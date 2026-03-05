@@ -1,13 +1,20 @@
 import {z} from "zod";
+import {useTranslations} from "next-intl";
 
 export const GenderValues = z.enum(["male", "female"]);
 export type GenderValues = z.infer<typeof GenderValues>;
 
-export const GenderValuesLabels: Record<GenderValues, string> = {
-    male: "Male",
-    female: "Female",
+interface GenderLabelProps {
+  gender: GenderValues | null;
 }
 
+export function GenderLabel({ gender }: GenderLabelProps) {
+  const t = useTranslations();
+
+  if (!gender) return null;
+
+  return <span>{t(`common.${gender}`)}</span>;
+}
 export const UsersSchema = z.object(
   {
       id: z.string(),
