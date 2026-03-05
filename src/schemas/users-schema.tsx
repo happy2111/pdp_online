@@ -17,7 +17,7 @@ export function GenderLabel({ gender }: GenderLabelProps) {
 }
 export const UsersSchema = z.object(
   {
-      id: z.string(),
+      id: z.number(),
       email: z.string(),
       username: z.string(),
       password_hash: z.string(),
@@ -25,7 +25,7 @@ export const UsersSchema = z.object(
       last_name: z.string(),
       avatar_url: z.string().nullable(),
       bio: z.string().nullable(),
-      role_id: z.string(),
+      role_id: z.number(),
       phone_number: z.string().nullable(),
       gender: GenderValues.nullable(),
       is_active: z.boolean(),
