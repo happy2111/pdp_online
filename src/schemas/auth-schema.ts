@@ -1,29 +1,29 @@
 import z from "zod";
 import {GenderValues} from "@/schemas/users-schema";
 
-export const LoginSchema = z.object({
+export const LoginSchema =  (t: any) =>  z.object({
   username_or_email: z.string().min(1),
-  password: z.string().min(1),
+  password: z.string().min(8, t("errors.zod.password_min"))
 })
-export type LoginSchema = z.infer<typeof LoginSchema>;
+export type LoginSchemaType = z.infer<ReturnType<typeof LoginSchema>>;
 
-export const RegisterSchema = z.object({
-  username: z.string().min(1),
-  email: z.email(),
+export const RegisterSchema = (t: any) => z.object({
+  username: z.string().min(1, t("errors.zod.required")),
+  email: z.string().email(t("errors.zod.invalid_email")),
   password: z.string()
-    .min(8, "Password must be at least 8 characters")
-    .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-    .regex(/[a-z]/, "Password must contain at least one lowercase letter")
-    .regex(/\d/, "Password must contain at least one number"),
-  first_name: z.string().min(1),
-  last_name: z.string().min(1),
+    .min(8, t("errors.zod.password_min"))
+    .regex(/[A-Z]/, t("errors.zod.password_uppercase"))
+    .regex(/[a-z]/, t("errors.zod.password_lowercase"))
+    .regex(/\d/, t("errors.zod.password_number")),
+  first_name: z.string().min(1, t("errors.zod.required")),
+  last_name: z.string().min(1, t("errors.zod.required")),
   phone_number: z.string().regex(
     /^\+998\d{9}$/,
-    'invalid uzbek phone number'
+    t("errors.zod.phone_invalid")
   ),
-  gender: GenderValues.nullable(),
-})
-export type RegisterSchema = z.infer<typeof RegisterSchema>;
+  gender: z.any().nullable(),
+});
+export type RegisterSchemaType = z.infer<ReturnType<typeof RegisterSchema>>;
 
 export const AuthResponseSchema = z.object({
   id: z.number(),

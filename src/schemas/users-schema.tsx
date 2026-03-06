@@ -37,7 +37,7 @@ export type UsersSchema = z.infer<typeof UsersSchema>;
 
 export const RolesSchema = z.object(
   {
-    id: z.string(),
+    id: z.number(),
     name: z.string(),
     display_name: z.string(),
     description: z.string().nullable(),
@@ -49,7 +49,7 @@ export type RolesSchema = z.infer<typeof RolesSchema>;
 
 export const TeacherProfileSchema = z.object(
   {
-    id: z.string(),
+    id: z.number(),
     user_id: z.string(),
     title: z.string().nullable(),
     department: z.string(),

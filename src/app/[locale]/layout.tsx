@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { notFound } from "next/navigation";
+import { Toaster } from "@/components/ui/sonner"
+
 
 
 
@@ -45,6 +47,7 @@ export default async function RootLayout({
 
   return (
     <html
+      suppressHydrationWarning
       lang={locale}
     >
       <body
@@ -54,6 +57,9 @@ export default async function RootLayout({
       <NextIntlClientProvider>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}
+          <Toaster
+            position={'top-right'}
+          />
         </ThemeProvider>
       </NextIntlClientProvider>
       </body>
