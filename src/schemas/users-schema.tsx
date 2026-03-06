@@ -1,16 +1,23 @@
 import {z} from "zod";
+import {useTranslations} from "next-intl";
 
 export const GenderValues = z.enum(["male", "female"]);
 export type GenderValues = z.infer<typeof GenderValues>;
 
-export const GenderValuesLabels: Record<GenderValues, string> = {
-    male: "Male",
-    female: "Female",
+interface GenderLabelProps {
+  gender: GenderValues | null;
 }
 
+export function GenderLabel({ gender }: GenderLabelProps) {
+  const t = useTranslations();
+
+  if (!gender) return null;
+
+  return <span>{t(`common.${gender}`)}</span>;
+}
 export const UsersSchema = z.object(
   {
-      id: z.string(),
+      id: z.number(),
       email: z.string(),
       username: z.string(),
       password_hash: z.string(),
@@ -18,7 +25,7 @@ export const UsersSchema = z.object(
       last_name: z.string(),
       avatar_url: z.string().nullable(),
       bio: z.string().nullable(),
-      role_id: z.string(),
+      role_id: z.number(),
       phone_number: z.string().nullable(),
       gender: GenderValues.nullable(),
       is_active: z.boolean(),
@@ -30,7 +37,7 @@ export type UsersSchema = z.infer<typeof UsersSchema>;
 
 export const RolesSchema = z.object(
   {
-    id: z.string(),
+    id: z.number(),
     name: z.string(),
     display_name: z.string(),
     description: z.string().nullable(),
@@ -42,7 +49,7 @@ export type RolesSchema = z.infer<typeof RolesSchema>;
 
 export const TeacherProfileSchema = z.object(
   {
-    id: z.string(),
+    id: z.number(),
     user_id: z.string(),
     title: z.string().nullable(),
     department: z.string(),
