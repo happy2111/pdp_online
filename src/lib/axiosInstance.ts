@@ -1,7 +1,9 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  // baseURL: process.env.NEXT_PUBLIC_API_URL, // TODO AFTER GOT DOMAIN
+
+  baseURL: "/api/v1",
   headers: {
     "Content-Type": "application/json",
   },
