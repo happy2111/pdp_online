@@ -57,12 +57,12 @@ export function LoginForm({ className }: { className?: string }) {
         <h1 className="text-2xl font-bold tracking-tight">{t("auth.login.title")}</h1>
       </CardHeader>
 
-      <CardContent>
+      <CardContent className={"form-card"}>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
             <Field>
               <FieldLabel>{t("auth.fields.username")}</FieldLabel>
-              <Input {...register("username_or_email")} placeholder="example@mail.com" />
+              <Input {...register("username_or_email")} placeholder="example@mail.com"/>
               {errors.username_or_email && (
                 <p className="text-destructive text-[10px]">{errors.username_or_email.message}</p>
               )}

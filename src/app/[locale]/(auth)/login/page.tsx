@@ -1,19 +1,28 @@
 'use client'
 
 import { LoginForm } from "@/components/LoginForm";
+import {LanguageToggle} from "@/components/LanguageToggle";
+import {ModeToggle} from "@/components/ModeToggle";
 
 export default function LoginPage() {
   return (
     <div className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden bg-background p-6 md:p-10">
-
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute top-[5%] left-[10%] w-80 h-80 rounded-full bg-emerald-500/20 blur-[100px] animate-blob" />
         <div className="absolute top-[35%] right-[5%] w-[450px] h-[450px] rounded-full bg-green-500/15 blur-[120px] animate-blob animation-delay-2000" />
         <div className="absolute bottom-[15%] left-[15%] w-72 h-72 rounded-full bg-green-400/20 blur-[100px] animate-blob animation-delay-4000" />
       </div>
 
+
+
       <div className="w-full max-w-md relative z-10">
         <LoginForm />
+      </div>
+
+      <div className="relative mt-2 z-50 flex items-center gap-2 p-1 rounded-2xl backdrop-blur-xl bg-background/70 border border-emerald-500/10">
+        <LanguageToggle />
+        <div className="w-[1px] h-4 bg-emerald-500/20" />
+        <ModeToggle />
       </div>
 
       <style jsx global>{`

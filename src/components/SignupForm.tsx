@@ -95,7 +95,7 @@ export function SignupForm({ className }: { className?: string }) {
         </div>
       </CardHeader>
 
-      <CardContent>
+      <CardContent className={"form-card"}>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 
           {step === 1 && (
@@ -155,7 +155,6 @@ export function SignupForm({ className }: { className?: string }) {
                     className="w-full transition-all"
                     onClick={() => setValue("gender", "male", { shouldValidate: true })}
                   >
-                    {selectedGender === "male" && <Check className="mr-2 size-4 animate-in zoom-in" />}
                     {t("common.male")}
                   </Button>
                   <Button
@@ -164,7 +163,6 @@ export function SignupForm({ className }: { className?: string }) {
                     className="w-full transition-all"
                     onClick={() => setValue("gender", "female", { shouldValidate: true })}
                   >
-                    {selectedGender === "female" && <Check className="mr-2 size-4 animate-in zoom-in" />}
                     {t("common.female")}
                   </Button>
                 </div>
@@ -203,7 +201,7 @@ export function SignupForm({ className }: { className?: string }) {
             </div>
           )}
 
-          <div className="flex gap-3 pt-4">
+          <div className="flex gap-3 pt-4 flex-wrap">
             {step > 1 && (
               <Button type="button" variant="ghost" onClick={() => setStep(step - 1)} className="flex-1">
                 <ChevronLeft className="mr-2 size-4" />

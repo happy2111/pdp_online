@@ -34,17 +34,21 @@ export function LanguageToggle() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
-          <Languages className="h-[1.2rem] w-[1.2rem]" />
+        <Button
+          variant="ghost"
+          size="icon"
+          className="hover:bg-emerald-500/10 transition-colors"
+        >
+          <Languages className="h-[1.2rem] w-[1.2rem] text-foreground/70" />
           <span className="sr-only">Toggle language</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="end" className="backdrop-blur-md bg-background/80">
         {languages.map((lang) => (
           <DropdownMenuItem
             key={lang.code}
             onClick={() => handleLanguageChange(lang.code)}
-            className={currentLocale === lang.code ? "bg-accent font-bold" : ""}
+            className={currentLocale === lang.code ? "bg-emerald-500/20 font-bold" : ""}
           >
             {lang.label}
           </DropdownMenuItem>
