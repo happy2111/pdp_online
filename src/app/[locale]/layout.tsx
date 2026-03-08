@@ -4,9 +4,6 @@ import "./globals.css";
 import { notFound } from "next/navigation";
 import { Toaster } from "@/components/ui/sonner"
 
-
-
-
 import {setRequestLocale} from 'next-intl/server';
 import { hasLocale, NextIntlClientProvider} from 'next-intl';
 import {routing} from '@/i18n/routing';
