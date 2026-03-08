@@ -150,16 +150,16 @@ const Navbar = () => {
 
     return (
         <div className="fixed top-[30px] left-0 w-full flex justify-center z-50">
-            {/* Glass morphism navbar with dark gray background */}
+            {/* Glass morphism navbar with 70% width */}
             <nav className={`
                 relative w-[70%] px-6 py-4 
                 flex justify-between items-center 
                 rounded-[30px] transition-colors duration-200 
-                overflow-hidden
-                bg-white/10 dark:bg-gray-900/90
-                backdrop-blur-md 
+                overflow-visible
+                bg-white/5 dark:bg-gray-900/50
+                backdrop-blur-md
                 border border-white/30 dark:border-gray-700/50
-                shadow-[0_8px_32px_rgba(0,0,0,0.1)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.3)]
+                shadow-[0_8px_32px_rgba(0,0,0,0.1)] 
                 before:absolute before:top-0 before:left-0 before:right-0 before:h-[1px] 
                 before:bg-gradient-to-r before:from-transparent before:via-white/80 dark:before:via-white/40 before:to-transparent
                 after:absolute after:top-0 after:left-0 after:w-[1px] after:h-full 
@@ -217,43 +217,46 @@ const Navbar = () => {
                             </svg>
                         </Button>
 
-                        {/* Animated Dropdown Menu */}
+                        {/* Animated Dropdown Menu - 70% width, appears from bottom with 5px gap */}
                         <div
                             className={`
-                            fixed left-1/2 transform -translate-x-1/2 w-[70%] mt-2
-                            transition-all duration-300 ease-out origin-top
-                            ${openDropdown === 'courses'
+                                fixed left-1/2 transform -translate-x-1/2 w-[70%] mt-2
+                                transition-all duration-300 ease-out origin-top
+                                ${openDropdown === 'courses'
                                 ? 'opacity-100 scale-y-100 translate-y-0 pointer-events-auto'
                                 : 'opacity-0 scale-y-0 -translate-y-4 pointer-events-none'
                             }
-                        `}
-                            style={{ top: '110px' }}
+                            `}
+                            style={{ top: 'calc(80px + 5px)' }}
                         >
                             <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-md rounded-lg shadow-xl border border-gray-200/50 dark:border-gray-700/50 overflow-hidden">
                                 {/* Tab Headers with Sliding Indicator */}
                                 <div className="flex border-b border-gray-200/50 dark:border-gray-700/50 bg-gray-50/50 dark:bg-gray-800/50 relative">
                                     <button
-                                        className={`flex-1 py-3 px-4 text-sm font-semibold transition-colors duration-300 relative z-10 ${activeTab === 'asosiy'
-                                            ? 'text-blue-600 dark:text-blue-400'
-                                            : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                                        className={`flex-1 py-3 px-4 text-sm font-semibold transition-colors duration-300 relative z-10 ${
+                                            activeTab === 'asosiy'
+                                                ? 'text-blue-600 dark:text-blue-400'
+                                                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
                                         }`}
                                         onClick={() => handleTabChange('asosiy')}
                                     >
                                         ASOSIY
                                     </button>
                                     <button
-                                        className={`flex-1 py-3 px-4 text-sm font-semibold transition-colors duration-300 relative z-10 ${activeTab === 'mutaxasislik'
-                                            ? 'text-blue-600 dark:text-blue-400'
-                                            : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                                        className={`flex-1 py-3 px-4 text-sm font-semibold transition-colors duration-300 relative z-10 ${
+                                            activeTab === 'mutaxasislik'
+                                                ? 'text-blue-600 dark:text-blue-400'
+                                                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
                                         }`}
                                         onClick={() => handleTabChange('mutaxasislik')}
                                     >
                                         MUTAXASISLIK
                                     </button>
                                     <button
-                                        className={`flex-1 py-3 px-4 text-sm font-semibold transition-colors duration-300 relative z-10 ${activeTab === 'foundation'
-                                            ? 'text-blue-600 dark:text-blue-400'
-                                            : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                                        className={`flex-1 py-3 px-4 text-sm font-semibold transition-colors duration-300 relative z-10 ${
+                                            activeTab === 'foundation'
+                                                ? 'text-blue-600 dark:text-blue-400'
+                                                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
                                         }`}
                                         onClick={() => handleTabChange('foundation')}
                                     >
