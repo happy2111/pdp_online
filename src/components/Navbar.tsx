@@ -149,155 +149,168 @@ const Navbar = () => {
     };
 
     return (
-        <nav className="bg-white dark:bg-gray-900 text-black dark:text-white px-6 py-4 flex justify-between items-center fixed top-0 left-0 w-full z-50 shadow-md dark:shadow-gray-800 transition-colors duration-200">
-            {/* Logo */}
-            <Link href="/" className="flex items-center">
-                <Image
-                    src="/logo.svg"
-                    alt="Logo"
-                    width={100}
-                    height={100}
-                    className="hover:opacity-80 transition-opacity dark:brightness-90"
-                />
-            </Link>
-
-            {/* Search Bar */}
-            <div className="flex-1 max-w-xl mx-8">
-                <div className="relative">
-                    <input
-                        type="text"
-                        placeholder="Search courses..."
-                        className="w-full px-4 py-2 pl-10 pr-4 text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 dark:focus:border-blue-400 dark:focus:ring-blue-400 transition-colors"
+        <div className="fixed top-[30px] left-0 w-full flex justify-center z-50">
+            {/* Glass morphism navbar with dark gray background */}
+            <nav className={`
+                relative w-[70%] px-6 py-4 
+                flex justify-between items-center 
+                rounded-[30px] transition-colors duration-200 
+                overflow-hidden
+                bg-white/10 dark:bg-gray-900/90
+                backdrop-blur-md 
+                border border-white/30 dark:border-gray-700/50
+                shadow-[0_8px_32px_rgba(0,0,0,0.1)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.3)]
+                before:absolute before:top-0 before:left-0 before:right-0 before:h-[1px] 
+                before:bg-gradient-to-r before:from-transparent before:via-white/80 dark:before:via-white/40 before:to-transparent
+                after:absolute after:top-0 after:left-0 after:w-[1px] after:h-full 
+                after:bg-gradient-to-b after:from-white/80 dark:after:from-white/40 after:via-transparent after:to-white/30 dark:after:to-white/10
+            `}>
+                {/* Logo */}
+                <Link href="/" className="flex items-center">
+                    <Image
+                        src="/logo.svg"
+                        alt="Logo"
+                        width={100}
+                        height={100}
+                        className="hover:opacity-80 transition-opacity dark:brightness-90"
                     />
-                    <div className="absolute left-3 top-2.5 text-gray-400 dark:text-gray-500">
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
-                    </div>
-                </div>
-            </div>
+                </Link>
 
-            {/* Right side */}
-            <div className="flex items-center gap-4">
-                {/* Courses Dropdown with Animation */}
-                <div
-                    className="relative"
-                    ref={dropdownRef}
-                    onMouseEnter={() => handleMouseEnter('courses')}
-                    onMouseLeave={handleMouseLeave}
-                >
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        className="gap-1 text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-300"
-                    >
-                        Courses
-                        <svg
-                            className={`w-4 h-4 transition-transform duration-300 ${openDropdown === 'courses' ? 'rotate-180' : ''}`}
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </Button>
-
-                    {/* Animated Dropdown Menu - 70% width, appears from bottom */}
-                    <div
-                        className={`
-                            fixed left-1/2 transform -translate-x-1/2 w-[70%] mt-2
-                            transition-all duration-300 ease-out origin-top
-                            ${openDropdown === 'courses'
-                            ? 'opacity-100 scale-y-100 translate-y-0 pointer-events-auto'
-                            : 'opacity-0 scale-y-0 -translate-y-4 pointer-events-none'
-                        }
-                        `}
-                        style={{ top: '80px' }}
-                    >
-                        <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-                            {/* Tab Headers with Sliding Indicator */}
-                            <div className="flex border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 relative">
-                                <button
-                                    className={`flex-1 py-3 px-4 text-sm font-semibold transition-colors duration-300 relative z-10 ${
-                                        activeTab === 'asosiy'
-                                            ? 'text-blue-600 dark:text-blue-400'
-                                            : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
-                                    }`}
-                                    onClick={() => handleTabChange('asosiy')}
-                                >
-                                    ASOSIY
-                                </button>
-                                <button
-                                    className={`flex-1 py-3 px-4 text-sm font-semibold transition-colors duration-300 relative z-10 ${
-                                        activeTab === 'mutaxasislik'
-                                            ? 'text-blue-600 dark:text-blue-400'
-                                            : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
-                                    }`}
-                                    onClick={() => handleTabChange('mutaxasislik')}
-                                >
-                                    MUTAXASISLIK
-                                </button>
-                                <button
-                                    className={`flex-1 py-3 px-4 text-sm font-semibold transition-colors duration-300 relative z-10 ${
-                                        activeTab === 'foundation'
-                                            ? 'text-blue-600 dark:text-blue-400'
-                                            : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
-                                    }`}
-                                    onClick={() => handleTabChange('foundation')}
-                                >
-                                    FOUNDATION
-                                </button>
-
-                                {/* Sliding indicator */}
-                                <div
-                                    className="absolute bottom-0 h-0.5 bg-blue-600 dark:bg-blue-400 transition-all duration-300 ease-out"
-                                    style={{
-                                        width: '33.333%',
-                                        transform: `translateX(${
-                                            activeTab === 'asosiy' ? '0%' : activeTab === 'mutaxasislik' ? '100%' : '200%'
-                                        })`
-                                    }}
-                                />
-                            </div>
-
-                            {/* Tab Content with Slide Animation */}
-                            <div className="p-6 overflow-hidden">
-                                <div
-                                    key={activeTab}
-                                    className={`transition-all duration-300 ease-out ${getAnimationClass()}`}
-                                >
-                                    {tabContent[activeTab as keyof typeof tabContent]}
-                                </div>
-                            </div>
+                {/* Search Bar */}
+                <div className="flex-1 max-w-xl mx-8">
+                    <div className="relative">
+                        <input
+                            type="text"
+                            placeholder="Search courses..."
+                            className="w-full px-4 py-2 pl-10 pr-4 text-gray-700 dark:text-gray-200 bg-white/50 dark:bg-gray-800/50 border border-gray-300/50 dark:border-gray-700/50 rounded-full focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 dark:focus:border-blue-400 dark:focus:ring-blue-400 backdrop-blur-sm transition-colors"
+                        />
+                        <div className="absolute left-3 top-2.5 text-gray-400 dark:text-gray-500">
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
                         </div>
                     </div>
                 </div>
 
-                <Button
-                    variant="ghost"
-                    size="sm"
-                    asChild
-                    className="text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-300"
-                >
-                    <Link href="/instruction">Instruction</Link>
-                </Button>
+                {/* Right side */}
+                <div className="flex items-center gap-4">
+                    {/* Courses Dropdown with Animation */}
+                    <div
+                        className="relative"
+                        ref={dropdownRef}
+                        onMouseEnter={() => handleMouseEnter('courses')}
+                        onMouseLeave={handleMouseLeave}
+                    >
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            className="gap-1 text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-300"
+                        >
+                            Courses
+                            <svg
+                                className={`w-4 h-4 transition-transform duration-300 ${openDropdown === 'courses' ? 'rotate-180' : ''}`}
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </Button>
 
-                <Button
-                    variant="ghost"
-                    size="sm"
-                    asChild
-                    className="text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-300"
-                >
-                    <Link href="/contact">Contact</Link>
-                </Button>
+                        {/* Animated Dropdown Menu */}
+                        <div
+                            className={`
+                            fixed left-1/2 transform -translate-x-1/2 w-[70%] mt-2
+                            transition-all duration-300 ease-out origin-top
+                            ${openDropdown === 'courses'
+                                ? 'opacity-100 scale-y-100 translate-y-0 pointer-events-auto'
+                                : 'opacity-0 scale-y-0 -translate-y-4 pointer-events-none'
+                            }
+                        `}
+                            style={{ top: '110px' }}
+                        >
+                            <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-md rounded-lg shadow-xl border border-gray-200/50 dark:border-gray-700/50 overflow-hidden">
+                                {/* Tab Headers with Sliding Indicator */}
+                                <div className="flex border-b border-gray-200/50 dark:border-gray-700/50 bg-gray-50/50 dark:bg-gray-800/50 relative">
+                                    <button
+                                        className={`flex-1 py-3 px-4 text-sm font-semibold transition-colors duration-300 relative z-10 ${activeTab === 'asosiy'
+                                            ? 'text-blue-600 dark:text-blue-400'
+                                            : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                                        }`}
+                                        onClick={() => handleTabChange('asosiy')}
+                                    >
+                                        ASOSIY
+                                    </button>
+                                    <button
+                                        className={`flex-1 py-3 px-4 text-sm font-semibold transition-colors duration-300 relative z-10 ${activeTab === 'mutaxasislik'
+                                            ? 'text-blue-600 dark:text-blue-400'
+                                            : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                                        }`}
+                                        onClick={() => handleTabChange('mutaxasislik')}
+                                    >
+                                        MUTAXASISLIK
+                                    </button>
+                                    <button
+                                        className={`flex-1 py-3 px-4 text-sm font-semibold transition-colors duration-300 relative z-10 ${activeTab === 'foundation'
+                                            ? 'text-blue-600 dark:text-blue-400'
+                                            : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                                        }`}
+                                        onClick={() => handleTabChange('foundation')}
+                                    >
+                                        FOUNDATION
+                                    </button>
 
-                {/* Auth buttons */}
-                <div className="flex items-center gap-2 border-l border-gray-300 dark:border-gray-700 pl-4">
-                    <LanguageToggle />
-                    <ModeToggle />
-                    <NavbarAuth />
+                                    {/* Sliding indicator */}
+                                    <div
+                                        className="absolute bottom-0 h-0.5 bg-blue-600 dark:bg-blue-400 transition-all duration-300 ease-out"
+                                        style={{
+                                            width: '33.333%',
+                                            transform: `translateX(${
+                                                activeTab === 'asosiy' ? '0%' : activeTab === 'mutaxasislik' ? '100%' : '200%'
+                                            })`
+                                        }}
+                                    />
+                                </div>
+
+                                {/* Tab Content with Slide Animation */}
+                                <div className="p-6 overflow-hidden">
+                                    <div
+                                        key={activeTab}
+                                        className={`transition-all duration-300 ease-out ${getAnimationClass()}`}
+                                    >
+                                        {tabContent[activeTab as keyof typeof tabContent]}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        asChild
+                        className="text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-300"
+                    >
+                        <Link href="/instruction">Instruction</Link>
+                    </Button>
+
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        asChild
+                        className="text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-300"
+                    >
+                        <Link href="/contact">Contact</Link>
+                    </Button>
+
+                    {/* Auth buttons */}
+                    <div className="flex items-center gap-2 border-l border-gray-300/50 dark:border-gray-700/50 pl-4">
+                        <LanguageToggle />
+                        <ModeToggle />
+                        <NavbarAuth />
+                    </div>
                 </div>
-            </div>
+            </nav>
 
             {/* Animation styles */}
             <style jsx global>{`
@@ -311,7 +324,7 @@ const Navbar = () => {
                         transform: translateX(0);
                     }
                 }
-                
+
                 @keyframes slideInFromLeft {
                     0% {
                         opacity: 0;
@@ -322,16 +335,16 @@ const Navbar = () => {
                         transform: translateX(0);
                     }
                 }
-                
+
                 .animate-slideInFromRight {
                     animation: slideInFromRight 0.3s ease-out;
                 }
-                
+
                 .animate-slideInFromLeft {
                     animation: slideInFromLeft 0.3s ease-out;
                 }
             `}</style>
-        </nav>
+        </div>
     )
 }
 
