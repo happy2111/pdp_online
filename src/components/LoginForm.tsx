@@ -50,9 +50,9 @@ export function LoginForm({ className }: { className?: string }) {
   return (
     <Card className={cn("relative z-10 w-full backdrop-blur-xl bg-background/70 shadow-2xl border-muted/40", className)}>
       <CardHeader className="space-y-1 flex flex-col items-center">
-        <div className="flex size-20 items-center justify-center rounded-xl bg-green-800/10 mb-2 p-2 shadow-sm border border-green-500/20">
+        <Link href={'/'} className="flex size-20 items-center justify-center rounded-xl bg-green-800/10 mb-2 p-2 shadow-sm border border-green-500/20">
           <Image src="/logo.svg" alt="Logo" width={100} height={100} className="object-contain" />
-        </div>
+        </Link>
 
         <h1 className="text-2xl font-bold tracking-tight">{t("auth.login.title")}</h1>
       </CardHeader>

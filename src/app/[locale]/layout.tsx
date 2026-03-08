@@ -11,6 +11,7 @@ import {setRequestLocale} from 'next-intl/server';
 import { hasLocale, NextIntlClientProvider} from 'next-intl';
 import {routing} from '@/i18n/routing';
 import {ThemeProvider} from "next-themes";
+import Navbar from "@/components/Navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,6 +31,8 @@ export const metadata: Metadata = {
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({locale}));
 }
+
+
 
 export default async function RootLayout({
                                            children,
@@ -56,6 +59,7 @@ export default async function RootLayout({
       >
       <NextIntlClientProvider>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <Navbar/>
           {children}
           <Toaster
             position={'top-right'}
