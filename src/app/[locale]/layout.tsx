@@ -9,6 +9,7 @@ import { hasLocale, NextIntlClientProvider} from 'next-intl';
 import {routing} from '@/i18n/routing';
 import {ThemeProvider} from "next-themes";
 import Navbar from "@/components/Navbar";
+import Hero from "@/components/Hero";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -46,24 +47,25 @@ export default async function RootLayout({
 
 
   return (
-    <html
-      suppressHydrationWarning
-      lang={locale}
-    >
+      <html
+          suppressHydrationWarning
+          lang={locale}
+      >
       <body
-        suppressHydrationWarning
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          suppressHydrationWarning
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
       <NextIntlClientProvider>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Navbar/>
+          <Hero />
           {children}
           <Toaster
-            position={'top-right'}
+              position={'top-right'}
           />
         </ThemeProvider>
       </NextIntlClientProvider>
       </body>
-    </html>
+      </html>
   );
 }
