@@ -6,6 +6,7 @@ import {
   SidebarGroupContent,
   SidebarInput,
 } from "@/components/ui/sidebar"
+import {Input} from "@/components/ui/input";
 
 export function SearchForm({ ...props }: React.ComponentProps<"form">) {
   return (
@@ -15,7 +16,7 @@ export function SearchForm({ ...props }: React.ComponentProps<"form">) {
           <Label htmlFor="search" className="sr-only">
             Search
           </Label>
-          <SidebarInput
+          <Input
             id="search"
             placeholder="Search the docs..."
             className="pl-8"

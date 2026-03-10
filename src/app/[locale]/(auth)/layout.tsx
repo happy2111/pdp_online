@@ -15,8 +15,8 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
+    <main className="w-full bg-red-500">
     {children}
-    </>
+    </main>
   );
 }

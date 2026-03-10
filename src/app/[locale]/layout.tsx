@@ -63,7 +63,10 @@ export default async function RootLayout({
             <HomeSidebar/>
             <Navbar/>
               {/*<Hero />*/}
+            <main className={'w-full'}>
               {children}
+
+            </main>
           </SidebarProvider>
           <Toaster
               position={'top-right'}
