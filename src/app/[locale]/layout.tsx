@@ -8,8 +8,10 @@ import {setRequestLocale} from 'next-intl/server';
 import { hasLocale, NextIntlClientProvider} from 'next-intl';
 import {routing} from '@/i18n/routing';
 import {ThemeProvider} from "next-themes";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/navbar/Navbar";
 import Hero from "@/components/Hero";
+import {SidebarProvider} from "@/components/ui/sidebar";
+import {HomeSidebar} from "@/components/navbar/HomeSidebar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -57,9 +59,12 @@ export default async function RootLayout({
       >
       <NextIntlClientProvider>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <Navbar/>
-          <Hero />
-          {children}
+          <SidebarProvider>
+            <HomeSidebar/>
+            <Navbar/>
+              {/*<Hero />*/}
+              {children}
+          </SidebarProvider>
           <Toaster
               position={'top-right'}
           />

@@ -1,6 +1,6 @@
 'use client'
 
-import { LoginForm } from "@/components/LoginForm";
+import { LoginForm } from "@/components/auth/LoginForm";
 import {LanguageToggle} from "@/components/LanguageToggle";
 import {ModeToggle} from "@/components/ModeToggle";
 
@@ -17,12 +17,6 @@ export default function LoginPage() {
 
       <div className="w-full max-w-md relative z-10">
         <LoginForm />
-      </div>
-
-      <div className="relative mt-2 z-50 flex items-center gap-2 p-1 rounded-2xl backdrop-blur-xl bg-background/70 border border-emerald-500/10">
-        <LanguageToggle />
-        <div className="w-[1px] h-4 bg-emerald-500/20" />
-        <ModeToggle />
       </div>
 
       <style jsx global>{`
