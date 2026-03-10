@@ -11,9 +11,18 @@ const nextConfig: NextConfig = {
       },
     ]
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'swiperjs.com',
+        port: '',
+        pathname: '/demos/images/**',
+      },
+    ],
+  },
 };
 
 const withNextIntl = createNextIntlPlugin();
 
 export default withNextIntl(nextConfig);
-
