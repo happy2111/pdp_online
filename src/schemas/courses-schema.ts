@@ -1,43 +1,80 @@
-import {z} from "zod";
+import { z } from "zod";
 
-export const LevelValues = z.enum(["beginner", "intermediate", "advanced"]);
-export type LevelValues = z.infer<typeof LevelValues>
+export const CourseLevelEnum = z.enum([
+  "BEGINNER",
+  "INTERMEDIATE",
+  "ADVANCED",
+]);
 
-export const LevelValuesLabels: Record<LevelValues, string> = {
-  beginner: "Beginner",
-  intermediate: "Intermediate",
-  advanced: "Advanced",
+export type CourseLevelEnum = z.infer<typeof CourseLevelEnum>;
+
+export const CourseLevelLabels: Record<CourseLevelEnum, string> = {
+  BEGINNER: "courses.level.beginner",
+  INTERMEDIATE: "courses.level.intermediate",
+  ADVANCED: "courses.level.advanced",
 }
 
-export const StatusValues = z.enum(["draft", "published"]);
-export type StatusValues = z.infer<typeof StatusValues>
 
-export const StatusValuesLabels: Record<StatusValues, string> = {
-  draft: "Draft",
-  published: "Published",
-}
+export const CourseListItemSchema = z.object({
+  id: z.number(),
+  slug: z.string(),
 
-export const CoursesSchema = z.object(
-  {
-    id: z.string(),
-    teacher_id: z.string(),
-    category_id: z.string(),
-    slug: z.string(),
-    title: z.string(),
-    short_description: z.string(),
-    description: z.string(),
-    thumbnail_url: z.string(),
-    preview_video_url: z.string().nullable(),
-    level: z.string(),
-    language: z.string(),
-    duration_hours: z.number(),
-    status: StatusValues,
-    is_free: z.boolean(),
-    rating_avg: z.number(),
-    enrolled_count: z.number().nullable(),
-    requirements: z.array(z.string()),
-    learning_outcomes: z.array(z.string()),
-    published_at: z.string().nullable(),
-    created_at: z.string(),
-  }
-)
+  title: z.string(),
+  short_description: z.string(),
+
+  thumbnail_url: z.string().url(),
+
+  level: CourseLevelEnum,
+  language: z.string(),
+
+  duration_hours: z.number(),
+
+  is_free: z.boolean(),
+
+  rating_avg: z.number(),
+  enrolled_count: z.number(),
+
+  category_id: z.number(),
+  category_name: z.string(),
+
+  teacher_id: z.number().nullable(),
+  teacher_full_name: z.string(),
+});
+
+export const CoursesListSchema = z.array(CourseListItemSchema);
+
+export type CourseListItem = z.infer<typeof CourseListItemSchema>;
+
+
+export const CourseDetailsSchema = z.object({
+  id: z.number(),
+  slug: z.string(),
+
+  title: z.string(),
+  short_description: z.string(),
+  description: z.string(),
+
+  thumbnail_url: z.string().url(),
+
+  preview_video_url: z.string().nullable(),
+
+  level: CourseLevelEnum,
+  language: z.string(),
+
+  duration_hours: z.number(),
+
+  rating_avg: z.number(),
+  enrolled_count: z.number(),
+
+  category_id: z.number(),
+  category_name: z.string(),
+
+  teacher_id: z.number(),
+  teacher_full_name: z.string(),
+  teacher_title: z.string(),
+
+  requirements: z.array(z.string()),
+  learning_outcomes: z.array(z.string()),
+});
+
+export type CourseDetails = z.infer<typeof CourseDetailsSchema>;

@@ -5,20 +5,18 @@ import { LanguageToggle } from '../LanguageToggle'
 import { ModeToggle } from '../ModeToggle'
 import { NavbarAuth } from '@/components/ui/NavbarAuth'
 import { CategoryDropdown } from "@/components/navbar/CategoryDropdown"
-import { Input } from "@/components/ui/input"
-import { SidebarTrigger } from "@/components/ui/sidebar" // Импортируем триггер
+import { SidebarTrigger } from "@/components/ui/sidebar"
 
 const Navbar = () => {
   return (
-    <div className="fixed top-8 left-0 w-full flex justify-center z-50">
+    <div className="fixed top-8 left-0 w-full flex justify-center z-50 ">
       <nav className={`
-                relative w-[95%] lg:w-[75%] px-4 md:px-6 py-3 
+                relative container-custom py-3
                 flex justify-between items-center 
                 rounded-3xl transition-all duration-300
-                bg-background/60 backdrop-blur-xl
+                bg-background/40 backdrop-blur-sm
                 border border-border shadow-lg
             `}>
-
 
         <div className="flex items-center gap-4">
           <div className="md:hidden">
@@ -35,23 +33,8 @@ const Navbar = () => {
           </Link>
         </div>
 
-        {/* Центр: Поиск (только десктоп) */}
-        <div className="flex-1 max-w-md mx-8 hidden md:block">
-          <div className="relative flex items-center">
-            <Input
-              type="text"
-              placeholder="Search courses..."
-              className="px-4 pl-10 text-sm rounded-full transition-all"
-            />
-            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            </div>
-          </div>
-        </div>
 
-        {/* Правая часть: Категории (десктоп) + Опции */}
+
         <div className="flex items-center gap-2">
           <div className="hidden md:block">
             <CategoryDropdown />
@@ -71,4 +54,4 @@ const Navbar = () => {
   )
 }
 
-export default Navbar
+export default Navbar;

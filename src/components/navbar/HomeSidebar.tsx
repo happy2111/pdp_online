@@ -25,10 +25,13 @@ import {
 import { CategoriesService } from "@/services/categories-service"
 import { Category } from "@/schemas/categories-schema"
 import {NavUserSidebar} from "@/components/navbar/NavUserSidebar";
+import {useTranslations} from "next-intl";
 
 export function HomeSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const [categories, setCategories] = React.useState<Category[]>([])
   const [loading, setLoading] = React.useState(true)
+
+  const t = useTranslations()
 
   React.useEffect(() => {
     async function fetchCats() {
@@ -51,16 +54,12 @@ export function HomeSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) 
       {...props}>
       <SidebarHeader className="border-b border-sidebar-border pb-4">
         <NavUserSidebar />
-
-        <div className="mt-2">
-          <SearchForm />
-        </div>
       </SidebarHeader>
 
       <SidebarContent>
         <SidebarGroup>
           <div className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest px-4 mb-4 opacity-70">
-            O'quv yo'nalishlari
+            {t("categories.title")}
           </div>
           <SidebarMenu>
             {loading ? (

@@ -82,7 +82,7 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
+  --background: oklch(0.196 0 89.876);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
@@ -123,7 +123,7 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border outline-ring/50 ;
   }
   body {
     @apply bg-background text-foreground;
@@ -139,6 +139,11 @@
       font-size: 12px !important;
     }
   }
+
+  .container-custom {
+    @apply w-[95%] lg:w-[75%] mx-auto px-4 md:px-6;
+  }
+
 
 
 }
