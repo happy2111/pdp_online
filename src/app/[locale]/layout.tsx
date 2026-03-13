@@ -9,9 +9,11 @@ import { hasLocale, NextIntlClientProvider} from 'next-intl';
 import {routing} from '@/i18n/routing';
 import {ThemeProvider} from "next-themes";
 import Navbar from "@/components/navbar/Navbar";
-import Hero from "@/components/Hero";
+import Hero from "@/components/home/Hero";
 import {SidebarProvider} from "@/components/ui/sidebar";
 import {HomeSidebar} from "@/components/navbar/HomeSidebar";
+import NextTopLoader from 'nextjs-toploader';
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,7 +49,6 @@ export default async function RootLayout({
   }
   setRequestLocale(locale);
 
-
   return (
       <html
           suppressHydrationWarning
@@ -60,12 +61,13 @@ export default async function RootLayout({
       <NextIntlClientProvider>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <SidebarProvider>
+            <NextTopLoader shadow="none" color="var(--primary)" showSpinner={false} />
+
             <HomeSidebar/>
             <Navbar/>
-              {/*<Hero />*/}
-            <main className={'w-full'}>
-              {children}
 
+            <main className={'w-full pt-28'}>
+              {children}
             </main>
           </SidebarProvider>
           <Toaster
