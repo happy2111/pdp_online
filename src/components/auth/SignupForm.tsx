@@ -29,7 +29,7 @@ export function SignupForm({ className }: { className?: string }) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [isPending, startTransition] = useTransition();
 
-  const totalSteps = 3; // увеличиваем шаги
+  const totalSteps = 3;
 
   const dynamicSchema = RegisterSchema(t);
 
@@ -73,8 +73,15 @@ export function SignupForm({ className }: { className?: string }) {
 
   return (
     <Card className={cn("relative z-10 w-full backdrop-blur-xl bg-background/70 shadow-2xl border-muted/40", className)}>
-      <CardHeader className="space-y-1 flex flex-col items-center">
-        <Link href={'/public'} className="flex size-20 items-center justify-center rounded-xl bg-green-800/10 mb-2 p-2 shadow-sm border border-green-500/20">
+      <Button
+        onClick={() => router.push('/')}
+        className="hover:bg-white/10 px-2 absolute md:hidden hover:text-white rounded-2xl"
+        variant='ghost'
+      ><ChevronLeft/>Orqaga</Button>
+
+
+      <CardHeader className="space-y-1 flex flex-col pt-12 items-center">
+        <Link href={'/'} className="flex size-20 items-center justify-center rounded-xl bg-green-800/10 mb-2 p-2 shadow-sm border border-green-500/20">
           <Image src="/logo.svg" alt="Logo" width={100} height={100} className="object-contain" />
         </Link>
 

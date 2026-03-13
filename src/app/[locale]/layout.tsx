@@ -9,7 +9,6 @@ import { hasLocale, NextIntlClientProvider} from 'next-intl';
 import {routing} from '@/i18n/routing';
 import {ThemeProvider} from "next-themes";
 import Navbar from "@/components/navbar/Navbar";
-import Hero from "@/components/home/Hero";
 import {SidebarProvider} from "@/components/ui/sidebar";
 import {HomeSidebar} from "@/components/navbar/HomeSidebar";
 import NextTopLoader from 'nextjs-toploader';
@@ -60,16 +59,8 @@ export default async function RootLayout({
       >
       <NextIntlClientProvider>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <SidebarProvider>
-            <NextTopLoader shadow="none" color="var(--primary)" showSpinner={false} />
-
-            <HomeSidebar/>
-            <Navbar/>
-
-            <main className={'w-full pt-28'}>
-              {children}
-            </main>
-          </SidebarProvider>
+          <NextTopLoader shadow="none" color="var(--primary)" showSpinner={false} />
+            {children}
           <Toaster
               position={'top-right'}
           />
