@@ -11,9 +11,9 @@ export default function SignupPage() {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-muted/30 p-4 md:p-6 transition-colors duration-300">
+    <div className="min-h-screen w-full flex items-center justify-center bg-muted/30 max-md:p-4 transition-colors dark:text-white! duration-300">
 
-      <div className="flex w-full max-w-[1000px] min-h-[600px] bg-card rounded-[32px] overflow-hidden shadow-2xl border border-border">
+      <div className="flex w-full max-w-full min-h-dvh bg-card rounded-[32px] overflow-hidden shadow-2xl border border-border">
 
         <div className="hidden md:flex w-1/2 bg-primary p-12 flex-col justify-between text-primary-foreground relative overflow-hidden">
 

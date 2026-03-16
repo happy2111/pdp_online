@@ -90,11 +90,11 @@ export function LoginForm({ className }: { className?: string }) {
             </Field>
           </div>
 
-          <Button type="submit" className="w-full mt-2" disabled={isPending}>
+          <Button type="submit" className="w-full mt-2 dark:text-white!" disabled={isPending}>
             {isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : t("auth.login.submit")}
           </Button>
 
-          <div className="text-center text-sm pt-4">
+          <div className="text-center text-sm pt-4 ">
             <span className="text-muted-foreground">{t("auth.login.noAccount")}{" "}</span>
             <Link href="/register" className="font-medium text-primary hover:underline underline-offset-4">
               {t("auth.login.registerLink")}

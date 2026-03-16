@@ -211,12 +211,12 @@ export function SignupForm({ className }: { className?: string }) {
             )}
 
             {step < totalSteps ? (
-              <Button type="button" onClick={nextStep} className="flex-1 ml-auto group">
+              <Button type="button" onClick={nextStep} className="flex-1 ml-auto group dark:text-white!">
                 {t("common.next")}
                 <ChevronRight className="ml-2 size-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             ) : (
-              <Button type="submit" className="flex-1" disabled={isPending}>
+              <Button type="submit" className="flex-1 dark:text-white!" disabled={isPending}>
                 {isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
                 {isPending ? t("auth.register.submitting") : t("auth.register.submit")}
               </Button>

@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import {useTranslations} from "next-intl";
+import {Star} from "lucide-react";
 
 interface Props {
   course: CourseListItem;
@@ -14,16 +15,13 @@ export function CourseCard({ course }: Props) {
   const t = useTranslations();
 
   return (
-    <Card className="group pt-0! overflow-hidden rounded-3xl bg-card/70 backdrop-blur transition-all hover:shadow-xl hover:-translate-y-1 cursor-pointer">
-
-      <div className="relative w-full h-48 overflow-hidden">
+    <Card className="group pt-0! gap-2 overflow-hidden rounded-3xl bg-card/70 backdrop-blur transition-all hover:shadow-xl hover:-translate-y-1 cursor-pointer">
+      <div className="relative w-full h-32 overflow-hidden">
         <img
           src={course.thumbnail_url}
           alt={course.title}
-          // fill
           className="object-cover group-hover:scale-105 transition-transform duration-300"
         />
-
         {course.is_free && (
           <Badge className="absolute top-3 left-3 bg-primary text-primary-foreground">
             Free
@@ -31,7 +29,7 @@ export function CourseCard({ course }: Props) {
         )}
       </div>
 
-      <CardContent className="p-3 space-y-3">
+      <CardContent className="px-3">
 
         <h3 className="font-semibold text-lg line-clamp-1">
           {course.title}
@@ -54,8 +52,8 @@ export function CourseCard({ course }: Props) {
 
         <div className="flex items-center justify-between text-xs text-muted-foreground pt-2">
 
-          <span>
-            ⭐ {course.rating_avg.toFixed(1)}
+          <span className="flex items-center gap-1">
+            <Star className="size-4 text-yellow-400"/> {course.rating_avg.toFixed(1)}
           </span>
 
           <span>
