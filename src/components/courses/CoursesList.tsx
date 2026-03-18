@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation"; // Импортируем хуки
+import { useSearchParams, useRouter } from "next/navigation";
 import { CoursesService } from "@/services/courses-service";
 import { CourseListItem } from "@/schemas/courses-schema";
 import { CourseCard } from "./CourseCard";

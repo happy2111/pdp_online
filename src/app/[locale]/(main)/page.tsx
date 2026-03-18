@@ -7,8 +7,6 @@ import Hero from "@/components/home/Hero";
 import {CoursesList} from "@/components/courses/CoursesList";
 import {Loader2} from "lucide-react";
 
-
-
 export default function Home() {
   const t = useTranslations();
 
@@ -25,7 +23,7 @@ export default function Home() {
         <div className="absolute bottom-[10%] left-[25%] w-72 h-72 rounded-full bg-primary/15 blur-[100px] animate-blob animation-delay-4000" />
       </div>
 
-      <Hero/>
+      <Hero />
 
       <div className="relative min-h-svh overflow-hidden ">
 
@@ -54,23 +52,37 @@ export default function Home() {
 
         </div>
 
-        <style jsx global>{`
-        @keyframes blob {
-          0% { transform: translate(0px, 0px) scale(1); }
-          33% { transform: translate(40px, -60px) scale(1.1); }
-          66% { transform: translate(-30px, 30px) scale(0.9); }
-          100% { transform: translate(0px, 0px) scale(1); }
-        }
-        .animate-blob {
-          animation: blob 12s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .animation-delay-2000 {
-          animation-delay: 2s;
-        }
-        .animation-delay-4000 {
-          animation-delay: 4s;
-        }
-      `}</style>
+        <style
+          jsx
+          global
+        >{`
+          @keyframes blob {
+            0% {
+              transform: translate(0px, 0px) scale(1);
+            }
+            33% {
+              transform: translate(40px, -60px) scale(1.1);
+            }
+            66% {
+              transform: translate(-30px, 30px) scale(0.9);
+            }
+            100% {
+              transform: translate(0px, 0px) scale(1);
+            }
+          }
+
+          .animate-blob {
+            animation: blob 12s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+          }
+
+          .animation-delay-2000 {
+            animation-delay: 2s;
+          }
+
+          .animation-delay-4000 {
+            animation-delay: 4s;
+          }
+        `}</style>
 
       </div>
     </div>

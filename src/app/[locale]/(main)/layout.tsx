@@ -1,9 +1,9 @@
 import type { Viewport } from 'next'
-import {ModeToggle} from "@/components/ModeToggle";
-import {LanguageToggle} from "@/components/LanguageToggle";
 import {SidebarProvider} from "@/components/ui/sidebar";
 import {HomeSidebar} from "@/components/navbar/HomeSidebar";
 import Navbar from "@/components/navbar/Navbar";
+import {Loader2} from "lucide-react";
+import {Suspense} from "react";
 
 export const viewport: Viewport = {
   width: 'device-width',
