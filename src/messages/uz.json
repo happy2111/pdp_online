@@ -17,7 +17,9 @@
     "cancel": "Bekor qilish",
     "confirm": "Tasdiqlash",
     "step": "Bosqich",
-    "edit": "Tahrirlash"
+    "edit": "Tahrirlash",
+    "viewAll": "Hammasini ko‘rish",
+    "allCategories": "Barcha kategoriyalar"
   },
   "auth": {
     "login": {
