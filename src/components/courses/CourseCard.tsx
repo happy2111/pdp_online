@@ -20,7 +20,7 @@ export function CourseCard({ course }: Props) {
     <Card
       onClick={() => router.push(`/courses/${course.slug}`)}
       className="group pt-0! gap-2 overflow-hidden rounded-3xl bg-card/70 backdrop-blur transition-all hover:shadow-xl hover:-translate-y-1 cursor-pointer">
-      <div className="relative w-full h-32 overflow-hidden flex items-center">
+      <div className="relative w-full h-32 overflow-hidden flex items-center justify-center">
         <img
           src={course.thumbnail_url}
           alt={course.title}

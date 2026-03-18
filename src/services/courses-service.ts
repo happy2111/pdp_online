@@ -26,9 +26,9 @@ export class CoursesService {
     return res.data;
   }
 
-  static async getCourseById(id: number): Promise<ApiResponse<CourseDetails>> {
+  static async getCourseBySlug(slug: string): Promise<ApiResponse<CourseDetails>> {
     const res = await api.get<ApiResponse<CourseDetails>>(
-      `${process.env.NEXT_PUBLIC_API_URL}/courses/${id}`
+      `${process.env.NEXT_PUBLIC_API_URL}/courses/${slug}`
     );
 
     return res.data;

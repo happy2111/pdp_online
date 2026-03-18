@@ -33,7 +33,7 @@ import { NavUserSidebar } from "@/components/navbar/NavUserSidebar"
 function HomeSidebarContent({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const { setOpenMobile } = useSidebar() // Закрываем сайдбар на мобилках после клика
+  const { setOpenMobile } = useSidebar()
 
   const [categories, setCategories] = React.useState<Category[]>([])
   const [loading, setLoading] = React.useState(true)

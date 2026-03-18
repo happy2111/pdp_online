@@ -22,7 +22,7 @@ export const CourseListItemSchema = z.object({
   title: z.string(),
   short_description: z.string(),
 
-  thumbnail_url: z.string().url(),
+  thumbnail_url: z.url(),
 
   level: CourseLevelEnum,
   language: z.string(),
