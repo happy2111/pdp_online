@@ -6,8 +6,8 @@
     "welcome": "Xush kelibsiz",
     "logout": "Chiqish",
     "loading": "Yuklanmoqda...",
-    "search": "Qidiruv",
-    "searchPlaceholder": "Foydalanuvchilar, kategoriyalar yoki qidiruv...",
+    "search": "Qidirish",
+    "searchPlaceholder": "Foydalanuvchilar, kategoriyalar yoki qidirish...",
     "noResults": "Hech narsa topilmadi",
     "back": "Orqaga",
     "next": "Keyingi",
@@ -16,22 +16,23 @@
     "save": "Saqlash",
     "cancel": "Bekor qilish",
     "confirm": "Tasdiqlash",
-    "step": "Qadam"
+    "step": "Bosqich",
+    "edit": "Tahrirlash"
   },
   "auth": {
     "login": {
       "title": "Hisobga kirish",
       "submit": "Kirish",
-      "success": "Kirish muvaffaqiyatli amalga oshirildi!",
-      "noAccount": "Hali akkauntingiz yo'qmi?",
-      "registerLink": "Ro'yxatdan o'tish"
+      "success": "Muvaffaqiyatli kirildi!",
+      "noAccount": "Hali hisobingiz yo‘qmi?",
+      "registerLink": "Ro‘yxatdan o‘tish"
     },
     "register": {
       "title": "Hisob yaratish",
       "submit": "Hisob yaratish",
-      "submitting": "Ro'yxatdan o'tmoqda...",
-      "success": "Ro'yxatdan o'tish muvaffaqiyatli yakunlandi!",
-      "loginLink": "Allaqachon akkaunt mavjudmi? Kirish"
+      "submitting": "Ro‘yxatdan o‘tilmoqda...",
+      "success": "Ro‘yxatdan o‘tish muvaffaqiyatli yakunlandi!",
+      "loginLink": "Allaqachon hisobingiz bormi? Kirish"
     },
     "fields": {
       "firstName": "Ism",
@@ -46,38 +47,39 @@
   },
   "errors": {
     "200": "Muvaffaqiyatli",
-    "1000": "Noma'lum xato yuz berdi",
+    "1000": "Noma’lum xatolik yuz berdi",
     "1001": "Foydalanuvchi allaqachon mavjud",
-    "1002": "Noto'g'ri foydalanuvchi ma'lumotlari",
-    "1003": "Noto'g'ri token",
-    "1004": "Tekshiruv xatosi",
-    "1005": "Noto'g'ri tasdiqlash kodi",
+    "1002": "Foydalanuvchi ma’lumotlari noto‘g‘ri",
+    "1003": "Noto‘g‘ri token",
+    "1004": "Tasdiqlash xatosi",
+    "1005": "Tasdiqlash kodi noto‘g‘ri",
     "1006": "Foydalanuvchi topilmadi",
     "1008": "Topilmadi",
-    "1011": "Referal kodi mavjud emas",
+    "1011": "Referal kod mavjud emas",
     "zod": {
       "required": "Majburiy maydon",
-      "invalid_email": "Email formati noto'g'ri",
-      "password_min": "Parol kamida 8 ta belgi bo'lishi kerak",
-      "password_uppercase": "Kamida bitta katta harf bo'lishi kerak",
-      "password_lowercase": "Kamida bitta kichik harf bo'lishi kerak",
-      "password_number": "Kamida bitta raqam bo'lishi kerak",
-      "phone_invalid": "Noto'g'ri raqam (format: +998XXXXXXXXX)",
-      "password_mismatch": "Parollar mos kelmadi",
+      "invalid_email": "Email formati noto‘g‘ri",
+      "password_min": "Parol kamida 8 ta belgidan iborat bo‘lishi kerak",
+      "password_uppercase": "Kamida bitta katta harf bo‘lishi kerak",
+      "password_lowercase": "Kamida bitta kichik harf bo‘lishi kerak",
+      "password_number": "Kamida bitta raqam bo‘lishi kerak",
+      "phone_invalid": "Telefon raqami noto‘g‘ri (format: +998XXXXXXXXX)",
+      "password_mismatch": "Parollar mos kelmaydi",
       "gender_required": "Jinsni tanlang"
-    }
+    },
+    "update_failed": "Profilni yangilab bo‘lmadi"
   },
   "courses": {
     "title": "Kurslar",
     "hero": {
-      "titlePrefix": "Keyingi kursingizni",
-      "titleHighlight": "kashf eting",
-      "description": "Tajriba o'qituvchilardan yangi ko'nikmalarni o'rganing va karerangizni rivojlantiring.",
+      "titlePrefix": "Keyingi",
+      "titleHighlight": "kursni",
+      "description": "Tajribali ustozlardan yangi ko‘nikmalarni o‘rganing va karyerangizni rivojlantiring.",
       "searchPlaceholder": "Kurslarni qidirish..."
     },
     "level": {
-      "beginner": "Boshlang'ich",
-      "intermediate": "O'rta",
+      "beginner": "Boshlang‘ich",
+      "intermediate": "O‘rta",
       "advanced": "Yuqori"
     }
   },
@@ -88,13 +90,26 @@
   },
   "categories": {
     "title": "Kategoriyalar",
-    "directions": "Yo'nalishlar",
+    "directions": "Yo‘nalishlar",
     "courses": "kurslar",
-    "emptyCourses": "Hozircha kurslar mavjud emas",
+    "emptyCourses": "Hozircha kurslar yo‘q",
     "selectCategory": "Kategoriyani tanlang"
   },
   "sidebar": {
     "account": "Hisob",
     "notifications": "Bildirishnomalar"
+  },
+  "profile": {
+    "settings": "Profil sozlamalari",
+    "manage_info": "Shaxsiy ma’lumotlarni boshqaring",
+    "avatar_updated": "Avatar muvaffaqiyatli yangilandi",
+    "updated_success": "Profil muvaffaqiyatli saqlandi",
+    "teacher_stats": "O‘qituvchi statistikasi",
+    "students": "Talabalar",
+    "rating": "O‘rtacha reyting",
+    "title": "Lavozim / Unvon",
+    "department": "Kafedra / Bo‘lim",
+    "bio": "O‘zingiz haqingizda",
+    "bio_placeholder": "O‘zingiz haqida qisqacha yozing..."
   }
 }

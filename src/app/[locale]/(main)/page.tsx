@@ -1,12 +1,6 @@
 'use client'
 
-import Image from "next/image";
 import {useTranslations} from "next-intl";
-import {ModeToggle} from "@/components/ModeToggle";
-import {Languages} from "lucide-react";
-import {LanguageToggle} from "@/components/LanguageToggle";
-import {GenderLabel} from "@/schemas/users-schema";
-import {Link} from "@/i18n/navigation";
 import {useEffect} from "react";
 import {printMe} from "@/lib/utils";
 import Hero from "@/components/home/Hero";

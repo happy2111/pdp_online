@@ -16,7 +16,8 @@
     "save": "Сохранить",
     "cancel": "Отмена",
     "confirm": "Подтвердить",
-    "step": "Шаг"
+    "step": "Шаг",
+    "edit": "Редактировать"
   },
   "auth": {
     "login": {
@@ -65,7 +66,8 @@
       "phone_invalid": "Неверный номер (формат: +998XXXXXXXXX)",
       "password_mismatch": "Пароли не совпадают",
       "gender_required": "Выберите пол"
-    }
+    },
+    "update_failed": "Не удалось обновить профиль"
   },
   "courses": {
     "title": "Курсы",
@@ -96,5 +98,18 @@
   "sidebar": {
     "account": "Account",
     "notifications": "Notifications"
+  },
+  "profile": {
+    "settings": "Настройки профиля",
+    "manage_info": "Управляйте личной информацией",
+    "avatar_updated": "Аватар успешно обновлён",
+    "updated_success": "Профиль успешно сохранён",
+    "teacher_stats": "Статистика преподавателя",
+    "students": "Студенты",
+    "rating": "Средний рейтинг",
+    "title": "Должность / Титул",
+    "department": "Кафедра / Департамент",
+    "bio": "О себе",
+    "bio_placeholder": "Расскажите немного о себе..."
   }
 }
