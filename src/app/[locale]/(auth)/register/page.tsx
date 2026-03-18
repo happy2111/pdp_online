@@ -15,15 +15,15 @@ export default function SignupPage() {
 
       <div className="flex w-full max-w-full min-h-dvh bg-card max-sm:rounded-[32px] overflow-hidden shadow-2xl max-md:border border-border">
 
-        <div className="hidden md:flex w-1/2 bg-primary p-12 flex-col justify-between text-primary-foreground relative overflow-hidden">
+        <div className="hidden text-white! md:flex w-1/2 bg-primary p-12 flex-col justify-between text-primary-foreground relative overflow-hidden">
 
           <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-white/10 dark:bg-black/10 rounded-full blur-2xl" />
           <div className="absolute top-20 -right-10 w-60 h-60 bg-white/5 dark:bg-black/5 rounded-full blur-3xl" />
 
-          <div className="relative z-10">
+          <div className="relative z-10 ">
             <Button
               onClick={() => router.push('/')}
-              className="hover:bg-white/10 px-2! -translate-x-4 text-primary-foreground rounded-2xl"
+              className="hover:bg-white/10 px-2! text-white! -translate-x-4 text-primary-foreground rounded-2xl"
               variant='ghost'
             >
               <ChevronLeft className="mr-1 size-5"/>

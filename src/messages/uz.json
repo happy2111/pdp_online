@@ -43,6 +43,11 @@
       "password": "Parol",
       "gender": "Jins",
       "confirmPassword": "Parolni tasdiqlang"
+    },
+    "roles": {
+      "USER": "Foydalanuvchi",
+      "TEACHER": "O‘qituvchi",
+        "ADMIN": "Administrator"
     }
   },
   "errors": {

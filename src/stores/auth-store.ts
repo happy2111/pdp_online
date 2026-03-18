@@ -12,18 +12,20 @@ interface AuthState {
   user: AuthResponse | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  rehydrated: boolean,
 
   login: (data: LoginSchemaType, router: any, t: any) => Promise<void>;
   register: (data: RegisterSchemaType, router: any, t: any) => Promise<void>;
   logout: () => void;
 }
 
-export const useAuthStore = create<AuthState>()(
+export const useAuthStore = create<AuthState & { rehydrated: boolean }>()(
   persist(
     (set) => ({
       user: null,
       isAuthenticated: false,
       isLoading: false,
+      rehydrated: false,
 
       login: async (data, router, t) => {
         set({ isLoading: true });
@@ -81,8 +83,13 @@ export const useAuthStore = create<AuthState>()(
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         user: state.user,
-        isAuthenticated: state.isAuthenticated
+        isAuthenticated: state.isAuthenticated,
       }),
+      onRehydrateStorage: () => (state) => {
+        if (state) {
+          state.rehydrated = true
+        }
+      }
     }
   )
 );

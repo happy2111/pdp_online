@@ -18,6 +18,9 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import {RoleLabels, Roles} from "@/schemas/auth-schema";
+import Protected from "@/components/protecters/Protected";
+import {useAuthStore} from "@/stores/auth-store";
 
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -30,7 +33,8 @@ export default function ProfileSettings() {
   const [profile, setProfile] = useState<Profile | null>(null)
   const [isPending, startTransition] = useTransition()
   const [isUploading, setIsUploading] = useState(false)
-  const [isEditing, setIsEditing] = useState(false) // Состояние режима редактирования
+  const [isEditing, setIsEditing] = useState(false)
+  const isAuthenticated = useAuthStore(state => state.isAuthenticated);
 
   const {
     register,
@@ -42,6 +46,8 @@ export default function ProfileSettings() {
   })
 
   useEffect(() => {
+    // if (!isAuthenticated) return
+
     ;(async () => {
       try {
         const res = await ProfileService.getProfile()
@@ -60,7 +66,7 @@ export default function ProfileSettings() {
         toast.error(t("errors.1000"))
       }
     })()
-  }, [reset, t])
+  }, [reset, t, isAuthenticated])
 
   const onAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -107,6 +113,7 @@ export default function ProfileSettings() {
   }
 
   return (
+    <Protected>
     <div className="container-custom py-8 md:py-12">
       <motion.div
         initial="hidden"
@@ -120,7 +127,7 @@ export default function ProfileSettings() {
             <CardContent className="pt-10 pb-8 text-center">
               <div className="relative mx-auto mb-5 inline-block">
                 <Avatar className="h-28 w-28 border-4 border-background ring-1 ring-border/60 shadow-sm">
-                  <AvatarImage src={profile.avatar_url} alt="Avatar" />
+                  <AvatarImage src={profile.avatar_url} alt="Avatar"  className='object-cover'/>
                   <AvatarFallback className="text-3xl bg-muted">
                     <User className="h-10 w-10" />
                   </AvatarFallback>
@@ -155,15 +162,11 @@ export default function ProfileSettings() {
               <p className="mt-1 text-muted-foreground">@{profile.username}</p>
 
               <div className="mt-4 flex flex-wrap justify-center gap-2">
-                <div className="rounded-full bg-primary/10 px-3.5 py-1 text-xs font-medium text-primary ring-1 ring-primary/20">
-                  {profile.role}
+                <div className="rounded-full flex gap-1 items-center bg-primary/10 px-3.5 py-1 text-xs font-medium text-primary ring-1 ring-primary/20">
+                      <BadgeCheck className="h-3.5 w-3.5" />
+
+                  {t(RoleLabels[profile.role as Roles])}
                 </div>
-                {profile.teacher_info && (
-                  <div className="flex items-center gap-1.5 rounded-full bg-accent/10 px-3.5 py-1 text-xs font-medium text-accent-foreground ring-1 ring-accent/20">
-                    <BadgeCheck className="h-3.5 w-3.5" />
-                    Teacher
-                  </div>
-                )}
               </div>
             </CardContent>
           </Card>
@@ -379,5 +382,6 @@ export default function ProfileSettings() {
         </motion.div>
       </motion.div>
     </div>
+    </Protected>
   )
 }

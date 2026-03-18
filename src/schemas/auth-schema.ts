@@ -7,6 +7,15 @@ export const LoginSchema =  (t: any) =>  z.object({
 })
 export type LoginSchemaType = z.infer<ReturnType<typeof LoginSchema>>;
 
+export const RolesSchema = z.enum(['USER', 'TEACHER', 'ADMIN'])
+export type Roles = z.infer<typeof RolesSchema>;
+
+export const RoleLabels: Record<Roles, string> = {
+  USER: "auth.roles.USER",
+  TEACHER: "auth.roles.TEACHER",
+  ADMIN: "auth.roles.ADMIN",
+}
+
 export const RegisterSchema = (t: any) => z.object({
   username: z.string().min(1, t("errors.zod.required")),
   email: z.string().email(t("errors.zod.invalid_email")),
@@ -34,7 +43,7 @@ export const AuthResponseSchema = z.object({
   avatar_url: z.string().nullable(),
   bio: z.string().nullable(),
   role_id: z.number(),
-  role_name: z.string(),
+  role_name: RolesSchema,
   phone_number: z.string().nullable(),
   gender: GenderValues.nullable(),
   is_active: z.boolean(),
