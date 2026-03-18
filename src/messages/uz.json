@@ -86,6 +86,12 @@
       "beginner": "Boshlang‘ich",
       "intermediate": "O‘rta",
       "advanced": "Yuqori"
+    },
+    "list": {
+      "searchPlaceholder": "Qidiruv...",
+      "loading": "Yuklanmoqda...",
+      "pagination": "Sahifa {page}/{total} — Jami: {count}",
+      "pageInfo": "{page} / {total}"
     }
   },
   "navbar": {

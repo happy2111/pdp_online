@@ -78,3 +78,13 @@ export const CourseDetailsSchema = z.object({
 });
 
 export type CourseDetails = z.infer<typeof CourseDetailsSchema>;
+
+
+export interface GetAllCoursesParams {
+  category_id?: number;
+  search?: string;
+  page?: number;
+  size?: number;
+}
+
+export type WithPagination<T> = T & { page_size: number, total_elements: number, total_pages: number, current_page: number };

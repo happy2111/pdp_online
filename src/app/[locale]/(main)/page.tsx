@@ -34,7 +34,7 @@ export default function Home() {
           <div className="absolute bottom-[15%] left-[15%] w-72 h-72 rounded-full bg-green-400/20 blur-[100px] animate-blob animation-delay-4000" />
         </div>
 
-        <div className="container-custom relative z-10 py-16">
+        <div className="container-custom relative z-1 py-16">
 
           <h1 className="text-3xl font-bold mb-10">
             {t("courses.title")}

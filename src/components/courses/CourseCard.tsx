@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import {useTranslations} from "next-intl";
 import {Star} from "lucide-react";
+import {useRouter} from "next/navigation";
 
 interface Props {
   course: CourseListItem;
@@ -13,9 +14,12 @@ interface Props {
 
 export function CourseCard({ course }: Props) {
   const t = useTranslations();
+  const router = useRouter();
 
   return (
-    <Card className="group pt-0! gap-2 overflow-hidden rounded-3xl bg-card/70 backdrop-blur transition-all hover:shadow-xl hover:-translate-y-1 cursor-pointer">
+    <Card
+      onClick={() => router.push(`/courses/${course.slug}`)}
+      className="group pt-0! gap-2 overflow-hidden rounded-3xl bg-card/70 backdrop-blur transition-all hover:shadow-xl hover:-translate-y-1 cursor-pointer">
       <div className="relative w-full h-32 overflow-hidden flex items-center">
         <img
           src={course.thumbnail_url}

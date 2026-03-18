@@ -86,6 +86,12 @@
       "beginner": "Beginner",
       "intermediate": "Intermediate",
       "advanced": "Advanced"
+    },
+    "list": {
+      "searchPlaceholder": "Поиск...",
+      "loading": "Загрузка...",
+      "pagination": "Стр. {page}/{total} — Всего: {count}",
+      "pageInfo": "{page} / {total}"
     }
   },
   "navbar": {
