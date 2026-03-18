@@ -1,5 +1,5 @@
 "use client"
-import { useState } from 'react'
+import {Suspense, useState} from 'react'
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -8,6 +8,7 @@ import { ModeToggle } from '../ModeToggle'
 import { NavbarAuth } from '@/components/ui/NavbarAuth'
 import { CategoryDropdown } from "@/components/navbar/CategoryDropdown"
 import { SidebarTrigger } from "@/components/ui/sidebar"
+import {Loader2} from "lucide-react";
 
 const Navbar = () => {
   const [hidden, setHidden] = useState(false)
@@ -53,7 +54,15 @@ const Navbar = () => {
 
         <div className="flex items-center gap-2">
           <div className="hidden md:block">
-            <CategoryDropdown />
+            <Suspense
+              fallback={
+                <div className="flex justify-center items-center h-64 text-primary">
+                  <Loader2 className="w-8 h-8 animate-spin" />
+                </div>
+              }
+            >
+             <CategoryDropdown />
+            </Suspense>
           </div>
 
           <div className="flex items-center gap-1 md:gap-2 ml-2 pl-2 border-l border-border">

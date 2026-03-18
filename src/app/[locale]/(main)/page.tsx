@@ -1,10 +1,11 @@
 'use client'
 
 import {useTranslations} from "next-intl";
-import {useEffect} from "react";
+import {Suspense, useEffect} from "react";
 import {printMe} from "@/lib/utils";
 import Hero from "@/components/home/Hero";
 import {CoursesList} from "@/components/courses/CoursesList";
+import {Loader2} from "lucide-react";
 
 
 
@@ -40,7 +41,16 @@ export default function Home() {
             {t("courses.title")}
           </h1>
 
-          <CoursesList />
+
+          <Suspense
+            fallback={
+              <div className="flex justify-center items-center h-64 text-primary">
+                <Loader2 className="w-8 h-8 animate-spin" />
+              </div>
+            }
+          >
+            <CoursesList />
+          </Suspense>
 
         </div>
 
