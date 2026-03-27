@@ -10,3 +10,9 @@ export interface ApiResponse<T> {
   message: string;
   data: T;
 }
+
+export interface ApiResponseItems<T> {
+  code: number;
+  message: string;
+  items: T;
+}

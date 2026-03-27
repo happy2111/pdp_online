@@ -32,7 +32,7 @@ export const useAuthStore = create<AuthState & { rehydrated: boolean }>()(
         try {
           const response = await AuthService.login(data);
 
-          if (response.code === 200) {
+          if (response.code === 0) {
             toast.success("Login successful!");
             router.push("/");
           } else {
@@ -56,7 +56,7 @@ export const useAuthStore = create<AuthState & { rehydrated: boolean }>()(
         try {
           const response = await AuthService.register(data);
 
-          if (response.code === 200) {
+          if (response.code === 1) {
             toast.success(t("auth.register.success"));
             router.push("/");
           }else {

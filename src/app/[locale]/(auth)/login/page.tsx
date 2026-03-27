@@ -5,7 +5,6 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import { useRouter } from "@/i18n/navigation";
-import { cn } from "@/lib/utils";
 
 export default function LoginPage() {
   const t = useTranslations();

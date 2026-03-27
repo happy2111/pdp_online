@@ -1,5 +1,9 @@
 import api from "@/lib/axiosInstance";
-import {ApiResponse, Pagination} from "@/schemas/response-schema";
+import {
+  ApiResponse,
+  ApiResponseItems,
+  Pagination
+} from "@/schemas/response-schema";
 
 import {
   CourseListItem,
@@ -10,8 +14,8 @@ export class CoursesService {
 
   static async getAllCourses(
     params?: GetAllCoursesParams
-  ): Promise<Pagination<ApiResponse<CourseListItem[]>>> {
-    const res = await api.get<Pagination<ApiResponse<CourseListItem[]>>>(
+  ): Promise<Pagination<ApiResponseItems<CourseListItem[]>>> {
+    const res = await api.get<Pagination<ApiResponseItems<CourseListItem[]>>>(
       `${process.env.NEXT_PUBLIC_API_URL}/courses`,
       {
         params: {
@@ -32,6 +36,10 @@ export class CoursesService {
     );
 
     return res.data;
+  }
+
+  static async getCourseModules(slug: string) {
+
   }
 
 }

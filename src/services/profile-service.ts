@@ -19,8 +19,8 @@ export class ProfileService {
   }
 
 
-  static async getAvatarPresignUrl(dto: AvatarPresignRequest): Promise<AvatarPresignResponse> {
-    const res = await api.post<AvatarPresignResponse>(`${process.env.NEXT_PUBLIC_API_URL}/profile/avatar/presign`, dto)
+  static async getAvatarPresignUrl(dto: AvatarPresignRequest): Promise<ApiResponse<AvatarPresignResponse>> {
+    const res = await api.post<ApiResponse<AvatarPresignResponse>>(`${process.env.NEXT_PUBLIC_API_URL}/profile/avatar/presign`, dto)
     return res.data
   }
 
@@ -46,20 +46,29 @@ export class ProfileService {
       if (file.size > MAX_SIZE) {
         throw new Error('Файл слишком большой (макс 5MB)')
       }
-
+      const fileExtension = file.name.split('.').pop();
+      const cleanBaseName = file.name
+        .split('.')
+        .slice(0, -1)
+        .join('.')
+        .replace(/\s+/g, '_')           // Заменяем все пробелы на _
+        .replace(/[^a-zA-Z0-9_\-]/g, ''); // Удаляем всё, кро
+      const filename = `${cleanBaseName}_${Date.now()}.${fileExtension}`;
       const presign = await this.getAvatarPresignUrl({
-        filename: file.name,
+        filename,
       })
 
-      if (!presign?.upload_url || !presign?.key) {
+      alert()
+
+      if (!presign?.data?.upload_url || !presign?.data?.key) {
         throw new Error('Ошибка получения presign URL')
       }
 
-      const uploadRes = await fetch(presign.upload_url, {
+      const uploadRes = await fetch(presign.data?.upload_url, {
         method: 'PUT',
         body: file,
         headers: {
-          'Content-Type': presign.content_type,
+          'Content-Type': presign.data?.content_type,
         }
       })
 
@@ -67,7 +76,7 @@ export class ProfileService {
         throw new Error(`Ошибка загрузки в S3: ${uploadRes.status}`)
       }
 
-      return await this.confirmAvatar(presign.key)
+      return await this.confirmAvatar(presign.data?.key)
 
     } catch (error: any) {
       console.error('uploadAvatar error:', error)

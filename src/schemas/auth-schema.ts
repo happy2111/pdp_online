@@ -2,7 +2,7 @@ import z from "zod";
 import {GenderValues} from "@/schemas/users-schema";
 
 export const LoginSchema =  (t: any) =>  z.object({
-  username_or_email: z.string().min(1),
+  usernameOrEmail: z.string().min(1),
   password: z.string().min(8, t("errors.zod.password_min"))
 })
 export type LoginSchemaType = z.infer<ReturnType<typeof LoginSchema>>;

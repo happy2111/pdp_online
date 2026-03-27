@@ -36,7 +36,7 @@ export function CoursesList() {
         search,
       });
 
-      setCourses(res.data);
+      setCourses(res.items);
       setTotalPages(res.total_pages);
     } catch (err) {
       console.error(err);

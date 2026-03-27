@@ -24,7 +24,7 @@ export const CourseSidebar = ({ course }: { course: CourseDetails }) => {
 
         <div className="space-y-0.5">
           <div className="text-2xl font-bold">Бесплатно</div>
-          <p className="text-sm text-muted-foreground line-through">499 000 so'm</p>
+          <p className="text-sm text-muted-foreground line-through">{course.price} so'm</p>
         </div>
 
         <Button className="w-full h-11 text-base font-semibold rounded-2xl bg-primary hover:bg-primary/90">

@@ -61,6 +61,8 @@ export const CourseDetailsSchema = z.object({
   level: CourseLevelEnum,
   language: z.string(),
 
+  price: z.number().nullable(),
+
   duration_hours: z.number(),
 
   rating_avg: z.number(),

@@ -32,7 +32,7 @@ export function LoginForm({ className }: { className?: string }) {
   const { register, handleSubmit, formState: { errors } } = useForm<LoginSchemaType>({
     resolver: zodResolver(dynamicSchema),
     defaultValues: {
-      username_or_email: "",
+      usernameOrEmail: "",
       password: "",
     },
   });
@@ -62,9 +62,9 @@ export function LoginForm({ className }: { className?: string }) {
           <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
             <Field>
               <FieldLabel>{t("auth.fields.username")}</FieldLabel>
-              <Input {...register("username_or_email")} placeholder="example@mail.com"/>
-              {errors.username_or_email && (
-                <p className="text-destructive text-[10px]">{errors.username_or_email.message}</p>
+              <Input {...register("usernameOrEmail")} placeholder="example@mail.com"/>
+              {errors.usernameOrEmail && (
+                <p className="text-destructive text-[10px]">{errors.usernameOrEmail.message}</p>
               )}
             </Field>
 
