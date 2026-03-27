@@ -19,6 +19,8 @@ import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { CourseSidebar } from "@/components/courses/course-sidebar"
+import {ModulesService} from "@/services/modules-service";
+import {CourseCurriculum} from "@/components/courses/CourseCurriculum";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -29,6 +31,8 @@ export default function CourseDetailPage() {
   const { slug } = useParams()
   const [course, setCourse] = useState<CourseDetails | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  // const [tab, setTab] = useState("general")
+  const [modules, setModules] = useState<any[]>([])
 
   useEffect(() => {
     const fetchCourse = async () => {
@@ -44,6 +48,19 @@ export default function CourseDetailPage() {
     fetchCourse()
   }, [slug])
 
+  useEffect(() => {
+    if (slug) {
+      const loadData = async () => {
+        const response = await ModulesService.getCourseModules(slug as string);
+        if (response.code === 0) {
+          setModules(response.data);
+        }
+      };
+      loadData();
+    }
+
+  }, [slug]);
+
   if (isLoading) {
     return (
       <div className="flex h-screen items-center justify-center">
@@ -51,6 +68,8 @@ export default function CourseDetailPage() {
       </div>
     )
   }
+
+
 
   if (!course) return <div>Course not found</div>
 
@@ -126,8 +145,21 @@ export default function CourseDetailPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
 
           <div className="lg:col-span-8">
-            <Tabs defaultValue="general" className="w-full">
-              <TabsList className="w-full justify-start h-12 bg-transparent border-b border-border rounded-none p-0 gap-8 mb-8">
+            <Tabs defaultValue="general" className="w-full space-y-6">
+              <TabsList
+                className="
+                  flex
+                  w-full
+                  overflow-x-auto
+                  no-scrollbar
+                  whitespace-nowrap
+                  bg-card/30
+                  backdrop-blur-md
+                  p-1
+                  rounded-2xl
+                  border border-border/50
+                  gap-1
+                ">
                 {["general", "curriculum", "reviews"].map((tab) => {
                   const labels: Record<string, string> = {
                     general: "Общее",
@@ -139,16 +171,9 @@ export default function CourseDetailPage() {
                       key={tab}
                       value={tab}
                       className="
-                        data-[state=active]:bg-transparent
-                        shadow-none!
-                        data-[state=active]:border-b-2
-                        data-[state=active]:border-x-0
-                        data-[state=active]:border-t-0
-                        data-[state=active]:border-primary
-                        data-[state=active]:text-foreground
-                        data-[state=inactive]:text-muted-foreground
-                        rounded-none px-0 h-full text-base
-                        transition-colors duration-200
+                       data-[state=active]:bg-primary
+                       data-[state=active]:text-primary-foreground
+                        shrink-0 rounded-xl px-6 font-bold text-xs uppercase tracking-tighter
                       "
                     >
                       {labels[tab]}
@@ -193,40 +218,8 @@ export default function CourseDetailPage() {
                 </div>
               </TabsContent>
 
-              <TabsContent value="curriculum" className="outline-none">
-                <Accordion type="single" collapsible className="w-full space-y-3">
-                  <AccordionItem
-                    value="module-1"
-                    className="border border-border rounded-3xl px-4 bg-card/70 backdrop-blur"
-                  >
-                    <AccordionTrigger className="hover:no-underline">
-                      <div className="flex flex-col items-start text-left gap-1">
-                        <span className="font-semibold text-sm">Модуль 1: Основы синтаксиса</span>
-                        <span className="text-xs text-muted-foreground font-normal">
-                          4 урока • 56 минут
-                        </span>
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="pt-2 pb-4 space-y-1">
-                      {[
-                        { title: "Введение и установка среды", time: "05:20" },
-                        { title: "Типы данных и переменные", time: "12:45" },
-                      ].map((lesson) => (
-                        <div
-                          key={lesson.title}
-                          className="flex items-center justify-between p-3 rounded-2xl hover:bg-muted/50 cursor-pointer transition-colors"
-                        >
-                          <div className="flex items-center gap-3">
-                            <PlayCircle className="h-4 w-4 text-primary shrink-0" />
-                            <span className="text-sm">{lesson.title}</span>
-                          </div>
-                          <span className="text-xs text-muted-foreground">{lesson.time}</span>
-                        </div>
-                      ))}
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
-              </TabsContent>
+              <CourseCurriculum modules={modules} />
+
             </Tabs>
           </div>
 
