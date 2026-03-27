@@ -13,7 +13,7 @@ const Hero = () => {
   const t = useTranslations();
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [debouncedQuery] = useDebounce(query, 500); // Задержка 500мс
+  const [debouncedQuery] = useDebounce(query, 500);
 
   const [courses, setCourses] = useState<CourseListItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -22,17 +22,15 @@ const Hero = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
 
-  // Функция запроса к серверу
   const fetchSearchCourses = async (search: string) => {
     setIsLoading(true);
     try {
       const res = await CoursesService.getAllCourses({
         search: search,
         page: 0,
-        size: 5, // Берем только первые 5 для превью
+        size: 5,
       });
-      // res.data.data потому что в вашем сервисе Pagination возвращает ApiResponse
-      setCourses(res.data || []);
+      setCourses(res.items || []);
     } catch (err) {
       console.error("Search error:", err);
     } finally {
@@ -40,14 +38,12 @@ const Hero = () => {
     }
   };
 
-  // Эффект для дебаунс-поиска
   useEffect(() => {
     if (isOpen) {
       fetchSearchCourses(debouncedQuery);
     }
   }, [debouncedQuery, isOpen]);
 
-  // Закрытие при клике вне
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(e.target as Node) &&
@@ -123,8 +119,6 @@ const Hero = () => {
           </div>
         </div>
       </div>
-
-      {/* Твой Blob Style остается без изменений */}
     </section>
   );
 };
