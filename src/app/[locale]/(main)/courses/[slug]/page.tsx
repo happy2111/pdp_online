@@ -31,8 +31,15 @@ export default function CourseDetailPage() {
   const { slug } = useParams()
   const [course, setCourse] = useState<CourseDetails | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  // const [tab, setTab] = useState("general")
   const [modules, setModules] = useState<any[]>([])
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "instant",
+    });
+  }, [slug]);
 
   useEffect(() => {
     const fetchCourse = async () => {
