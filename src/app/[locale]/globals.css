@@ -140,6 +140,10 @@
     }
   }
 
+  .vjs-loading-spinner,  .vjs-loading-spinner::after, .vjs-loading-spinner::before{
+    display: none !important;
+  }
+
   .container-custom {
     @apply w-[95%] lg:w-[75%] mx-auto px-4 md:px-6;
   }
