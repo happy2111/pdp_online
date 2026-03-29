@@ -17,7 +17,7 @@ import {
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
-import { BadgeCheck, Bell, LogOut, Settings } from "lucide-react"
+import {BadgeCheck, Bell, LogOut, Settings, User} from "lucide-react"
 
 export const NavbarAuth = () => {
   const { user, isAuthenticated, logout } = useAuthStore()
@@ -97,21 +97,9 @@ export const NavbarAuth = () => {
 
           <DropdownMenuItem asChild className="rounded-xl cursor-pointer py-2.5">
             <Link href="/profile">
-              <BadgeCheck className="mr-2 h-4 w-4 text-primary" />
+              <User className="mr-2 h-4 w-4 text-primary" />
               <span>{t("navbar.profile")}</span>
             </Link>
-          </DropdownMenuItem>
-
-          <DropdownMenuItem asChild className="rounded-xl cursor-pointer py-2.5">
-            <Link href="/settings">
-              <Settings className="mr-2 h-4 w-4 text-muted-foreground" />
-              <span>{t("navbar.settings")}</span>
-            </Link>
-          </DropdownMenuItem>
-
-          <DropdownMenuItem className="rounded-xl cursor-pointer py-2.5">
-            <Bell className="mr-2 h-4 w-4 text-muted-foreground" />
-            <span>{t("navbar.notifications")}</span>
           </DropdownMenuItem>
 
         </DropdownMenuGroup>

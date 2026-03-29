@@ -4,20 +4,14 @@ import { CourseDetails } from "@/schemas/courses-schema"
 import { PlayCircle, Clock, FileText, Layout, Award, Share2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { VideoPlayer } from "../video-player"
 
 export const CourseSidebar = ({ course }: { course: CourseDetails }) => {
   return (
     <Card className="sticky pt-0! top-0 overflow-hidden rounded-3xl bg-card/70 backdrop-blur border border-border transition-all hover:shadow-xl">
 
-      <div className="relative group cursor-pointer">
-        <img
-          src={course.thumbnail_url}
-          alt={course.title}
-          className="aspect-video w-full object-cover transition-transform duration-300 group-hover:scale-105"
-        />
-        <div className="absolute inset-0 flex items-center justify-center bg-black/40 group-hover:bg-black/20 transition-colors">
-          <PlayCircle className="h-14 w-14 text-white drop-shadow-lg" />
-        </div>
+      <div className="relative group cursor-pointer z-99">
+        <VideoPlayer slug={course.slug} endpoint={course.preview_video_url} />
       </div>
 
       <CardContent className="p-5 space-y-5">

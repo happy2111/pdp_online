@@ -1,16 +1,39 @@
 import api from "@/lib/axiosInstance";
 import {
   ApiResponse,
-  ApiResponseItems,
+  ApiResponseItems, BaseResponse,
   Pagination
 } from "@/schemas/response-schema";
 
 import {
   CourseListItem,
-  CourseDetails, GetAllCoursesParams, WithPagination,
+  CourseDetails, GetAllCoursesParams, WithPagination, CreateCourseSchema,
+  CreateCourseRequest, GetMyCoursesParams, ThumbnailPresignRequest,
+  ThumbnailPresignResponse,
 } from "@/schemas/courses-schema";
 
 export class CoursesService {
+
+  static async create(dto: CreateCourseRequest): Promise<BaseResponse> {
+    const res = await api.post<BaseResponse>(`${process.env.NEXT_PUBLIC_API_URL}/courses/create`, dto)
+    return res.data
+  }
+
+  static async getMyCourses(
+    params?: GetMyCoursesParams
+  ): Promise<Pagination<ApiResponseItems<CourseListItem[]>>> {
+    const res = await api.get<Pagination<ApiResponseItems<CourseListItem[]>>>(
+      `${process.env.NEXT_PUBLIC_API_URL}/courses/my`,
+      {
+        params: {
+          page: params?.page ?? 0,
+          size: params?.size ?? 10,
+        },
+      }
+    );
+
+    return res.data;
+  }
 
   static async getAllCourses(
     params?: GetAllCoursesParams
@@ -34,12 +57,75 @@ export class CoursesService {
     const res = await api.get<ApiResponse<CourseDetails>>(
       `${process.env.NEXT_PUBLIC_API_URL}/courses/${slug}`
     );
-
     return res.data;
   }
 
-  static async getCourseModules(slug: string) {
 
+  static async getThumbnailPresignUrl(
+    slug: string,
+    dto: ThumbnailPresignRequest
+  ): Promise<ApiResponse<ThumbnailPresignResponse>> {
+    const res = await api.post<ApiResponse<ThumbnailPresignResponse>>(
+      `${process.env.NEXT_PUBLIC_API_URL}/courses/${slug}/thumbnail/presign`,
+      dto
+    );
+    return res.data;
   }
 
+  static async confirmThumbnail(slug: string, key: string): Promise<BaseResponse> {
+    const res = await api.post<BaseResponse>(
+      `${process.env.NEXT_PUBLIC_API_URL}/courses/${slug}/thumbnail/confirm`,
+      null,
+      { params: { key } }
+    );
+    return res.data;
+  }
+
+  static async uploadThumbnail(slug: string, file: File): Promise<BaseResponse> {
+    try {
+      if (!file) throw new Error('Файл не выбран');
+      if (!file.type.startsWith('image/')) throw new Error('Можно загружать только изображения');
+
+      const MAX_SIZE = 10 * 1024 * 1024; // 10MB
+      if (file.size > MAX_SIZE) throw new Error('Файл слишком большой (макс 10MB)');
+
+      // Подготовка имени файла
+      const fileExtension = file.name.split('.').pop();
+      const cleanBaseName = file.name
+        .split('.')
+        .slice(0, -1)
+        .join('.')
+        .replace(/\s+/g, '_')
+        .replace(/[^a-zA-Z0-9_\-]/g, '');
+
+      const filename = `${cleanBaseName}_${Date.now()}.${fileExtension}`;
+
+      // 1. Получаем URL для загрузки
+      const presign = await this.getThumbnailPresignUrl(slug, { filename });
+
+      if (!presign?.data?.upload_url || !presign?.data?.key) {
+        throw new Error('Ошибка получения presign URL');
+      }
+
+      // 2. Загружаем файл напрямую в S3 (используем fetch, чтобы не мешать заголовки axios)
+      const uploadRes = await fetch(presign.data.upload_url, {
+        method: 'PUT',
+        body: file,
+        headers: {
+          'Content-Type': presign.data.content_type,
+        }
+      });
+
+      if (!uploadRes.ok) {
+        throw new Error(`Ошибка загрузки в S3: ${uploadRes.status}`);
+      }
+
+      // 3. Сообщаем бэкенду, что файл успешно загружен
+      return await this.confirmThumbnail(slug, presign.data.key);
+
+    } catch (error: any) {
+      console.error('uploadThumbnail error:', error);
+      throw error;
+    }
+  }
 }

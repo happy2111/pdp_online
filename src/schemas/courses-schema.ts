@@ -81,6 +81,10 @@ export const CourseDetailsSchema = z.object({
 
 export type CourseDetails = z.infer<typeof CourseDetailsSchema>;
 
+export interface GetMyCoursesParams {
+  page?: number;
+  size?: number;
+}
 
 export interface GetAllCoursesParams {
   category_id?: number;
@@ -88,5 +92,35 @@ export interface GetAllCoursesParams {
   page?: number;
   size?: number;
 }
+
+export const CreateCourseSchema = z.object({
+  category_id: z.number(),
+  title: z.string().min(3, "Title is too short"),
+  short_description: z.string().max(255),
+  description: z.string(),
+  level: CourseLevelEnum,
+  language: z.string(),
+  requirements: z.array(z.string()),
+  learning_outcomes: z.array(z.string()),
+  price: z.number().nonnegative().optional(),
+});
+
+export type CreateCourseRequest = z.infer<typeof CreateCourseSchema>;
+
+
+export const ThumbnailPresignRequestSchema = z.object({
+  filename: z.string(),
+});
+
+export type ThumbnailPresignRequest = z.infer<typeof ThumbnailPresignRequestSchema>;
+
+export const ThumbnailPresignResponseSchema = z.object({
+  upload_url: z.string(),
+  key: z.string(),
+  content_type: z.string(),
+});
+
+export type ThumbnailPresignResponse = z.infer<typeof ThumbnailPresignResponseSchema>;
+
 
 export type WithPagination<T> = T & { page_size: number, total_elements: number, total_pages: number, current_page: number };

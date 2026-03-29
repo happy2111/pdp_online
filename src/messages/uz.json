@@ -19,7 +19,9 @@
     "step": "Bosqich",
     "edit": "Tahrirlash",
     "viewAll": "Hammasini ko‘rish",
-    "allCategories": "Barcha kategoriyalar"
+    "allCategories": "Barcha kategoriyalar",
+    "free": "Bepul",
+    "paid": "Pullik"
   },
   "auth": {
     "login": {
@@ -78,6 +80,30 @@
   },
   "courses": {
     "title": "Kurslar",
+    "create_new": "Yangi kurs yaratish",
+    "no_courses_yet": "Hozircha kurslar yo‘q",
+    "start_teaching_desc": "O‘z bilimingizni ulashing va birinchi kursingizni yarating.",
+    "create_first_course": "Birinchi kursni yaratish",
+    "create_success": "Kurs muvaffaqiyatli yaratildi",
+    "create_error": "Kursni yaratishda xatolik yuz berdi",
+    "edit_course": "Kursni tahrirlash",
+    "dialog": {
+      "title": "Yangi kurs yaratish",
+      "course_title": "Kurs nomi",
+      "course_title_placeholder": "Masalan: Java boshlanuvchilar uchun",
+      "short_description": "Qisqa ta’rif",
+      "description": "To‘liq ta’rif",
+      "level": "Daraja",
+      "price": "Narxi (bepul bo‘lsa 0 kiriting)",
+      "category": "Kategoriya",
+      "language": "Til",
+      "submit": "Kurs yaratish",
+      "requirements": "Talablar",
+      "requirements_placeholder": "Masalan: Kompyuter savodxonligi",
+      "learning_outcomes": "Nimalarni o‘rganasiz",
+      "learning_outcomes_placeholder": "Masalan: Rest API bilan ishlash",
+      "add_item": "Qo‘shish"
+    },
     "hero": {
       "titlePrefix": "Keyingi",
       "titleHighlight": "kursni",
@@ -123,6 +149,10 @@
     "title": "Lavozim / Unvon",
     "department": "Kafedra / Bo‘lim",
     "bio": "O‘zingiz haqingizda",
-    "bio_placeholder": "O‘zingiz haqida qisqacha yozing..."
-  }
+    "bio_placeholder": "O‘zingiz haqida qisqacha yozing...",
+    "my_courses": "Mening kurslarim",
+    "courses_tab" : "Mening kurslarim",
+    "settings_tab" : "Profil"
+  },
+  "students" : "Talabalar"
 }

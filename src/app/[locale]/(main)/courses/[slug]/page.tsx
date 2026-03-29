@@ -17,7 +17,6 @@ import { CoursesService } from "@/services/courses-service"
 import { CourseDetails } from "@/schemas/courses-schema"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { CourseSidebar } from "@/components/courses/course-sidebar"
 import {ModulesService} from "@/services/modules-service";
 import {CourseCurriculum} from "@/components/courses/CourseCurriculum";
@@ -230,7 +229,7 @@ export default function CourseDetailPage() {
             </Tabs>
           </div>
 
-          <div className="lg:col-span-4 xl:-translate-y-100">
+          <div className="lg:col-span-4 xl:-translate-y-100 z-10">
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}

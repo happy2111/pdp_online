@@ -3,7 +3,10 @@
 import { useState, useEffect, useTransition } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Camera, User, Mail, Save, PencilLine, BadgeCheck, GraduationCap, Loader2, X } from "lucide-react"
+import {
+  Camera, User, Mail, Save, PencilLine, BadgeCheck, GraduationCap, Loader2, X,
+  BookOpen
+} from "lucide-react"
 import { toast } from "sonner"
 import { useTranslations } from "next-intl"
 import { motion, AnimatePresence } from "framer-motion"
@@ -21,6 +24,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {RoleLabels, Roles} from "@/schemas/auth-schema";
 import Protected from "@/components/protecters/Protected";
 import {useAuthStore} from "@/stores/auth-store";
+import {MyCoursesList} from "@/components/courses/MyCoursesList";
+import {useRouter} from "next/navigation";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -29,13 +35,13 @@ const cardVariants = {
 
 export default function ProfileSettings() {
   const t = useTranslations()
-
+  const router = useRouter()
   const [profile, setProfile] = useState<Profile | null>(null)
   const [isPending, startTransition] = useTransition()
   const [isUploading, setIsUploading] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);
-
+  const userId = useAuthStore(state => state.user?.id);
   const {
     register,
     handleSubmit,
@@ -196,189 +202,212 @@ export default function ProfileSettings() {
         </motion.div>
 
         {/* Правая колонка — форма */}
-        <motion.div variants={cardVariants} className="lg:col-span-8">
-          <Card className="border bg-card/60 backdrop-blur-sm">
-            <CardHeader className="space-y-1 pb-6">
-              <div className="flex items-start justify-between">
-                <div>
-                  <CardTitle className="text-2xl font-semibold tracking-tight">
-                    {t("profile.settings") || "Настройки профиля"}
-                  </CardTitle>
-                  <p className="mt-1.5 text-sm text-muted-foreground">
-                    {t("profile.manage_info") || "Управляйте личной информацией"}
-                  </p>
-                </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={toggleEditing}
-                  className={cn(
-                    "rounded-full transition-colors",
-                    isEditing ? "bg-destructive/10 text-destructive hover:bg-destructive/20" : "hover:bg-primary/10 text-muted-foreground hover:text-primary"
-                  )}
-                >
-                  {isEditing ? <X className="h-6 w-6" /> : <PencilLine className="h-6 w-6" />}
-                </Button>
-              </div>
-            </CardHeader>
+        <motion.div variants={cardVariants} className="lg:col-span-8 gap-10 flex flex-col">
 
-            <CardContent>
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                <div className="grid gap-6 sm:grid-cols-2">
-                  <div className="space-y-2">
-                    <Label htmlFor="first_name">{t("auth.fields.firstName")}</Label>
-                    <Input
-                      id="first_name"
-                      {...register("first_name")}
-                      disabled={!isEditing}
-                      className={cn("h-11 transition-all", !isEditing && "bg-muted/20 opacity-80")}
-                    />
-                    {errors.first_name && (
-                      <p className="text-sm text-destructive">{errors.first_name.message}</p>
+          <Tabs defaultValue="settings" className="w-full space-y-6">
+            <div className="flex justify-center sm:justify-start">
+              <TabsList className="grid w-full max-w-[400px] grid-cols-2 p-1 bg-muted/50 rounded-2xl">
+                <TabsTrigger value="settings" className="rounded-xl gap-2">
+                  <User className="h-4 w-4" />
+                  {t("profile.settings_tab") || "Профиль"}
+                </TabsTrigger>
+                <TabsTrigger value="courses" className="rounded-xl gap-2">
+                  <BookOpen className="h-4 w-4" />
+                  {t("profile.courses_tab") || "Мои курсы"}
+                </TabsTrigger>
+              </TabsList>
+            </div>
+
+          <TabsContent value="settings" className="mt-0 focus-visible:ring-0">
+            <Card className="border bg-card/60 backdrop-blur-sm">
+              <CardHeader className="space-y-1 pb-6">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <CardTitle className="text-2xl font-semibold tracking-tight">
+                      {t("profile.settings") || "Настройки профиля"}
+                    </CardTitle>
+                    <p className="mt-1.5 text-sm text-muted-foreground">
+                      {t("profile.manage_info") || "Управляйте личной информацией"}
+                    </p>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={toggleEditing}
+                    className={cn(
+                      "rounded-full transition-colors",
+                      isEditing ? "bg-destructive/10 text-destructive hover:bg-destructive/20" : "hover:bg-primary/10 text-muted-foreground hover:text-primary"
                     )}
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="last_name">{t("auth.fields.lastName")}</Label>
-                    <Input
-                      id="last_name"
-                      {...register("last_name")}
-                      disabled={!isEditing}
-                      className={cn("h-11 transition-all", !isEditing && "bg-muted/20 opacity-80")}
-                    />
-                    {errors.last_name && (
-                      <p className="text-sm text-destructive">{errors.last_name.message}</p>
-                    )}
-                  </div>
+                  >
+                    {isEditing ? <X className="h-6 w-6" /> : <PencilLine className="h-6 w-6" />}
+                  </Button>
                 </div>
+              </CardHeader>
 
-                <div className="grid gap-6 sm:grid-cols-2">
-                  <div className="space-y-2">
-                    <Label htmlFor="username">{t("auth.fields.username")}</Label>
-                    <div className="relative">
-                      <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-                        @
-                      </span>
-                      <Input
-                        id="username"
-                        {...register("username")}
-                        disabled={!isEditing}
-                        className={cn("h-11 pl-8 transition-all", !isEditing && "bg-muted/20 opacity-80")}
-                      />
-                    </div>
-                    {errors.username && (
-                      <p className="text-sm text-destructive">{errors.username.message}</p>
-                    )}
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="email">{t("auth.fields.email")}</Label>
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        id="email"
-                        value={profile.email}
-                        readOnly
-                        disabled
-                        className="h-11 pl-10 bg-muted/40 cursor-not-allowed opacity-70"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {profile.teacher_info && (
+              <CardContent>
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                   <div className="grid gap-6 sm:grid-cols-2">
                     <div className="space-y-2">
-                      <Label htmlFor="title">{t("profile.title") || "Должность / Титул"}</Label>
+                      <Label htmlFor="first_name">{t("auth.fields.firstName")}</Label>
                       <Input
-                        id="title"
-                        {...register("title")}
+                        id="first_name"
+                        {...register("first_name")}
                         disabled={!isEditing}
-                        placeholder="Например: Senior Lecturer"
                         className={cn("h-11 transition-all", !isEditing && "bg-muted/20 opacity-80")}
                       />
+                      {errors.first_name && (
+                        <p className="text-sm text-destructive">{errors.first_name.message}</p>
+                      )}
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="department">{t("profile.department") || "Кафедра / Департамент"}</Label>
+                      <Label htmlFor="last_name">{t("auth.fields.lastName")}</Label>
                       <Input
-                        id="department"
-                        {...register("department")}
+                        id="last_name"
+                        {...register("last_name")}
                         disabled={!isEditing}
-                        placeholder="Например: Computer Science"
                         className={cn("h-11 transition-all", !isEditing && "bg-muted/20 opacity-80")}
                       />
+                      {errors.last_name && (
+                        <p className="text-sm text-destructive">{errors.last_name.message}</p>
+                      )}
                     </div>
                   </div>
-                )}
 
-                <div className="space-y-2">
-                  <Label htmlFor="bio">{t("profile.bio") || "О себе"}</Label>
-                  <Textarea
-                    id="bio"
-                    {...register("bio")}
-                    disabled={!isEditing}
-                    rows={4}
-                    placeholder={t("profile.bio_placeholder") || "Несколько слов о себе..."}
-                    className={cn("min-h-[108px] resize-none transition-all", !isEditing && "bg-muted/20 opacity-80")}
-                  />
-                </div>
+                  <div className="grid gap-6 sm:grid-cols-2">
+                    <div className="space-y-2">
+                      <Label htmlFor="username">{t("auth.fields.username")}</Label>
+                      <div className="relative">
+                        <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                          @
+                        </span>
+                        <Input
+                          id="username"
+                          {...register("username")}
+                          disabled={!isEditing}
+                          className={cn("h-11 pl-8 transition-all", !isEditing && "bg-muted/20 opacity-80")}
+                        />
+                      </div>
+                      {errors.username && (
+                        <p className="text-sm text-destructive">{errors.username.message}</p>
+                      )}
+                    </div>
 
-                <div className="flex justify-end pt-4">
-                  <AnimatePresence mode="wait">
-                    {isEditing ? (
-                      <motion.div
-                        key="save-btn"
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.95 }}
-                      >
-                        <Button
-                          type="submit"
-                          disabled={isPending || !isDirty}
-                          className={cn(
-                            "min-w-40 h-11 rounded-xl font-medium transition-all",
-                            isDirty
-                              ? "bg-primary hover:bg-primary/95 shadow-sm"
-                              : "bg-muted text-muted-foreground"
-                          )}
+                    <div className="space-y-2">
+                      <Label htmlFor="email">{t("auth.fields.email")}</Label>
+                      <div className="relative">
+                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          id="email"
+                          value={profile.email}
+                          readOnly
+                          disabled
+                          className="h-11 pl-10 bg-muted/40 cursor-not-allowed opacity-70"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {profile.teacher_info && (
+                    <div className="grid gap-6 sm:grid-cols-2">
+                      <div className="space-y-2">
+                        <Label htmlFor="title">{t("profile.title") || "Должность / Титул"}</Label>
+                        <Input
+                          id="title"
+                          {...register("title")}
+                          disabled={!isEditing}
+                          placeholder="Например: Senior Lecturer"
+                          className={cn("h-11 transition-all", !isEditing && "bg-muted/20 opacity-80")}
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="department">{t("profile.department") || "Кафедра / Департамент"}</Label>
+                        <Input
+                          id="department"
+                          {...register("department")}
+                          disabled={!isEditing}
+                          placeholder="Например: Computer Science"
+                          className={cn("h-11 transition-all", !isEditing && "bg-muted/20 opacity-80")}
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="space-y-2">
+                    <Label htmlFor="bio">{t("profile.bio") || "О себе"}</Label>
+                    <Textarea
+                      id="bio"
+                      {...register("bio")}
+                      disabled={!isEditing}
+                      rows={4}
+                      placeholder={t("profile.bio_placeholder") || "Несколько слов о себе..."}
+                      className={cn("min-h-[108px] resize-none transition-all", !isEditing && "bg-muted/20 opacity-80")}
+                    />
+                  </div>
+
+                  <div className="flex justify-end pt-4">
+                    <AnimatePresence mode="wait">
+                      {isEditing ? (
+                        <motion.div
+                          key="save-btn"
+                          initial={{ opacity: 0, scale: 0.95 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.95 }}
                         >
-                          {isPending ? (
-                            <>
-                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                              {t("common.loading")}
-                            </>
-                          ) : (
-                            <>
-                              <Save className="mr-2 h-4 w-4" />
-                              {t("common.save")}
-                            </>
-                          )}
-                        </Button>
-                      </motion.div>
-                    ) : (
-                      <motion.div
-                        key="edit-btn"
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.95 }}
-                      >
-                        <Button
-                          type="button"
-                          onClick={() => setIsEditing(true)}
-                          variant="outline"
-                          className="min-w-40 h-11 rounded-xl font-medium border-primary/20 text-primary hover:bg-primary/5"
+                          <Button
+                            type="submit"
+                            disabled={isPending || !isDirty}
+                            className={cn(
+                              "min-w-40 h-11 rounded-xl font-medium transition-all",
+                              isDirty
+                                ? "bg-primary hover:bg-primary/95 shadow-sm"
+                                : "bg-muted text-muted-foreground"
+                            )}
+                          >
+                            {isPending ? (
+                              <>
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                {t("common.loading")}
+                              </>
+                            ) : (
+                              <>
+                                <Save className="mr-2 h-4 w-4" />
+                                {t("common.save")}
+                              </>
+                            )}
+                          </Button>
+                        </motion.div>
+                      ) : (
+                        <motion.div
+                          key="edit-btn"
+                          initial={{ opacity: 0, scale: 0.95 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.95 }}
                         >
-                          <PencilLine className="mr-2 h-4 w-4" />
-                          {t("common.edit") || "Редактировать"}
-                        </Button>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </form>
-            </CardContent>
-          </Card>
+                          <Button
+                            type="button"
+                            onClick={() => setIsEditing(true)}
+                            variant="outline"
+                            className="min-w-40 h-11 rounded-xl font-medium border-primary/20 text-primary hover:bg-primary/5"
+                          >
+                            <PencilLine className="mr-2 h-4 w-4" />
+                            {t("common.edit") || "Редактировать"}
+                          </Button>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </form>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="courses" className="mt-0 focus-visible:ring-0">
+            <MyCoursesList userId={userId}/>
+          </TabsContent>
+        </Tabs>
+
         </motion.div>
       </motion.div>
     </div>

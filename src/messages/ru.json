@@ -20,7 +20,9 @@
     "edit": "Редактировать",
     "viewAll": "Посмотреть все",
     "allCourses": "Все курсы",
-    "allCategories": "Все категории"
+    "allCategories": "Все категории",
+    "free": "Бесплатно",
+    "paid": "Платно"
   },
   "auth": {
     "login": {
@@ -79,6 +81,30 @@
   },
   "courses": {
     "title": "Курсы",
+    "create_new": "Создать новый курс",
+    "no_courses_yet": "Пока нет курсов",
+    "start_teaching_desc": "Поделитесь своими знаниями и создайте свой первый курс.",
+    "create_first_course": "Создать первый курс",
+    "create_success": "Курс успешно создан",
+    "create_error": "Произошла ошибка при создании курса",
+    "edit_course": "Редактировать курс",
+    "dialog": {
+      "title": "Создание нового курса",
+      "course_title": "Название курса",
+      "course_title_placeholder": "Например: Java для начинающих",
+      "short_description": "Краткое описание",
+      "description": "Полное описание",
+      "level": "Уровень",
+      "price": "Цена (если бесплатно, укажите 0)",
+      "category": "Категория",
+      "language": "Язык",
+      "submit": "Создать курс",
+      "requirements": "Требования",
+      "requirements_placeholder": "Например: Базовые навыки работы с компьютером",
+      "learning_outcomes": "Чему вы научитесь",
+      "learning_outcomes_placeholder": "Например: Работа с REST API",
+      "add_item": "Добавить"
+    },
     "hero": {
       "titlePrefix": "Откройте для себя следующий",
       "titleHighlight": "курс",
@@ -124,6 +150,10 @@
     "title": "Должность / Титул",
     "department": "Кафедра / Департамент",
     "bio": "О себе",
-    "bio_placeholder": "Расскажите немного о себе..."
-  }
+    "bio_placeholder": "Расскажите немного о себе...",
+    "my_courses": "Мои Курсы",
+    "courses_tab" : "Мои Курсы",
+    "settings_tab" : "Профиль"
+  },
+  "students" : "Студенты"
 }

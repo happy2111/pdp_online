@@ -5,9 +5,12 @@ export type Pagination<T> = T & {
   current_page: number;
 };
 
-export interface ApiResponse<T> {
+export interface BaseResponse {
   code: number;
   message: string;
+}
+
+export interface ApiResponse<T> extends BaseResponse {
   data: T;
 }
 
