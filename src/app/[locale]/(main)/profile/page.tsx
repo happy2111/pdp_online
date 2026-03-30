@@ -404,7 +404,9 @@ export default function ProfileSettings() {
           </TabsContent>
 
           <TabsContent value="courses" className="mt-0 focus-visible:ring-0">
-            <MyCoursesList userId={userId}/>
+            {userId && (
+              <MyCoursesList userId={userId}/>
+            )}
           </TabsContent>
         </Tabs>
 
