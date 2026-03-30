@@ -128,4 +128,61 @@ export class CoursesService {
       throw error;
     }
   }
+
+
+  static async UploadPreviewVideo(
+    slug: string,
+    file: File
+  ): Promise<ThumbnailPresignResponse> {
+    try {
+      if (!file) throw new Error('Файл не выбран');
+      if (!file.type.startsWith('video/')) throw new Error('Можно загружать только видео');
+
+      const fileExtension = file.name.split('.').pop();
+      const cleanBaseName = file.name
+        .split('.')
+        .slice(0, -1)
+        .join('.')
+        .replace(/\s+/g, '_')
+        .replace(/[^a-zA-Z0-9_\-]/g, '');
+
+      const filename = `${cleanBaseName}_${Date.now()}.${fileExtension}`;
+
+      const res = await api.post<ApiResponse<ThumbnailPresignResponse>>(
+        `${process.env.NEXT_PUBLIC_API_URL}/courses/${slug}/video/presign`,
+        { filename }
+      );
+
+      if (!res.data?.data?.upload_url || !res?.data?.data?.key) {
+        throw new Error('Ошибка получения presign URL для видео');
+      }
+
+      const presignData = res.data.data;
+
+      const uploadRes = await fetch(presignData.upload_url, {
+        method: 'PUT',
+        body: file,
+        headers: {
+          'Content-Type': presignData.content_type,
+        },
+      });
+
+      if (!uploadRes.ok) {
+        throw new Error(`Ошибка загрузки видео в S3: ${uploadRes.status}`);
+      }
+
+      return presignData;
+
+    } catch (error: any) {
+      console.error('getPreviewVideoPresignUrl error:', error);
+      throw error;
+    }
+  }
+
+  static async publishCourse(
+    slug: string
+  ) : Promise<BaseResponse>{
+    const res = await api.patch<BaseResponse>(`${process.env.NEXT_PUBLIC_API_URL}/courses/${slug}/publish`, )
+    return res.data
+  }
 }
