@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useParams, useRouter } from "next/navigation"
 import { useTranslations } from "next-intl"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion } from "framer-motion"
 import { toast } from "sonner"
 import {
   ArrowLeft, Save, PencilLine, X, Loader2, Upload, Video, Image as ImageIcon,
@@ -39,18 +39,12 @@ import {
   AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import Protected from "@/components/protecters/Protected"
-import { VideoPlayer } from "@/components/video-player"
+import StringListEditor from "@/components/courses/settings/StringListEditor"
+import ThumbnailUploadCard
+  from "@/components/courses/settings/ThumbnailUploadCard";
+import VideoPreviewCard from "@/components/courses/settings/VideoPreviewCard";
+import SaveRow from "@/components/courses/settings/SaveRow";
 
-
-// ── Animation variants ───────────────────────────────────────
-const fadeUp = {
-  hidden: { opacity: 0, y: 18 },
-  visible: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.38, delay: i * 0.07, ease: [0.22, 1, 0.36, 1] },
-  }),
-}
 
 const LANGUAGES = [
   { value: "uz", label: "O'zbek" },
@@ -58,229 +52,12 @@ const LANGUAGES = [
   { value: "en", label: "English" },
 ]
 
-// ── StringListEditor ─────────────────────────────────────────
-function StringListEditor({
-                            label, items, onChange, placeholder, disabled,
-                          }: {
-  label: string
-  items: string[]
-  onChange: (v: string[]) => void
-  placeholder?: string
-  disabled?: boolean
-}) {
-  const [draft, setDraft] = useState("")
-  const add = () => {
-    if (!draft.trim()) return
-    onChange([...items, draft.trim()])
-    setDraft("")
-  }
-  const remove = (idx: number) => onChange(items.filter((_, i) => i !== idx))
 
-  return (
-    <div className="space-y-3">
-      <Label>{label}</Label>
-      <div className="space-y-2">
-        <AnimatePresence initial={false}>
-          {items.map((item, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 10 }}
-              className="flex items-center gap-2 rounded-lg border border-border/60 bg-muted/30 px-3 py-2 text-sm"
-            >
-              <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-primary" />
-              <span className="flex-1 text-foreground/90">{item}</span>
-              {!disabled && (
-                <button type="button" onClick={() => remove(idx)}
-                        className="text-muted-foreground hover:text-destructive transition-colors">
-                  <X className="h-3.5 w-3.5" />
-                </button>
-              )}
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </div>
-      {!disabled && (
-        <div className="flex gap-2">
-          <Input
-            value={draft}
-            onChange={e => setDraft(e.target.value)}
-            onKeyDown={e => e.key === "Enter" && (e.preventDefault(), add())}
-            placeholder={placeholder}
-            className="h-10 text-sm"
-          />
-          <Button type="button" variant="outline" size="sm" onClick={add} className="h-10 px-3 shrink-0">
-            <Plus className="h-4 w-4" />
-          </Button>
-        </div>
-      )}
-    </div>
-  )
-}
 
-// ── ThumbnailUploadCard ──────────────────────────────────────
-function ThumbnailUploadCard({
-                               previewUrl, isUploading, disabled, onFileSelect,
-                             }: {
-  previewUrl?: string | null
-  isUploading?: boolean
-  disabled?: boolean
-  onFileSelect: (file: File) => void
-}) {
-  const inputRef = useRef<HTMLInputElement>(null)
 
-  return (
-    <div className="space-y-2">
-      <Label>Обложка курса</Label>
-      <div
-        onClick={() => !disabled && inputRef.current?.click()}
-        className={cn(
-          "group relative flex flex-col items-center justify-center rounded-xl border-2 border-dashed aspect-video overflow-hidden transition-all duration-200",
-          disabled
-            ? "cursor-not-allowed border-border/40 bg-muted/20"
-            : "cursor-pointer border-border hover:border-primary/50 hover:bg-primary/5"
-        )}
-      >
-        {previewUrl ? (
-          <>
-            <img src={previewUrl} alt="thumbnail" className="absolute inset-0 h-full w-full object-cover" />
-            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-              {!disabled && (
-                <div className="flex items-center gap-2 text-white text-sm font-medium">
-                  <Upload className="h-4 w-4" /> Заменить
-                </div>
-              )}
-            </div>
-          </>
-        ) : (
-          <div className="flex flex-col items-center gap-3 p-6 text-center">
-            {isUploading
-              ? <Loader2 className="h-8 w-8 animate-spin text-primary" />
-              : (
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary group-hover:scale-110 transition-transform">
-                  <ImageIcon className="h-6 w-6" />
-                </div>
-              )
-            }
-            {!isUploading && (
-              <>
-                <p className="text-sm font-medium text-foreground/80">
-                  {disabled ? "Нет файла" : "Нажмите для загрузки"}
-                </p>
-                <p className="text-xs text-muted-foreground">PNG, JPG, WebP до 10MB</p>
-              </>
-            )}
-          </div>
-        )}
-      </div>
-      <input ref={inputRef} type="file" accept="image/*" className="sr-only" disabled={disabled}
-             onChange={e => { const f = e.target.files?.[0]; if (f) onFileSelect(f); e.target.value = "" }} />
-    </div>
-  )
-}
-
-// ── VideoPreviewCard ─────────────────────────────────────────
-function VideoPreviewCard({
-                            course, isAuth, isUploading, disabled, onFileSelect,
-                          }: {
-  course: CourseDetails
-  isAuth: boolean
-  isUploading: boolean
-  disabled: boolean
-  onFileSelect: (file: File) => void
-}) {
-  const inputRef = useRef<HTMLInputElement>(null)
-
-  return (
-    <div className="space-y-2">
-      <Label>Превью-видео</Label>
-      <div className="relative group rounded-xl overflow-hidden border border-border/60 aspect-video bg-muted/10">
-        {course.preview_video_url ? (
-          isAuth ? (
-            <VideoPlayer slug={course.slug} endpoint={course.preview_video_url} />
-          ) : (
-            <div
-              className="cursor-pointer h-full w-full"
-              onClick={() => toast.error("Пожалуйста, войдите в систему, чтобы просмотреть видео-превью курса.")}
-            >
-              <img
-                src={course.thumbnail_url}
-                alt={course.title}
-                className="aspect-video w-full object-cover transition-transform duration-300 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 flex items-center justify-center bg-black/40 group-hover:bg-black/20 transition-colors">
-                <PlayCircle className="h-14 w-14 text-white drop-shadow-lg" />
-              </div>
-            </div>
-          )
-        ) : (
-          <div className="flex h-full flex-col items-center justify-center gap-3 p-6 text-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
-              <Video className="h-6 w-6" />
-            </div>
-            <p className="text-sm font-medium text-foreground/80">Превью-видео не загружено</p>
-            <p className="text-xs text-muted-foreground">MP4, WebM до 500MB</p>
-          </div>
-        )}
-
-        {/* Replace / upload overlay button */}
-        {!disabled && (
-          <button
-            type="button"
-            onClick={() => inputRef.current?.click()}
-            disabled={isUploading}
-            className="absolute bottom-2 right-2 z-10 flex items-center gap-1.5 rounded-lg bg-black/70 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-sm hover:bg-black/90 transition-colors disabled:opacity-60"
-          >
-            {isUploading
-              ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> Загрузка...</>
-              : <><Upload className="h-3.5 w-3.5" /> {course.preview_video_url ? "Заменить" : "Загрузить"}</>
-            }
-          </button>
-        )}
-      </div>
-      <input ref={inputRef} type="file" accept="video/*" className="sr-only" disabled={disabled || isUploading}
-             onChange={e => { const f = e.target.files?.[0]; if (f) onFileSelect(f); e.target.value = "" }} />
-    </div>
-  )
-}
-
-// ── SaveRow ──────────────────────────────────────────────────
-function SaveRow({ isEditing, isPending, isDirty, t }: {
-  isEditing: boolean
-  isPending: boolean
-  isDirty: boolean
-  t: ReturnType<typeof useTranslations>
-}) {
-  return (
-    <div className="flex justify-end pt-2">
-      <AnimatePresence mode="wait">
-        {isEditing ? (
-          <motion.div key="save" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }}>
-            <Button type="submit" disabled={isPending || !isDirty}
-                    className={cn("min-w-36 h-11 rounded-xl font-medium transition-all",
-                      isDirty ? "shadow-sm" : "bg-muted text-muted-foreground")}>
-              {isPending
-                ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />{t("common.loading")}</>
-                : <><Save className="mr-2 h-4 w-4" />{t("common.save")}</>
-              }
-            </Button>
-          </motion.div>
-        ) : (
-          <motion.div key="hint" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <p className="text-xs text-muted-foreground py-3">
-              Нажмите <PencilLine className="inline h-3 w-3" /> чтобы редактировать
-            </p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  )
-}
-
-// ============================================================
-// MAIN PAGE
-// ============================================================
+// ==========================================================
+// // MAIN PAGE
+// // ==============================================================
 export default function CourseSettingsPage() {
   const { slug } = useParams<{ slug: string }>()
   const router = useRouter()
