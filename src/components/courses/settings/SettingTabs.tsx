@@ -35,6 +35,7 @@ import SaveRow from "@/components/courses/settings/SaveRow"
 import { useTranslations } from "next-intl"
 import { Category } from "@/schemas/categories-schema"
 import { Controller } from "react-hook-form"
+import ModulesTab from "@/components/courses/settings/ModulesTab";
 
 interface Props {
   isEditing: boolean;
@@ -108,7 +109,7 @@ const SettingTabs = (props: Props) => {
   return (
     <motion.div initial="hidden" animate="visible" custom={2}>
       <Tabs defaultValue="info" className="space-y-6">
-        <TabsList className="grid w-full max-w-md grid-cols-3 p-1 bg-muted/50 rounded-2xl">
+        <TabsList className="grid w-full max-w-md grid-cols-4 p-1 bg-muted/50 rounded-2xl">
           <TabsTrigger value="info" className="rounded-xl gap-1.5 text-xs sm:text-sm">
             <FileText className="h-3.5 w-3.5" /> {t('tabs.info')}
           </TabsTrigger>
@@ -118,168 +119,171 @@ const SettingTabs = (props: Props) => {
           <TabsTrigger value="content" className="rounded-xl gap-1.5 text-xs sm:text-sm">
             <BookOpen className="h-3.5 w-3.5" /> {t('tabs.content')}
           </TabsTrigger>
+          <TabsTrigger value="modules" className="rounded-xl gap-1.5 text-xs sm:text-sm">
+            <BookOpen className="h-3.5 w-3.5" /> {t('tabs.modules')}
+          </TabsTrigger>
         </TabsList>
-
-        <form onSubmit={handleSubmit(onSubmit)}>
 
           {/* TAB: INFO */}
           <TabsContent value="info" className="mt-0 space-y-5">
-            <Card className="border bg-card/60 backdrop-blur-sm">
-              <CardHeader className="pb-5">
-                <CardTitle className="flex items-center gap-2 text-lg">
-                  <Tag className="h-4.5 w-4.5 text-primary" />
-                  {t('basicInfo')}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-5">
-                <div className="space-y-2">
-                  <Label htmlFor="title">{t('courseTitle')}</Label>
-                  <Input
-                    id="title"
-                    {...register("title")}
-                    disabled={!isEditing}
-                    placeholder="Masalan: React noldan PRO gacha"
-                    className={cn("h-11 transition-all", !isEditing && "bg-muted/20 opacity-80")}
-                  />
-                  {errors.title && (
-                    <p className="flex items-center gap-1 text-xs text-destructive">
-                      <AlertCircle className="h-3 w-3" />
-                      {errors.title.message}
-                    </p>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="short_description">{t('shortDescription')}</Label>
-                  <Textarea
-                    id="short_description"
-                    {...register("short_description")}
-                    disabled={!isEditing}
-                    rows={2}
-                    placeholder="Kurs haqida bir-ikki jumla..."
-                    className={cn("resize-none transition-all", !isEditing && "bg-muted/20 opacity-80")}
-                  />
-                  {errors.short_description && (
-                    <p className="flex items-center gap-1 text-xs text-destructive">
-                      <AlertCircle className="h-3 w-3" />
-                      {errors.short_description.message}
-                    </p>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="description">{t('fullDescription')}</Label>
-                  <Textarea
-                    id="description"
-                    {...register("description")}
-                    disabled={!isEditing}
-                    rows={5}
-                    placeholder="Kursning to‘liq tavsifi..."
-                    className={cn("min-h-[120px] resize-none transition-all", !isEditing && "bg-muted/20 opacity-80")}
-                  />
-                </div>
-
-                <Separator />
-
-                <div className="grid gap-5 sm:grid-cols-2">
-                  {/* Категория */}
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Card className="border bg-card/60 backdrop-blur-sm">
+                <CardHeader className="pb-5">
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <Tag className="h-4.5 w-4.5 text-primary" />
+                    {t('basicInfo')}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-5">
                   <div className="space-y-2">
-                    <Label>{t('category')}</Label>
-                    <Controller
-                      name="category_id"
-                      control={control}
-                      render={({ field }) => (
-                        <Select
-                          disabled={!isEditing}
-                          value={field.value ? String(field.value) : undefined}
-                          onValueChange={(v) => field.onChange(Number(v))}
-                        >
-                          <SelectTrigger className={cn("h-11", !isEditing && "bg-muted/20 opacity-80")}>
-                            <SelectValue placeholder={t('selectCategoryPlaceholder')} />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {flatCategories.map((cat) => (
-                              <SelectItem key={cat.id} value={cat.id.toString()}>
-                                <span
-                                  style={{ paddingLeft: `${cat.level * 12}px` }}
-                                  className="flex items-center gap-2"
-                                >
-                                  {cat.level > 0 && "└ "}
-                                  {cat.name}
-                                </span>
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      )}
-                    />
-                  </div>
-
-                  {/* Уровень */}
-                  <div className="space-y-2">
-                    <Label>{t('level')}</Label>
-                    <Select
-                      disabled={!isEditing}
-                      value={level}
-                      onValueChange={v => setValue("level", v as CourseLevelEnum, { shouldDirty: true })}
-                    >
-                      <SelectTrigger className={cn("h-11", !isEditing && "bg-muted/20 opacity-80")}>
-                        <SelectValue placeholder={t('selectLevelPlaceholder')} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {(Object.keys(CourseLevelLabels) as CourseLevelEnum[]).map(l => (
-                          <SelectItem key={l} value={l}>
-                            {t2(CourseLevelLabels[l])}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  {/* Язык */}
-                  <div className="space-y-2">
-                    <Label className="flex items-center gap-1.5">
-                      <Globe className="h-3.5 w-3.5" /> {t('language')}
-                    </Label>
-                    <Select
-                      disabled={!isEditing}
-                      value={watch("language")}
-                      onValueChange={v => setValue("language", v, { shouldDirty: true })}
-                    >
-                      <SelectTrigger className={cn("h-11", !isEditing && "bg-muted/20 opacity-80")}>
-                        <SelectValue placeholder={t('selectLanguagePlaceholder')} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {LANGUAGES.map(l => (
-                          <SelectItem key={l.value} value={l.value}>
-                            {l.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  {/* Цена */}
-                  <div className="space-y-2">
-                    <Label htmlFor="price" className="flex items-center gap-1.5">
-                      <DollarSign className="h-3.5 w-3.5" /> {t('price')}
-                    </Label>
+                    <Label htmlFor="title">{t('courseTitle')}</Label>
                     <Input
-                      id="price"
-                      type="number"
-                      min={0}
-                      step={0.01}
-                      {...register("price", { valueAsNumber: true })}
+                      id="title"
+                      {...register("title")}
                       disabled={!isEditing}
-                      placeholder={t('pricePlaceholder')}
-                      className={cn("h-11", !isEditing && "bg-muted/20 opacity-80")}
+                      placeholder="Masalan: React noldan PRO gacha"
+                      className={cn("h-11 transition-all", !isEditing && "bg-muted/20 opacity-80")}
+                    />
+                    {errors.title && (
+                      <p className="flex items-center gap-1 text-xs text-destructive">
+                        <AlertCircle className="h-3 w-3" />
+                        {errors.title.message}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="short_description">{t('shortDescription')}</Label>
+                    <Textarea
+                      id="short_description"
+                      {...register("short_description")}
+                      disabled={!isEditing}
+                      rows={2}
+                      placeholder="Kurs haqida bir-ikki jumla..."
+                      className={cn("resize-none transition-all", !isEditing && "bg-muted/20 opacity-80")}
+                    />
+                    {errors.short_description && (
+                      <p className="flex items-center gap-1 text-xs text-destructive">
+                        <AlertCircle className="h-3 w-3" />
+                        {errors.short_description.message}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="description">{t('fullDescription')}</Label>
+                    <Textarea
+                      id="description"
+                      {...register("description")}
+                      disabled={!isEditing}
+                      rows={5}
+                      placeholder="Kursning to‘liq tavsifi..."
+                      className={cn("min-h-[120px] resize-none transition-all", !isEditing && "bg-muted/20 opacity-80")}
                     />
                   </div>
-                </div>
-              </CardContent>
-            </Card>
 
-            <SaveRow isEditing={isEditing} isPending={isPending} isDirty={isDirty} />
+                  <Separator />
+
+                  <div className="grid gap-5 sm:grid-cols-2">
+                    {/* Категория */}
+                    <div className="space-y-2">
+                      <Label>{t('category')}</Label>
+                      <Controller
+                        name="category_id"
+                        control={control}
+                        render={({ field }) => (
+                          <Select
+                            disabled={!isEditing}
+                            value={field.value ? String(field.value) : undefined}
+                            onValueChange={(v) => field.onChange(Number(v))}
+                          >
+                            <SelectTrigger className={cn("h-11", !isEditing && "bg-muted/20 opacity-80")}>
+                              <SelectValue placeholder={t('selectCategoryPlaceholder')} />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {flatCategories.map((cat) => (
+                                <SelectItem key={cat.id} value={cat.id.toString()}>
+                                  <span
+                                    style={{ paddingLeft: `${cat.level * 12}px` }}
+                                    className="flex items-center gap-2"
+                                  >
+                                    {cat.level > 0 && "└ "}
+                                    {cat.name}
+                                  </span>
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        )}
+                      />
+                    </div>
+
+                    {/* Уровень */}
+                    <div className="space-y-2">
+                      <Label>{t('level')}</Label>
+                      <Select
+                        disabled={!isEditing}
+                        value={level}
+                        onValueChange={v => setValue("level", v as CourseLevelEnum, { shouldDirty: true })}
+                      >
+                        <SelectTrigger className={cn("h-11", !isEditing && "bg-muted/20 opacity-80")}>
+                          <SelectValue placeholder={t('selectLevelPlaceholder')} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {(Object.keys(CourseLevelLabels) as CourseLevelEnum[]).map(l => (
+                            <SelectItem key={l} value={l}>
+                              {t2(CourseLevelLabels[l])}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {/* Язык */}
+                    <div className="space-y-2">
+                      <Label className="flex items-center gap-1.5">
+                        <Globe className="h-3.5 w-3.5" /> {t('language')}
+                      </Label>
+                      <Select
+                        disabled={!isEditing}
+                        value={watch("language")}
+                        onValueChange={v => setValue("language", v, { shouldDirty: true })}
+                      >
+                        <SelectTrigger className={cn("h-11", !isEditing && "bg-muted/20 opacity-80")}>
+                          <SelectValue placeholder={t('selectLanguagePlaceholder')} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {LANGUAGES.map(l => (
+                            <SelectItem key={l.value} value={l.value}>
+                              {l.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {/* Цена */}
+                    <div className="space-y-2">
+                      <Label htmlFor="price" className="flex items-center gap-1.5">
+                        <DollarSign className="h-3.5 w-3.5" /> {t('price')}
+                      </Label>
+                      <Input
+                        id="price"
+                        type="number"
+                        min={0}
+                        step={0.01}
+                        {...register("price", { valueAsNumber: true })}
+                        disabled={!isEditing}
+                        placeholder={t('pricePlaceholder')}
+                        className={cn("h-11", !isEditing && "bg-muted/20 opacity-80")}
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <SaveRow isEditing={isEditing} isPending={isPending} isDirty={isDirty} />
+            </form>
           </TabsContent>
 
           {/* TAB: MEDIA */}
@@ -314,48 +318,56 @@ const SettingTabs = (props: Props) => {
 
           {/* TAB: CONTENT */}
           <TabsContent value="content" className="mt-0 space-y-5">
-            <Card className="border bg-card/60 backdrop-blur-sm">
-              <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-2 text-lg">
-                  <CheckCircle2 className="h-4.5 w-4.5 text-primary" />
-                  {t('requirements')}
-                </CardTitle>
-                <p className="text-sm text-muted-foreground">{t('requirementsDesc')}</p>
-              </CardHeader>
-              <CardContent>
-                <StringListEditor
-                  label={t('stringList.requirementsLabel')}
-                  items={requirements}
-                  onChange={v => setValue("requirements", v, { shouldDirty: true })}
-                  placeholder={t('stringList.requirementsPlaceholder')}
-                  disabled={!isEditing}
-                />
-              </CardContent>
-            </Card>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Card className="border bg-card/60 backdrop-blur-sm">
+                <CardHeader className="pb-4">
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <CheckCircle2 className="h-4.5 w-4.5 text-primary" />
+                    {t('requirements')}
+                  </CardTitle>
+                  <p className="text-sm text-muted-foreground">{t('requirementsDesc')}</p>
+                </CardHeader>
+                <CardContent>
+                  <StringListEditor
+                    label={t('stringList.requirementsLabel')}
+                    items={requirements}
+                    onChange={v => setValue("requirements", v, { shouldDirty: true })}
+                    placeholder={t('stringList.requirementsPlaceholder')}
+                    disabled={!isEditing}
+                  />
+                </CardContent>
+              </Card>
 
-            <Card className="border bg-card/60 backdrop-blur-sm">
-              <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-2 text-lg">
-                  <Eye className="h-4.5 w-4.5 text-primary" />
-                  {t('learningOutcomes')}
-                </CardTitle>
-                <p className="text-sm text-muted-foreground">{t('learningOutcomesDesc')}</p>
-              </CardHeader>
-              <CardContent>
-                <StringListEditor
-                  label={t('stringList.outcomesLabel')}
-                  items={outcomes}
-                  onChange={v => setValue("learning_outcomes", v, { shouldDirty: true })}
-                  placeholder={t('stringList.outcomesPlaceholder')}
-                  disabled={!isEditing}
-                />
-              </CardContent>
-            </Card>
+              <Card className="border bg-card/60 backdrop-blur-sm">
+                <CardHeader className="pb-4">
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <Eye className="h-4.5 w-4.5 text-primary" />
+                    {t('learningOutcomes')}
+                  </CardTitle>
+                  <p className="text-sm text-muted-foreground">{t('learningOutcomesDesc')}</p>
+                </CardHeader>
+                <CardContent>
+                  <StringListEditor
+                    label={t('stringList.outcomesLabel')}
+                    items={outcomes}
+                    onChange={v => setValue("learning_outcomes", v, { shouldDirty: true })}
+                    placeholder={t('stringList.outcomesPlaceholder')}
+                    disabled={!isEditing}
+                  />
+                </CardContent>
+              </Card>
 
-            <SaveRow isEditing={isEditing} isPending={isPending} isDirty={isDirty} />
+              <SaveRow isEditing={isEditing} isPending={isPending} isDirty={isDirty} />
+            </form>
           </TabsContent>
 
-        </form>
+          <TabsContent value="modules" className="mt-0">
+            <ModulesTab
+              slug={course.slug}
+              courseId={course.id}
+            />
+          </TabsContent>
+
       </Tabs>
     </motion.div>
   )

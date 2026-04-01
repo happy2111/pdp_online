@@ -25,9 +25,6 @@ import SettingTabs from "@/components/courses/settings/SettingTabs"
 
 export default function CourseSettingsPage() {
   const { slug } = useParams<{ slug: string }>()
-  const router = useRouter()
-  const t = useTranslations()
-  const tCourse = useTranslations('courses')
   const tSettings = useTranslations('courses.settings')
 
   const isAuth = useAuthStore(state => state.isAuthenticated)

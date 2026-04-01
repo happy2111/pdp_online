@@ -213,7 +213,8 @@
       "tabs": {
         "info": "Основное",
         "media": "Медиа",
-        "content": "Контент"
+        "content": "Контент",
+        "modules": "Модули"
       },
 
       "stringList": {
