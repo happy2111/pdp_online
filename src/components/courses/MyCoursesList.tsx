@@ -50,7 +50,7 @@ export function MyCoursesList({ userId }: { userId: number }) {
       </div>
 
       {courses.length > 0 ? (
-        <div className=" grid gap-6  sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+        <div className=" grid gap-6  sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
           {courses.map((course) => (
             <CourseCard key={course.id} course={course} isOwner={true} />
           ))}

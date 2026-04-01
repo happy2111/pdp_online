@@ -58,8 +58,6 @@ export class ProfileService {
         filename,
       })
 
-      alert()
-
       if (!presign?.data?.upload_url || !presign?.data?.key) {
         throw new Error('Ошибка получения presign URL')
       }

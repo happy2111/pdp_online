@@ -39,7 +39,7 @@ const Navbar = () => {
                 rounded-3xl transition-all duration-300
                 bg-background/40 backdrop-blur-sm
                 border border-border shadow-lg
-                w-full max-w-7xl
+                w-full
             `}>
         {/* Ваш существующий контент */}
         <div className="flex items-center gap-4">

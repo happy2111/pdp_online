@@ -145,7 +145,7 @@
   }
 
   .container-custom {
-    @apply w-[95%] lg:w-[75%] mx-auto px-4 md:px-6;
+    @apply max-w-7xl mx-auto px-4 md:px-6 lg:px-8;
   }
 }
 
