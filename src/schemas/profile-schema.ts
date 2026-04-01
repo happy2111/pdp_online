@@ -16,6 +16,7 @@ export const ProfileSchema = z.object({
   first_name: z.string(),
   last_name: z.string(),
   avatar_url: z.string(),
+  is_verified: z.boolean(),
   bio: z.string(),
   role: z.string(),
   teacher_info: TeacherInfoSchema.nullable().optional(),

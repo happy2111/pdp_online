@@ -27,6 +27,7 @@ import {useAuthStore} from "@/stores/auth-store";
 import {MyCoursesList} from "@/components/courses/MyCoursesList";
 import {useRouter} from "next/navigation";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import {VerifyEmailModal} from "@/components/profile/verify-email-modal";
 
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -108,6 +109,11 @@ export default function ProfileSettings() {
       reset() // Сброс полей при отмене
     }
     setIsEditing(!isEditing)
+  }
+
+  const refreshProfile = async () => {
+    const res = await ProfileService.getProfile()
+    if (res.data) setProfile(res.data)
   }
 
   if (!profile) {
@@ -304,7 +310,13 @@ export default function ProfileSettings() {
                           disabled
                           className="h-11 pl-10 bg-muted/40 cursor-not-allowed opacity-70"
                         />
+                        <VerifyEmailModal
+                          email={profile.email}
+                          isVerified={profile.is_verified}
+                          onSuccess={refreshProfile}
+                        />
                       </div>
+
                     </div>
                   </div>
 

@@ -54,3 +54,9 @@ export const AuthResponseSchema = z.object({
 
 
 export type AuthResponse = z.infer<typeof AuthResponseSchema>;
+
+
+export const VerifyCodeSchema = z.object({
+  code: z.string().min(1, "Code is required"),
+});
+export type VerifyCodeSchemaType = z.infer<typeof VerifyCodeSchema>;

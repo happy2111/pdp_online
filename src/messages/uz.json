@@ -25,6 +25,21 @@
     "paid": "Pullik"
   },
   "auth": {
+    "verify": {
+      "action": "Tasdiqlash",
+      "verified": "Tasdiqlangan",
+      "modal_title": "Elektron pochtani tasdiqlash",
+      "enter_code": "Kodni kiriting",
+      "modal_desc": "Biz sizning pochtangizga 6 xonali tasdiqlash kodini yuboramiz:",
+      "code_desc": "Tasdiqlash kodi pochtangizga yuborildi. Tekshirishni yakunlash uchun uni pastga kiriting.",
+      "check_spam": "Agar xat kelmasa, Spam jildini tekshiring",
+      "send_btn": "Kodni yuborish",
+      "confirm_btn": "Kodni tasdiqlash",
+      "resend": "Kodni qaytadan yuborish",
+      "code_sent": "Kod pochtangizga muvaffaqiyatli yuborildi",
+      "success": "Email muvaffaqiyatli tasdiqlandi!",
+      "invalid_code": "Kod noto'g'ri yoki muddati o'tgan"
+    },
     "login": {
       "title": "Hisobga kirish",
       "submit": "Kirish",
