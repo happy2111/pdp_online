@@ -18,8 +18,9 @@ import { CourseDetails } from "@/schemas/courses-schema"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { CourseSidebar } from "@/components/courses/course-sidebar"
-import {ModulesService} from "@/services/modules-service";
-import {CourseCurriculum} from "@/components/courses/CourseCurriculum";
+import { ModulesService } from "@/services/modules-service"
+import { CourseCurriculum } from "@/components/courses/CourseCurriculum"
+import { useTranslations } from "next-intl"
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -28,17 +29,16 @@ const fadeInUp = {
 
 export default function CourseDetailPage() {
   const { slug } = useParams()
+  const t = useTranslations('courses')        // основной namespace
+  const tDetail = useTranslations('courses.detail') // для детальной страницы
+
   const [course, setCourse] = useState<CourseDetails | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [modules, setModules] = useState<any[]>([])
 
   useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "instant",
-    });
-  }, [slug]);
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" })
+  }, [slug])
 
   useEffect(() => {
     const fetchCourse = async () => {
@@ -57,15 +57,14 @@ export default function CourseDetailPage() {
   useEffect(() => {
     if (slug) {
       const loadData = async () => {
-        const response = await ModulesService.getCourseModules(slug as string);
+        const response = await ModulesService.getCourseModules(slug as string)
         if (response.code === 0) {
-          setModules(response.data);
+          setModules(response.data)
         }
-      };
-      loadData();
+      }
+      loadData()
     }
-
-  }, [slug]);
+  }, [slug])
 
   if (isLoading) {
     return (
@@ -75,14 +74,11 @@ export default function CourseDetailPage() {
     )
   }
 
-
-
-  if (!course) return <div>Course not found</div>
+  if (!course) return <div>{t('no_courses_yet')}</div>
 
   return (
     <div className="min-h-screen bg-background">
       <section className="relative py-16 md:py-24">
-
         <div className="absolute top-0 right-0 w-1/2 h-full bg-primary/20 blur-[140px] rounded-full pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-1/3 h-2/3 bg-accent/20 blur-[100px] rounded-full pointer-events-none" />
 
@@ -98,10 +94,7 @@ export default function CourseDetailPage() {
                 <Badge className="bg-primary/10 text-primary border-primary/20 rounded-xl">
                   {course.category_name}
                 </Badge>
-                <Badge
-                  variant="outline"
-                  className="text-muted-foreground border-border rounded-xl"
-                >
+                <Badge variant="outline" className="text-muted-foreground border-border rounded-xl">
                   {course.level}
                 </Badge>
               </div>
@@ -110,7 +103,7 @@ export default function CourseDetailPage() {
                 {course.title}
               </h1>
 
-              <p className="text-lg text-muted-foreground max-w-3xl leading-relaxed">
+              <p className="text-lg text-muted-foreground max-w-3xl break-after-all leading-relaxed">
                 {course.short_description}
               </p>
 
@@ -118,13 +111,16 @@ export default function CourseDetailPage() {
                 <div className="flex items-center gap-1.5 text-yellow-500 dark:text-yellow-400 font-bold">
                   <Star className="fill-current h-4 w-4" />
                   {course.rating_avg.toFixed(1)}
-                    <span className="text-muted-foreground font-normal underline decoration-dotted ml-1">
-                (957 отзывов)
-                </span>
+                  <span className="text-muted-foreground font-normal underline decoration-dotted ml-1">
+                    {tDetail('ratingReviews', { count: 957 })}
+                  </span>
                 </div>
+
                 <div className="flex items-center gap-1.5 text-muted-foreground">
-                  <Users className="h-4 w-4" /> {course.enrolled_count} студентов
+                  <Users className="h-4 w-4" />
+                  {course.enrolled_count} {tDetail('studentsCount')}
                 </div>
+
                 <div className="flex items-center gap-1.5 text-muted-foreground">
                   <Globe className="h-4 w-4" /> {course.language}
                 </div>
@@ -136,7 +132,7 @@ export default function CourseDetailPage() {
                   {course.teacher_full_name.charAt(0)}
                 </div>
                 <div className="text-sm">
-                  <p className="text-muted-foreground">Преподаватель:</p>
+                  <p className="text-muted-foreground">{tDetail('teacher')}</p>
                   <p className="font-medium text-foreground underline decoration-primary underline-offset-4 cursor-pointer">
                     {course.teacher_full_name}
                   </p>
@@ -149,38 +145,20 @@ export default function CourseDetailPage() {
 
       <div className="container-custom py-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-
           <div className="lg:col-span-8">
             <Tabs defaultValue="general" className="w-full space-y-6">
-              <TabsList
-                className="
-                  flex
-                  w-full
-                  overflow-x-auto
-                  no-scrollbar
-                  whitespace-nowrap
-                  bg-card/30
-                  backdrop-blur-md
-                  p-1
-                  rounded-2xl
-                  border border-border/50
-                  gap-1
-                ">
+              <TabsList className="flex w-full overflow-x-auto no-scrollbar whitespace-nowrap bg-card/30 backdrop-blur-md p-1 rounded-2xl border border-border/50 gap-1">
                 {["general", "curriculum", "reviews"].map((tab) => {
                   const labels: Record<string, string> = {
-                    general: "Общее",
-                    curriculum: "Учебный план",
-                    reviews: "Отзывы",
+                    general: tDetail('general'),
+                    curriculum: tDetail('curriculum'),
+                    reviews: tDetail('reviews'),
                   }
                   return (
                     <TabsTrigger
                       key={tab}
                       value={tab}
-                      className="
-                       data-[state=active]:bg-primary
-                       data-[state=active]:text-primary-foreground
-                        shrink-0 rounded-xl px-6 font-bold text-xs uppercase tracking-tighter
-                      "
+                      className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground shrink-0 rounded-xl px-6 font-bold text-xs uppercase tracking-tighter"
                     >
                       {labels[tab]}
                     </TabsTrigger>
@@ -189,9 +167,8 @@ export default function CourseDetailPage() {
               </TabsList>
 
               <TabsContent value="general" className="space-y-10 outline-none">
-
                 <div className="p-6 border border-border rounded-3xl bg-card/70 backdrop-blur">
-                  <h3 className="text-xl font-bold mb-6">Чему вы научитесь?</h3>
+                  <h3 className="text-xl font-bold mb-6">{tDetail('whatYouWillLearn')}</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
                     {course.learning_outcomes.map((outcome, idx) => (
                       <div key={idx} className="flex gap-3">
@@ -203,15 +180,15 @@ export default function CourseDetailPage() {
                 </div>
 
                 <div className="space-y-4">
-                  <h3 className="text-xl font-bold">Описание курса</h3>
-                  <div className="prose prose-slate max-w-none text-muted-foreground leading-relaxed text-sm">
+                  <h3 className="text-xl font-bold">{tDetail('courseDescription')}</h3>
+                  <div className="prose prose-slate max-w-none text-muted-foreground whitespace-pre-line leading-relaxed text-sm break-words max-h-96 overflow-y-auto">
                     {course.description}
                   </div>
                 </div>
 
                 <div className="space-y-4">
                   <h3 className="text-xl font-bold flex items-center gap-2">
-                    <Info className="h-5 w-5 text-primary" /> Требования
+                    <Info className="h-5 w-5 text-primary" /> {tDetail('requirements')}
                   </h3>
                   <ul className="space-y-2 text-muted-foreground text-sm ml-2">
                     {course.requirements.map((req, idx) => (
@@ -225,7 +202,6 @@ export default function CourseDetailPage() {
               </TabsContent>
 
               <CourseCurriculum modules={modules} />
-
             </Tabs>
           </div>
 

@@ -1,5 +1,11 @@
 import { z } from "zod";
 
+export const LANGUAGES = [
+  { value: "UZ", label: "O'zbek" },
+  { value: "RU", label: "Русский" },
+  { value: "EN", label: "English" },
+]
+
 export const CourseLevelEnum = z.enum([
   "BEGINNER",
   "INTERMEDIATE",
@@ -14,6 +20,15 @@ export const CourseLevelLabels: Record<CourseLevelEnum, string> = {
   ADVANCED: "courses.level.advanced",
 }
 
+export const CourseStatusEnum = z.enum(["DRAFT", "PUBLISHED", "ARCHIVED"]);
+
+export type CourseStatusEnum = z.infer<typeof CourseStatusEnum>;
+
+export const CourseStatusLabels: Record<CourseStatusEnum, string> = {
+  DRAFT: "courses.status.draft",
+  PUBLISHED: "courses.status.published",
+  ARCHIVED: "courses.status.archived",
+}
 
 export const CourseListItemSchema = z.object({
   id: z.number(),
@@ -71,6 +86,8 @@ export const CourseDetailsSchema = z.object({
   category_id: z.number(),
   category_name: z.string(),
 
+  status: CourseStatusEnum,
+
   teacher_id: z.number(),
   teacher_full_name: z.string(),
   teacher_title: z.string(),
@@ -124,3 +141,20 @@ export type ThumbnailPresignResponse = z.infer<typeof ThumbnailPresignResponseSc
 
 
 export type WithPagination<T> = T & { page_size: number, total_elements: number, total_pages: number, current_page: number };
+
+
+export const UpdateCourseSchema = z.object({
+  category_id: z.number().optional(),
+  title: z.string().optional(),
+  slug: z.string().optional(),
+  short_description: z.string().optional(),
+  description: z.string().optional(),
+  level: CourseLevelEnum.optional(),
+  language: z.string().optional(),
+  requirements: z.array(z.string()).optional(),
+  learning_outcomes: z.array(z.string()).optional(),
+  price: z.number().optional(),
+  status: CourseStatusEnum.optional(),
+});
+
+export type UpdateCourseRequest = z.infer<typeof UpdateCourseSchema>;

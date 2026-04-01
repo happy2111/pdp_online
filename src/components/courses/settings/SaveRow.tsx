@@ -7,12 +7,13 @@ import {cn} from "@/lib/utils";
 import {Loader2, PencilLine, Save} from "lucide-react";
 import {useTranslations} from "next-intl";
 
-export default function SaveRow({ isEditing, isPending, isDirty, t }: {
+export default function SaveRow({ isEditing, isPending, isDirty }: {
   isEditing: boolean
   isPending: boolean
   isDirty: boolean
-  t: ReturnType<typeof useTranslations>
 }) {
+
+  const t = useTranslations()
   return (
     <div className="flex justify-end pt-2">
       <AnimatePresence mode="wait">

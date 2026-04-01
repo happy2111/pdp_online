@@ -9,7 +9,7 @@ import {
   CourseListItem,
   CourseDetails, GetAllCoursesParams, WithPagination, CreateCourseSchema,
   CreateCourseRequest, GetMyCoursesParams, ThumbnailPresignRequest,
-  ThumbnailPresignResponse,
+  ThumbnailPresignResponse, UpdateCourseRequest,
 } from "@/schemas/courses-schema";
 
 export class CoursesService {
@@ -127,6 +127,17 @@ export class CoursesService {
       console.error('uploadThumbnail error:', error);
       throw error;
     }
+  }
+
+  static async updateCourse(
+    slug: string,
+    dto: UpdateCourseRequest
+  ): Promise<BaseResponse> {
+    const res = await api.patch<BaseResponse>(
+      `${process.env.NEXT_PUBLIC_API_URL}/courses/${slug}/edit`, dto
+    );
+
+    return res.data;
   }
 
 

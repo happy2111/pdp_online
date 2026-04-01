@@ -7,7 +7,7 @@
     "logout": "Chiqish",
     "loading": "Yuklanmoqda...",
     "search": "Qidirish",
-    "searchPlaceholder": "Foydalanuvchilar, kategoriyalar yoki qidirish...",
+    "searchPlaceholder": "Foydalanuvchilar, kategoriyalar yoki qidiruv...",
     "noResults": "Hech narsa topilmadi",
     "back": "Orqaga",
     "next": "Keyingi",
@@ -16,9 +16,10 @@
     "save": "Saqlash",
     "cancel": "Bekor qilish",
     "confirm": "Tasdiqlash",
-    "step": "Bosqich",
+    "step": "Qadam",
     "edit": "Tahrirlash",
-    "viewAll": "Hammasini ko‘rish",
+    "viewAll": "Barchasini ko‘rish",
+    "allCourses": "Barcha kurslar",
     "allCategories": "Barcha kategoriyalar",
     "free": "Bepul",
     "paid": "Pullik"
@@ -27,14 +28,14 @@
     "login": {
       "title": "Hisobga kirish",
       "submit": "Kirish",
-      "success": "Muvaffaqiyatli kirildi!",
-      "noAccount": "Hali hisobingiz yo‘qmi?",
+      "success": "Kirish muvaffaqiyatli amalga oshirildi!",
+      "noAccount": "Hisobingiz yo‘qmi?",
       "registerLink": "Ro‘yxatdan o‘tish"
     },
     "register": {
       "title": "Hisob yaratish",
       "submit": "Hisob yaratish",
-      "submitting": "Ro‘yxatdan o‘tilmoqda...",
+      "submitting": "Ro‘yxatdan o‘tish...",
       "success": "Ro‘yxatdan o‘tish muvaffaqiyatli yakunlandi!",
       "loginLink": "Allaqachon hisobingiz bormi? Kirish"
     },
@@ -51,7 +52,7 @@
     "roles": {
       "USER": "Foydalanuvchi",
       "TEACHER": "O‘qituvchi",
-        "ADMIN": "Administrator"
+      "ADMIN": "Administrator"
     }
   },
   "errors": {
@@ -59,7 +60,7 @@
     "1000": "Noma’lum xatolik yuz berdi",
     "1001": "Foydalanuvchi allaqachon mavjud",
     "1002": "Foydalanuvchi ma’lumotlari noto‘g‘ri",
-    "1003": "Noto‘g‘ri token",
+    "1003": "Token noto‘g‘ri",
     "1004": "Tasdiqlash xatosi",
     "1005": "Tasdiqlash kodi noto‘g‘ri",
     "1006": "Foydalanuvchi topilmadi",
@@ -72,8 +73,8 @@
       "password_uppercase": "Kamida bitta katta harf bo‘lishi kerak",
       "password_lowercase": "Kamida bitta kichik harf bo‘lishi kerak",
       "password_number": "Kamida bitta raqam bo‘lishi kerak",
-      "phone_invalid": "Telefon raqami noto‘g‘ri (format: +998XXXXXXXXX)",
-      "password_mismatch": "Parollar mos kelmaydi",
+      "phone_invalid": "Noto‘g‘ri telefon raqami (format: +998XXXXXXXXX)",
+      "password_mismatch": "Parollar mos kelmayapti",
       "gender_required": "Jinsni tanlang"
     },
     "update_failed": "Profilni yangilab bo‘lmadi"
@@ -82,32 +83,37 @@
     "title": "Kurslar",
     "create_new": "Yangi kurs yaratish",
     "no_courses_yet": "Hozircha kurslar yo‘q",
-    "start_teaching_desc": "O‘z bilimingizni ulashing va birinchi kursingizni yarating.",
+    "start_teaching_desc": "O‘z bilimingizni baham ko‘ring va birinchi kursingizni yarating.",
     "create_first_course": "Birinchi kursni yaratish",
     "create_success": "Kurs muvaffaqiyatli yaratildi",
-    "create_error": "Kursni yaratishda xatolik yuz berdi",
+    "create_error": "Kurs yaratishda xatolik yuz berdi",
     "edit_course": "Kursni tahrirlash",
+    "status": {
+      "draft": "Qoralama",
+      "published": "Nashr etilgan",
+      "archived": "Arxivlangan"
+    },
     "dialog": {
       "title": "Yangi kurs yaratish",
       "course_title": "Kurs nomi",
-      "course_title_placeholder": "Masalan: Java boshlanuvchilar uchun",
-      "short_description": "Qisqa ta’rif",
-      "description": "To‘liq ta’rif",
+      "course_title_placeholder": "Masalan: Java boshlang‘ichdan",
+      "short_description": "Qisqa tavsif",
+      "description": "To‘liq tavsif",
       "level": "Daraja",
-      "price": "Narxi (bepul bo‘lsa 0 kiriting)",
+      "price": "Narx (bepul bo‘lsa 0 yozing)",
       "category": "Kategoriya",
       "language": "Til",
       "submit": "Kurs yaratish",
       "requirements": "Talablar",
-      "requirements_placeholder": "Masalan: Kompyuter savodxonligi",
-      "learning_outcomes": "Nimalarni o‘rganasiz",
-      "learning_outcomes_placeholder": "Masalan: Rest API bilan ishlash",
+      "requirements_placeholder": "Masalan: Kompyuterda ishlash asosiy ko‘nikmalari",
+      "learning_outcomes": "Nima o‘rganasiz",
+      "learning_outcomes_placeholder": "Masalan: REST API bilan ishlash",
       "add_item": "Qo‘shish"
     },
     "hero": {
       "titlePrefix": "Keyingi",
-      "titleHighlight": "kursni",
-      "description": "Tajribali ustozlardan yangi ko‘nikmalarni o‘rganing va karyerangizni rivojlantiring.",
+      "titleHighlight": "kursingizni",
+      "description": " Tajribali o‘qituvchilardan yangi ko‘nikmalar o‘rganing va karyerangizni rivojlantiring.",
       "searchPlaceholder": "Kurslarni qidirish..."
     },
     "level": {
@@ -116,10 +122,107 @@
       "advanced": "Yuqori"
     },
     "list": {
-      "searchPlaceholder": "Qidiruv...",
+      "searchPlaceholder": "Qidirish...",
       "loading": "Yuklanmoqda...",
       "pagination": "Sahifa {page}/{total} — Jami: {count}",
       "pageInfo": "{page} / {total}"
+    },
+    "detail": {
+      "ratingReviews": "({count} ta sharh)",
+      "studentsCount": "talaba",
+      "teacher": "O‘qituvchi:",
+      "whatYouWillLearn": "Nima o‘rganasiz?",
+      "courseDescription": "Kurs tavsifi",
+      "curriculum": "O‘quv dasturi",
+      "reviews": "Sharhlar",
+      "general": "Umumiy",
+
+      "loadingError": "Kursni yuklab bo‘lmadi",
+      "updateSuccess": "Kurs muvaffaqiyatli yangilandi",
+      "updateError": "O‘zgarishlarni saqlab bo‘lmadi",
+      "publishSuccess": "Kurs muvaffaqiyatli nashr etildi!",
+      "publishError": "Kursni nashr etib bo‘lmadi",
+      "thumbnailSuccess": "Muqova yangilandi",
+      "thumbnailError": "Muqovani yuklashda xatolik",
+      "videoSuccess": "Video yuklandi",
+      "videoError": "Videoni yuklashda xatolik",
+
+      "basicInfo": "Asosiy ma’lumotlar",
+      "courseTitle": "Kurs nomi",
+      "shortDescription": "Qisqa tavsif",
+      "fullDescription": "To‘liq tavsif",
+      "category": "Kategoriya",
+      "level": "Daraja",
+      "language": "Til",
+      "price": "Narx (bo‘sh = bepul)",
+      "pricePlaceholder": "0.00",
+
+      "media": "Media materiallar",
+      "mediaDescription": "Kurs muqovasi va preview video. Tahrirlash rejimini yoqing.",
+
+      "requirements": "Talablar",
+      "requirementsDesc": "Talaba kursni boshlashdan oldin nimani bilishi kerak",
+      "learningOutcomes": "O‘quv natijalari",
+      "learningOutcomesDesc": "Talaba kursni tugatgandan keyin nimani o‘rganadi",
+
+      "selectCategoryPlaceholder": "Kategoriyani tanlang",
+      "selectLevelPlaceholder": "Darajani tanlang",
+      "selectLanguagePlaceholder": "Tilni tanlang"
+    },
+    "settings": {
+      "title": "Kurs sozlamalari",
+      "my_courses": "Mening kurslarim",
+      "publish": "Nashr etish",
+      "publishing": "Nashr etilmoqda...",
+      "published": "Nashr etilgan",
+      "publish_confirm_title": "Kursni nashr etish?",
+      "publish_confirm_desc": "Nashr etilgandan keyin kurs platformadagi barcha foydalanuvchilarga ochiq bo‘ladi. Hammasi tayyorligiga ishonch hosil qiling.",
+      "publish_confirm_action": "Ha, nashr etish",
+
+      "loadingError": "Kursni yuklab bo‘lmadi",
+      "updateSuccess": "Kurs muvaffaqiyatli yangilandi",
+      "updateError": "O‘zgarishlarni saqlab bo‘lmadi",
+      "publishSuccess": "Kurs muvaffaqiyatli nashr etildi!",
+      "publishError": "Kursni nashr etib bo‘lmadi",
+      "thumbnailSuccess": "Muqova yangilandi",
+      "thumbnailError": "Muqovani yuklashda xatolik",
+      "videoSuccess": "Video yuklandi",
+      "videoError": "Videoni yuklashda xatolik",
+
+      "basicInfo": "Asosiy ma’lumotlar",
+      "courseTitle": "Kurs nomi",
+      "shortDescription": "Qisqa tavsif",
+      "fullDescription": "To‘liq tavsif",
+      "category": "Kategoriya",
+      "level": "Daraja",
+      "language": "Til",
+      "price": "Narx (bo‘sh = bepul)",
+      "pricePlaceholder": "0.00",
+
+      "media": "Media materiallar",
+      "mediaDescription": "Kurs muqovasi va preview video. Tahrirlash rejimini yoqing.",
+
+      "requirements": "Talablar",
+      "requirementsDesc": "Talaba kursni boshlashdan oldin nimani bilishi kerak",
+      "learningOutcomes": "O‘quv natijalari",
+      "learningOutcomesDesc": "Talaba kursni tugatgandan keyin nimani o‘rganadi",
+
+      "selectCategoryPlaceholder": "Kategoriyani tanlang",
+      "selectLevelPlaceholder": "Darajani tanlang",
+      "selectLanguagePlaceholder": "Tilni tanlang",
+
+      "tabs": {
+        "info": "Asosiy",
+        "media": "Media",
+        "content": "Kontent"
+      },
+
+      "stringList": {
+        "requirementsLabel": "Talablar ro‘yxati",
+        "outcomesLabel": "Natijalar ro‘yxati",
+        "requirementsPlaceholder": "Talab qo‘shish...",
+        "outcomesPlaceholder": "Natija qo‘shish..."
+      }
     }
   },
   "navbar": {
@@ -140,7 +243,7 @@
   },
   "profile": {
     "settings": "Profil sozlamalari",
-    "manage_info": "Shaxsiy ma’lumotlarni boshqaring",
+    "manage_info": "Shaxsiy ma’lumotlaringizni boshqaring",
     "avatar_updated": "Avatar muvaffaqiyatli yangilandi",
     "updated_success": "Profil muvaffaqiyatli saqlandi",
     "teacher_stats": "O‘qituvchi statistikasi",
@@ -148,11 +251,11 @@
     "rating": "O‘rtacha reyting",
     "title": "Lavozim / Unvon",
     "department": "Kafedra / Bo‘lim",
-    "bio": "O‘zingiz haqingizda",
-    "bio_placeholder": "O‘zingiz haqida qisqacha yozing...",
+    "bio": "O‘zim haqimda",
+    "bio_placeholder": "O‘zingiz haqingizda biroz yozing...",
     "my_courses": "Mening kurslarim",
-    "courses_tab" : "Mening kurslarim",
-    "settings_tab" : "Profil"
+    "courses_tab": "Mening kurslarim",
+    "settings_tab": "Profil"
   },
-  "students" : "Talabalar"
+  "students": "Talabalar"
 }

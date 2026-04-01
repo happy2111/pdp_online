@@ -88,6 +88,11 @@
     "create_success": "Курс успешно создан",
     "create_error": "Произошла ошибка при создании курса",
     "edit_course": "Редактировать курс",
+    "status": {
+      "draft": "Черновик",
+      "published": "Опубликован",
+      "archived": "Архив"
+    },
     "dialog": {
       "title": "Создание нового курса",
       "course_title": "Название курса",
@@ -121,6 +126,102 @@
       "loading": "Загрузка...",
       "pagination": "Стр. {page}/{total} — Всего: {count}",
       "pageInfo": "{page} / {total}"
+    },
+    "detail": {
+      "ratingReviews": "({count} отзывов)",
+      "studentsCount": "студентов",
+      "teacher": "Преподаватель:",
+      "whatYouWillLearn": "Чему вы научитесь?",
+      "courseDescription": "Описание курса",
+      "curriculum": "Учебный план",
+      "reviews": "Отзывы",
+      "general": "Общее",
+      "loadingError": "Не удалось загрузить курс",
+      "updateSuccess": "Курс успешно обновлён",
+      "updateError": "Не удалось сохранить изменения",
+      "publishSuccess": "Курс успешно опубликован!",
+      "publishError": "Не удалось опубликовать курс",
+      "thumbnailSuccess": "Обложка обновлена",
+      "thumbnailError": "Ошибка загрузки обложки",
+      "videoSuccess": "Видео загружено",
+      "videoError": "Ошибка загрузки видео",
+
+      "basicInfo": "Основная информация",
+      "courseTitle": "Название курса",
+      "shortDescription": "Краткое описание",
+      "fullDescription": "Полное описание",
+      "category": "Категория",
+      "level": "Уровень",
+      "language": "Язык",
+      "price": "Цена (пусто = бесплатно)",
+      "pricePlaceholder": "0.00",
+
+      "media": "Медиа-материалы",
+      "mediaDescription": "Обложка и превью-видео курса. Включите режим редактирования для загрузки.",
+
+      "requirements": "Требования",
+      "requirementsDesc": "Что студент должен знать перед началом курса",
+      "learningOutcomes": "Результаты обучения",
+      "learningOutcomesDesc": "Чему студент научится после прохождения курса",
+
+      "selectCategoryPlaceholder": "Выберите категорию",
+      "selectLevelPlaceholder": "Выберите уровень",
+      "selectLanguagePlaceholder": "Выберите язык"
+    },
+    "settings": {
+      "title": "Настройки курса",
+      "my_courses": "Мои курсы",
+      "publish": "Опубликовать",
+      "publishing": "Публикация...",
+      "published": "Опубликован",
+      "publish_confirm_title": "Опубликовать курс?",
+      "publish_confirm_desc": "После публикации курс станет доступен всем пользователям платформы. Убедитесь, что всё готово.",
+      "publish_confirm_action": "Да, опубликовать",
+
+      "loadingError": "Не удалось загрузить курс",
+      "updateSuccess": "Курс успешно обновлён",
+      "updateError": "Не удалось сохранить изменения",
+      "publishSuccess": "Курс успешно опубликован!",
+      "publishError": "Не удалось опубликовать курс",
+      "thumbnailSuccess": "Обложка обновлена",
+      "thumbnailError": "Ошибка загрузки обложки",
+      "videoSuccess": "Видео загружено",
+      "videoError": "Ошибка загрузки видео",
+
+      "basicInfo": "Основная информация",
+      "courseTitle": "Название курса",
+      "shortDescription": "Краткое описание",
+      "fullDescription": "Полное описание",
+      "category": "Категория",
+      "level": "Уровень",
+      "language": "Язык",
+      "price": "Цена (пусто = бесплатно)",
+      "pricePlaceholder": "0.00",
+
+      "media": "Медиа-материалы",
+      "mediaDescription": "Обложка и превью-видео курса. Включите режим редактирования для загрузки.",
+
+      "requirements": "Требования",
+      "requirementsDesc": "Что студент должен знать перед началом курса",
+      "learningOutcomes": "Результаты обучения",
+      "learningOutcomesDesc": "Чему студент научится после прохождения курса",
+
+      "selectCategoryPlaceholder": "Выберите категорию",
+      "selectLevelPlaceholder": "Выберите уровень",
+      "selectLanguagePlaceholder": "Выберите язык",
+
+      "tabs": {
+        "info": "Основное",
+        "media": "Медиа",
+        "content": "Контент"
+      },
+
+      "stringList": {
+        "requirementsLabel": "Список требований",
+        "outcomesLabel": "Список результатов",
+        "requirementsPlaceholder": "Добавить требование...",
+        "outcomesPlaceholder": "Добавить результат обучения..."
+      }
     }
   },
   "navbar": {
