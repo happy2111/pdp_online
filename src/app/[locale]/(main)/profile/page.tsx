@@ -299,7 +299,7 @@ export default function ProfileSettings() {
                       )}
                     </div>
 
-                    <div className="space-y-2">
+                    <div className="space-y-2 ">
                       <Label htmlFor="email">{t("auth.fields.email")}</Label>
                       <div className="relative">
                         <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -308,7 +308,7 @@ export default function ProfileSettings() {
                           value={profile.email}
                           readOnly
                           disabled
-                          className="h-11 pl-10 bg-muted/40 cursor-not-allowed opacity-70"
+                          className="h-11 pl-10 pr-24 bg-muted/40 cursor-not-allowed opacity-70 border-dashed"
                         />
                         <VerifyEmailModal
                           email={profile.email}
@@ -316,7 +316,6 @@ export default function ProfileSettings() {
                           onSuccess={refreshProfile}
                         />
                       </div>
-
                     </div>
                   </div>
 

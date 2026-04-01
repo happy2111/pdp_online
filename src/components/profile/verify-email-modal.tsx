@@ -81,17 +81,17 @@ export function VerifyEmailModal({ email, isVerified, onSuccess }: VerifyEmailMo
           type="button"
           disabled={isVerified}
           className={cn(
-            "absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium transition-all",
+            "absolute right-1.5 max-sm:top-16 top-1/2 -translate-y-1/2  px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200",
             isVerified
-              ? "text-green-500 cursor-default"
-              : "text-primary hover:underline hover:opacity-80"
+              ? "text-green-600 bg-green-500/10 cursor-default border border-green-500/20"
+              : "text-primary bg-primary/10 hover:bg-primary hover:text-white active:scale-95 shadow-sm"
           )}
         >
           {isVerified ? (
             <span className="flex items-center gap-1">
-              <ShieldCheck className="h-3.5 w-3.5" />
-              {t("auth.verify.verified") || "Подтвержден"}
-            </span>
+        <ShieldCheck className="h-3.5 w-3.5" />
+              {t("auth.verify.verified") || "Ок"}
+      </span>
           ) : (
             t("auth.verify.action") || "Подтвердить"
           )}
