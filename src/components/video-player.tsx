@@ -243,7 +243,7 @@ export const VideoPlayer = ({ slug, endpoint }: { slug: string; endpoint: string
       onClick={togglePlay}
     >
       {/* video.js контейнер */}
-      <div ref={containerRef} className="w-full h-full [&_.video-js]:w-full [&_.video-js]:h-full" />
+      <div ref={containerRef} className="w-full flex items-center h-full [&_.video-js]:w-full [&_.video-js]:h-full" />
 
       {/* Спиннер */}
       {waiting && (

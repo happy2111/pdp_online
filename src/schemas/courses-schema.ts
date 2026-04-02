@@ -91,6 +91,7 @@ export const CourseDetailsSchema = z.object({
   teacher_id: z.number(),
   teacher_full_name: z.string(),
   teacher_title: z.string(),
+  preview_video_status: z.string(),
 
   requirements: z.array(z.string()),
   learning_outcomes: z.array(z.string()),

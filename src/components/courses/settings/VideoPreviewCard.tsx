@@ -1,16 +1,19 @@
 'use client'
 
 import {Loader2, PlayCircle, Upload, Video} from "lucide-react";
-import  {useRef} from "react";
+import {useEffect, useRef, useState} from "react";
 import {
   CourseDetails,
 } from "@/schemas/courses-schema";
 import {Label} from "@/components/ui/label";
 import {VideoPlayer} from "@/components/video-player";
 import { toast } from "sonner";
+import {VideoProgressType} from "@/schemas/video-progress";
+import {subscribeToVideoProgress} from "@/services/subscribe-to-video-progress";
+import {VideoProcessingOverlay} from "@/components/VideoProcessingOverlay";
 
 export default function VideoPreviewCard({
-                            course, isAuth, isUploading, disabled, onFileSelect,
+                            course, isAuth, isUploading, disabled, onFileSelect
                           }: {
   course: CourseDetails
   isAuth: boolean
@@ -19,11 +22,54 @@ export default function VideoPreviewCard({
   onFileSelect: (file: File) => void
 }) {
   const inputRef = useRef<HTMLInputElement>(null)
+  const [socketData, setSocketData] = useState<{status: string, progress: number | null} | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  useEffect(() => {
+    if (isUploading) setIsProcessing(true);
+  }, [isUploading]);
+
+  useEffect(() => {
+    const backendStatus = course.preview_video_status;
+    const isStillProcessing =
+      backendStatus === 'PROCESSING' ||
+      backendStatus === 'TRANSCODING' ||
+      backendStatus === 'UPLOADED';
+
+    if (isStillProcessing || isUploading) {
+      setIsProcessing(true);
+    }
+  }, [course.preview_video_status, isUploading]);
+
+  useEffect(() => {
+    let unsubscribe: (() => void) | undefined;
+
+    if (isProcessing) {
+      const closeConnection = subscribeToVideoProgress(course.slug, (data) => {
+        setSocketData({ status: data.status, progress: data.progress });
+
+        if (data.status === 'DONE') {
+          setIsProcessing(false);
+          setTimeout(() => setSocketData(null), 3000);
+        }
+      });
+      unsubscribe = () => closeConnection();
+    }
+    return unsubscribe;
+  }, [isProcessing, course.slug]);
+
 
   return (
     <div className="space-y-2">
       <Label>Превью-видео</Label>
       <div className="relative group rounded-xl overflow-hidden border border-border/60 aspect-video bg-muted/10">
+        {(isUploading || isProcessing || socketData) && (
+          <VideoProcessingOverlay
+            status={socketData?.status || 'UPLOADED'} // Если данных еще нет, значит мы на стадии UPLOADED
+            progress={socketData?.progress ?? 0}
+          />
+        )}
+
         {course.preview_video_url ? (
           isAuth ? (
             <VideoPlayer slug={course.slug} endpoint={course.preview_video_url} />
@@ -52,16 +98,15 @@ export default function VideoPreviewCard({
           </div>
         )}
 
-        {/* Replace / upload overlay button */}
         {!disabled && (
           <button
             type="button"
             onClick={() => inputRef.current?.click()}
-            disabled={isUploading}
+            disabled={isUploading || !!socketData}
             className="absolute bottom-2 right-2 z-10 flex items-center gap-1.5 rounded-lg bg-black/70 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-sm hover:bg-black/90 transition-colors disabled:opacity-60"
           >
-            {isUploading
-              ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> Загрузка...</>
+            {isUploading || socketData
+              ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> Обработка...</>
               : <><Upload className="h-3.5 w-3.5" /> {course.preview_video_url ? "Заменить" : "Загрузить"}</>
             }
           </button>

@@ -11,6 +11,7 @@ import {
   CreateCourseRequest, GetMyCoursesParams, ThumbnailPresignRequest,
   ThumbnailPresignResponse, UpdateCourseRequest,
 } from "@/schemas/courses-schema";
+import {subscribeToVideoProgress} from "@/services/subscribe-to-video-progress";
 
 export class CoursesService {
 
@@ -107,6 +108,7 @@ export class CoursesService {
         throw new Error('Ошибка получения presign URL');
       }
 
+
       // 2. Загружаем файл напрямую в S3 (используем fetch, чтобы не мешать заголовки axios)
       const uploadRes = await fetch(presign.data.upload_url, {
         method: 'PUT',
@@ -174,7 +176,8 @@ export class CoursesService {
         method: 'PUT',
         body: file,
         headers: {
-          'Content-Type': presignData.content_type,
+          'Content-Type': presignData.content_type || file.type,
+
         },
       });
 
