@@ -13,13 +13,14 @@ import {subscribeToVideoProgress} from "@/services/subscribe-to-video-progress";
 import {VideoProcessingOverlay} from "@/components/VideoProcessingOverlay";
 
 export default function VideoPreviewCard({
-                            course, isAuth, isUploading, disabled, onFileSelect
+                            course, isAuth, isUploading, disabled, onFileSelect, onUpdate
                           }: {
   course: CourseDetails
   isAuth: boolean
   isUploading: boolean
   disabled: boolean
   onFileSelect: (file: File) => void
+  onUpdate: () => void
 }) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [socketData, setSocketData] = useState<{status: string, progress: number | null} | null>(null);
@@ -50,7 +51,12 @@ export default function VideoPreviewCard({
 
         if (data.status === 'DONE') {
           setIsProcessing(false);
-          setTimeout(() => setSocketData(null), 3000);
+          setTimeout(() => {
+            setSocketData(null);
+
+            window.location.reload();
+          }, 3000);
+          onUpdate();
         }
       });
       unsubscribe = () => closeConnection();

@@ -62,7 +62,7 @@ interface Props {
   onSubmit: any;
   handleThumbnailUpload: (file: File) => void;
   handleVideoUpload: (file: File) => void;
-
+  onVideoUpdate: () => void;
   errors: any;
 }
 
@@ -100,6 +100,7 @@ const SettingTabs = (props: Props) => {
     handleThumbnailUpload,
     handleVideoUpload,
     errors,
+    onVideoUpdate
   } = props;
 
   const t = useTranslations('courses.settings')
@@ -311,6 +312,7 @@ const SettingTabs = (props: Props) => {
                   isUploading={uploadingVideo}
                   disabled={!isEditing || uploadingVideo}
                   onFileSelect={handleVideoUpload}
+                  onUpdate={onVideoUpdate}
                 />
               </CardContent>
             </Card>

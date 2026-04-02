@@ -162,6 +162,21 @@ export default function CourseSettingsPage() {
     setIsEditing(v => !v)
   }
 
+  const refreshCourse = async () => {
+    try {
+      const res = await CoursesService.getCourseBySlug(slug);
+      if (res.data) {
+        setCourse(res.data);
+        reset({
+          ...res.data,
+          price: res.data.price ?? undefined,
+        });
+      }
+    } catch (error) {
+      console.error("Failed to refresh course data", error);
+    }
+  };
+
   if (!course) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
@@ -204,6 +219,7 @@ export default function CourseSettingsPage() {
           handleThumbnailUpload={handleThumbnailUpload}
           handleVideoUpload={handleVideoUpload}
           errors={errors}
+          onVideoUpdate={refreshCourse}
         />
       </div>
     </Protected>
