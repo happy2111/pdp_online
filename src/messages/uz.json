@@ -24,6 +24,16 @@
     "free": "Bepul",
     "paid": "Pullik"
   },
+  "video":{
+    "status": {
+      "uploaded": "Fayl muvaffaqiyatli yuklandi",
+      "processing": "Ishlov berishga tayyorlanmoqda...",
+      "transcoding": "Video formatini optimallashtirish...",
+      "uploaded_hls": "Yakuniy fayllarni saqlash...",
+      "done": "Video ko'rishga tayyor",
+      "failed": "Ishlov berishda xatolik yuz berdi"
+    }
+  },
   "auth": {
     "verify": {
       "action": "Tasdiqlash",
