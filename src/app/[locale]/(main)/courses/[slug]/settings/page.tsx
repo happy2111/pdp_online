@@ -58,7 +58,7 @@ export default function CourseSettingsPage() {
     (async () => {
       try {
         const [courseRes, catRes] = await Promise.all([
-          CoursesService.getCourseBySlug(slug),
+          CoursesService.getCourseBySlugProtected(slug),
           CategoriesService.getAllCategories(),
         ])
 
@@ -92,7 +92,7 @@ export default function CourseSettingsPage() {
     startTransition(async () => {
       try {
         await CoursesService.updateCourse(slug, data)
-        const res = await CoursesService.getCourseBySlug(slug)
+        const res = await CoursesService.getCourseBySlugProtected(slug)
         if (res.data) setCourse(res.data)
 
         toast.success(tSettings('updateSuccess'))
@@ -107,7 +107,7 @@ export default function CourseSettingsPage() {
     setIsPublishing(true)
     try {
       await CoursesService.publishCourse(slug)
-      const res = await CoursesService.getCourseBySlug(slug)
+      const res = await CoursesService.getCourseBySlugProtected(slug)
       if (res.data) setCourse(res.data)
       toast.success(tSettings('publishSuccess'))
     } catch (e: any) {
@@ -121,7 +121,7 @@ export default function CourseSettingsPage() {
     setUploadingThumb(true)
     try {
       await CoursesService.uploadThumbnail(slug, file)
-      const res = await CoursesService.getCourseBySlug(slug)
+      const res = await CoursesService.getCourseBySlugProtected(slug)
       if (res.data) setCourse(res.data)
       toast.success(tSettings('thumbnailSuccess'))
     } catch (e: any) {
@@ -135,7 +135,7 @@ export default function CourseSettingsPage() {
     setUploadingVideo(true)
     try {
       await CoursesService.UploadPreviewVideo(slug, file)
-      const res = await CoursesService.getCourseBySlug(slug)
+      const res = await CoursesService.getCourseBySlugProtected(slug)
       if (res.data) setCourse(res.data)
       toast.success(tSettings('videoSuccess'))
     } catch (e: any) {

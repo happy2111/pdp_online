@@ -1,8 +1,16 @@
 import { z } from "zod";
+import {LessonType, VideoStatusEnum} from "@/schemas/lessons-schema";
 
 export const LessonTitleSchema = z.object({
   lesson_id: z.number(),
   title: z.string(),
+  type: LessonType,
+  video_status: VideoStatusEnum,
+  sort_order: z.number(),
+  is_free_preview: z.boolean(),
+  duration_seconds: z.number().nullable().optional(),
+  content_text: z.string().nullable().optional(),
+  content_url: z.string().nullable().optional(),
 });
 
 export type LessonTitle = z.infer<typeof LessonTitleSchema>;

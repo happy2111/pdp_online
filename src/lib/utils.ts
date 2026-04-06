@@ -5,7 +5,12 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-
+export function formatDuration(seconds: number | null | undefined) {
+  if (typeof seconds !== "number") return "0:00";
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${mins}:${secs.toString().padStart(2, "0")}`;
+}
 
 export const formatPhone = (value: string) => {
   const digits = value.replace(/\D/g, "").slice(0, 9);

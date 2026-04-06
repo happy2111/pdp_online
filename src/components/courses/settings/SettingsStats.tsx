@@ -16,7 +16,7 @@ const SettingsStats = (props: Props) => {
         { label: "Студентов", value: course.enrolled_count, icon: BookOpen },
         { label: "Рейтинг", value: course.rating_avg.toFixed(1), icon: BarChart3 },
         { label: "Часов", value: course.duration_hours, icon: Play },
-        { label: "Цена", value: course.price != null ? `$${course.price}` : "Бесплатно", icon: DollarSign },
+        { label: "Цена", value: course.price != null ? `${course.price} so'm` : "Бесплатно", icon: DollarSign },
       ].map(({ label, value, icon: Icon }) => (
         <div key={label} className="rounded-xl border border-border/60 bg-card/60 backdrop-blur-sm px-4 py-3 flex items-center gap-3">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary shrink-0">

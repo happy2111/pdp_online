@@ -61,6 +61,13 @@ export class CoursesService {
     return res.data;
   }
 
+  static async getCourseBySlugProtected(slug: string): Promise<ApiResponse<CourseDetails>> {
+    const res = await api.get<ApiResponse<CourseDetails>>(
+      `${process.env.NEXT_PUBLIC_API_URL}/courses/${slug}/protected`
+    );
+    return res.data;
+  }
+
 
   static async getThumbnailPresignUrl(
     slug: string,

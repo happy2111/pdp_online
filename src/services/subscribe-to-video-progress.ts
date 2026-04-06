@@ -1,7 +1,12 @@
-import SockJS from 'sockjs-client';
-import { Client } from '@stomp/stompjs';
+import SockJS from "sockjs-client";
+import { Client } from "@stomp/stompjs";
+import { VideoProgressSchema, VideoProgressType, VideoProgressEventType } from "@/schemas/video-progress";
 
-export function subscribeToVideoProgress(slug: string, onUpdate: (data: any) => void) {
+export function subscribeToVideoProgress(
+  id: string,
+  type: VideoProgressEventType,
+  onUpdate: (data: VideoProgressType) => void
+) {
   const socket = new SockJS(`${process.env.NEXT_PUBLIC_BASE_URL}/ws`);
   const client = new Client({
     webSocketFactory: () => socket,
@@ -9,10 +14,19 @@ export function subscribeToVideoProgress(slug: string, onUpdate: (data: any) => 
   });
 
   client.onConnect = () => {
-    client.subscribe('/topic/video', (message: any) => {
-      const data = JSON.parse(message.body);
+    client.subscribe("/topic/video", (message: any) => {
+      const parsed = VideoProgressSchema.safeParse(JSON.parse(message.body));
 
-      if (data.type === 'COURSE' && data.id === slug) {
+      if (!parsed.success) {
+        console.error("Invalid video progress:", parsed.error);
+        return;
+      }
+
+      const data = parsed.data;
+
+      console.table(data);
+
+      if (data.type === type && data.id === id) {
         onUpdate(data);
       }
     });
@@ -20,5 +34,7 @@ export function subscribeToVideoProgress(slug: string, onUpdate: (data: any) => 
 
   client.activate();
 
-  return () => client.deactivate();
+  return () => {
+    client.deactivate();
+  };
 }

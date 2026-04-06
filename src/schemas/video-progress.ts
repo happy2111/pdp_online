@@ -7,10 +7,10 @@ export const VideoProgressEventType = z.enum([
 export type VideoProgressEventType = z.infer<typeof VideoProgressEventType>
 
 export const VideoProgressSchema = z.object({
-  type: z.string,
-  id: z.string,
-  status: z.string,
-  progress: z.number,
+  type: VideoProgressEventType,
+  id: z.string(),
+  status: z.string(),
+  progress: z.coerce.number(),
 })
 
 export type VideoProgressType = z.infer<typeof VideoProgressSchema>

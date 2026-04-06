@@ -7,12 +7,19 @@ import {
 } from "@/components/ui/accordion";
 import { TabsContent } from "@/components/ui/tabs";
 import { CourseModule } from "@/schemas/modules-schema";
+import {formatDuration} from "@/lib/utils";
+import {useRouter} from "@/i18n/navigation";
+import { useLocale } from "next-intl";
 
 interface CurriculumProps {
   modules: CourseModule[];
+  courseSlug: string;
 }
 
-export const CourseCurriculum = ({ modules }: CurriculumProps) => {
+export const CourseCurriculum = ({ modules, courseSlug }: CurriculumProps) => {
+  const router = useRouter()
+  const locale = useLocale();
+
   return (
     <TabsContent value="curriculum" className="outline-none">
       <Accordion type="single" collapsible className="w-full space-y-3">
@@ -37,18 +44,19 @@ export const CourseCurriculum = ({ modules }: CurriculumProps) => {
             <AccordionContent className="pt-2 pb-4 space-y-1">
               {module.lessons.map((lesson) => (
                 <div
+                  onClick={() => {
+                    router.push(`/courses/${courseSlug}/learn/${lesson.lesson_id}`);
+                  }}
                   key={lesson.lesson_id}
                   className="flex items-center justify-between p-3 rounded-2xl hover:bg-muted/50 cursor-pointer transition-colors group"
                 >
                   <div className="flex items-center gap-3">
-                    {/* Если на бэкенде появится тип контента, можно менять иконку */}
                     <PlayCircle className="h-4 w-4 text-primary shrink-0 opacity-70 group-hover:opacity-100 transition-opacity" />
                     <span className="text-sm font-medium">{lesson.title}</span>
                   </div>
 
-                  {/* Если в API нет длительности, можно просто поставить иконку или заглушку */}
                   <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium px-2 py-1 bg-muted rounded-lg">
-                    ID: {lesson.lesson_id}
+                    {formatDuration(lesson?.duration_seconds)}
                   </span>
                 </div>
               ))}

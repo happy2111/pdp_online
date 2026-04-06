@@ -81,7 +81,7 @@ export const VideoPlayer = ({ slug, endpoint }: { slug: string; endpoint: string
 
       VHS.xhr.onResponse = (request: any, error: any, response: any) => {
         if (response?.status === 401) {
-          console.log('❌ 401 Unauthorized')
+          console.log('401 Unauthorized')
           window.location.href = '/login'
         }
       }

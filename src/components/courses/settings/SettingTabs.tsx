@@ -9,7 +9,7 @@ import {
   FileText,
   CheckCircle2,
   AlertCircle,
-  Eye,
+  Eye, TableOfContents,
 } from "lucide-react"
 
 import {
@@ -117,7 +117,7 @@ const SettingTabs = (props: Props) => {
             <ImageIcon className="h-3.5 w-3.5" /> {t('tabs.media')}
           </TabsTrigger>
           <TabsTrigger value="content" className="rounded-xl gap-1.5 text-xs sm:text-sm">
-            <BookOpen className="h-3.5 w-3.5" /> {t('tabs.content')}
+            <TableOfContents className="h-3.5 w-3.5" /> {t('tabs.content')}
           </TabsTrigger>
           <TabsTrigger value="modules" className="rounded-xl gap-1.5 text-xs sm:text-sm">
             <BookOpen className="h-3.5 w-3.5" /> {t('tabs.modules')}
@@ -265,7 +265,7 @@ const SettingTabs = (props: Props) => {
                     {/* Цена */}
                     <div className="space-y-2">
                       <Label htmlFor="price" className="flex items-center gap-1.5">
-                        <DollarSign className="h-3.5 w-3.5" /> {t('price')}
+                        {t('price')}
                       </Label>
                       <Input
                         id="price"
@@ -338,7 +338,7 @@ const SettingTabs = (props: Props) => {
                 </CardContent>
               </Card>
 
-              <Card className="border bg-card/60 backdrop-blur-sm">
+              <Card className="border bg-card/60 backdrop-blur-sm mt-4">
                 <CardHeader className="pb-4">
                   <CardTitle className="flex items-center gap-2 text-lg">
                     <Eye className="h-4.5 w-4.5 text-primary" />

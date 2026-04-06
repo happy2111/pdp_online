@@ -59,7 +59,7 @@ export function CourseCard({ course, isOwner, customPath }: Props) {
               opacity-100 scale-100
               /* Десктоп: скрыта и увеличивается при наведении */
               md:opacity-0 md:scale-75 md:group-hover:opacity-100 md:group-hover:scale-100
-              hover:bg-primary hover:text-primary-foreground hover:rotate-90
+              hover:bg-primary hover:text-primary hover:rotate-90
             "
           >
             <Settings className="size-5" />

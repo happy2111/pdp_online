@@ -22,7 +22,7 @@ export default function VideoPreviewCard({
   onFileSelect: (file: File) => void
 }) {
   const inputRef = useRef<HTMLInputElement>(null)
-  const [socketData, setSocketData] = useState<{status: string, progress: number | null} | null>(null);
+  const [socketData, setSocketData] = useState<{status: string | unknown, progress: number | null} | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
   useEffect(() => {
@@ -45,7 +45,7 @@ export default function VideoPreviewCard({
     let unsubscribe: (() => void) | undefined;
 
     if (isProcessing) {
-      const closeConnection = subscribeToVideoProgress(course.slug, (data) => {
+      const closeConnection = subscribeToVideoProgress(course.slug, 'COURSE', (data) => {
         setSocketData({ status: data.status, progress: data.progress });
 
         if (data.status === 'DONE') {
@@ -65,7 +65,7 @@ export default function VideoPreviewCard({
       <div className="relative group rounded-xl overflow-hidden border border-border/60 aspect-video bg-muted/10">
         {(isUploading || isProcessing || socketData) && (
           <VideoProcessingOverlay
-            status={socketData?.status || 'UPLOADED'} // Если данных еще нет, значит мы на стадии UPLOADED
+            status={socketData?.status as any || 'UPLOADED'}
             progress={socketData?.progress ?? 0}
           />
         )}
