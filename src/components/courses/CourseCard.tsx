@@ -36,7 +36,6 @@ export function CourseCard({ course, isOwner, customPath }: Props) {
           className="object-cover w-full h-full transition-transform duration-700 ease-out group-hover:scale-110"
         />
 
-        {/* Градиент поверх картинки для читаемости бейджей */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 
         {course.is_free && (
@@ -45,7 +44,6 @@ export function CourseCard({ course, isOwner, customPath }: Props) {
           </Badge>
         )}
 
-        {/* СТИЛЬНАЯ КНОПКА НАСТРОЕК */}
         {isOwner && (
           <Button
             size="icon"
@@ -55,11 +53,10 @@ export function CourseCard({ course, isOwner, customPath }: Props) {
               absolute top-3 right-3 z-10 size-9 rounded-full
               bg-white/20 dark:bg-black/30 backdrop-blur-xl border border-white/30 dark:border-white/10
               text-white shadow-xl transition-all duration-300
-              /* Мобильные: видна сразу */
               opacity-100 scale-100
-              /* Десктоп: скрыта и увеличивается при наведении */
               md:opacity-0 md:scale-75 md:group-hover:opacity-100 md:group-hover:scale-100
-              hover:bg-primary hover:text-primary hover:rotate-90
+              hover:bg-primary hover:text-white
+              hover:dark:text-primary hover:rotate-90
             "
           >
             <Settings className="size-5" />
@@ -77,7 +74,6 @@ export function CourseCard({ course, isOwner, customPath }: Props) {
           </p>
         </div>
 
-        {/* Разделитель-пунктир (опционально для стиля) */}
         <div className="my-3 border-t border-dashed border-border" />
 
         <div className="mt-auto space-y-3">

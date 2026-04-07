@@ -24,8 +24,8 @@ import {
 import { LessonForm } from "./LessonForm"
 import { subscribeToVideoProgress } from "@/services/subscribe-to-video-progress"
 import { LessonTitle } from "@/schemas/modules-schema"
-import {useLocale} from "next-intl";
-import {useRouter} from "@/i18n/navigation";
+import { useRouter } from "@/i18n/navigation"
+import { useTranslations } from "next-intl"
 
 const TYPE_ICONS: Record<string, React.ElementType> = {
   VIDEO: Video,
@@ -44,22 +44,6 @@ const STATUS_COLOR: Record<string, string> = {
   FAILED: "text-red-500",
 }
 
-const STATUS_LABEL: Record<string, string> = {
-  DONE: "Готово",
-  TRANSCODING: "Транскодирование",
-  PROCESSING: "Обработка",
-  UPLOADED: "Загружено",
-  UPLOADED_HLS: "HLS готов",
-  FAILED: "Ошибка",
-}
-
-const PROCESSING_STATUSES = [
-  "PROCESSING",
-  "TRANSCODING",
-  "UPLOADED",
-  "UPLOADED_HLS",
-]
-
 interface Props {
   lesson: LessonTitle
   onUpdated: () => void
@@ -67,7 +51,9 @@ interface Props {
 }
 
 export function LessonItem({ lesson, onUpdated, courseSlug }: Props) {
+  const t = useTranslations()
   const router = useRouter()
+
   const [editing, setEditing] = useState(false)
   const [deleteOpen, setDeleteOpen] = useState(false)
   const [socketData, setSocketData] = useState<{ status: any; progress: number | null } | null>(null)
@@ -81,7 +67,7 @@ export function LessonItem({ lesson, onUpdated, courseSlug }: Props) {
 
   const isVideoProcessing =
     lesson.type === "VIDEO" &&
-    PROCESSING_STATUSES.includes(currentStatus)
+    ["PROCESSING", "TRANSCODING", "UPLOADED", "UPLOADED_HLS"].includes(currentStatus)
 
   useEffect(() => {
     if (!isVideoProcessing) return
@@ -102,18 +88,16 @@ export function LessonItem({ lesson, onUpdated, courseSlug }: Props) {
       }
     )
 
-    return () => {
-      close()
-    }
+    return () => close()
   }, [isVideoProcessing, lesson.lesson_id, onUpdated])
 
   const handleVideoUpload = async (file: File) => {
     try {
       await LessonsService.uploadVideo(lesson.lesson_id, file)
-      toast.success("Видео загружено, начинается обработка...")
-      setSocketData({ status: "PROCESSING", progress: 0 }) // мгновенный UI
+      toast.success(t("lessons.video_upload_success"))
+      setSocketData({ status: "PROCESSING", progress: 0 })
     } catch {
-      toast.error("Ошибка загрузки видео")
+      toast.error(t("lessons.video_upload_error"))
     }
   }
 
@@ -133,20 +117,24 @@ export function LessonItem({ lesson, onUpdated, courseSlug }: Props) {
         <div className="hidden sm:flex items-center gap-1.5">
           {lesson.is_free_preview && (
             <Badge variant="secondary" className="text-[10px] gap-1 h-5 px-1.5">
-              <Eye className="h-2.5 w-2.5" />Free
+              <Eye className="h-2.5 w-2.5" /> {t("common.free")}
             </Badge>
           )}
 
           {isVideoProcessing && (
-            <span className={`text-[10px] font-medium ${STATUS_COLOR[currentStatus]}`}>
-              {STATUS_LABEL[currentStatus] ?? currentStatus}
+            <span className={`text-[10px] font-medium ${STATUS_COLOR[currentStatus] || ""}`}>
+              {t(`video.status.${currentStatus.toLowerCase()}`) ?? currentStatus}
               {currentProgress > 0 && ` • ${Math.round(currentProgress)}%`}
             </span>
           )}
 
           {currentStatus === "DONE" && lesson.type === "VIDEO" && (
-            <Button onClick={() => router.push(`/courses/${courseSlug}/learn/${lesson.lesson_id}`)} variant={'ghost'} className="text-primary hover:text-primary-foreground">
-              <Play className="h-3 w-3 "  />
+            <Button
+              onClick={() => router.push(`/courses/${courseSlug}/learn/${lesson.lesson_id}`)}
+              variant="ghost"
+              className="text-primary hover:text-primary-foreground"
+            >
+              <Play className="h-3 w-3" />
             </Button>
           )}
         </div>
@@ -170,7 +158,7 @@ export function LessonItem({ lesson, onUpdated, courseSlug }: Props) {
           <DropdownMenuContent align="end" className="w-44">
             <DropdownMenuItem onClick={() => setEditing(!editing)}>
               <Pencil className="h-3.5 w-3.5 mr-2" />
-              Редактировать
+              {t("common.edit")}
             </DropdownMenuItem>
 
             {lesson.type === "VIDEO" && (
@@ -181,12 +169,15 @@ export function LessonItem({ lesson, onUpdated, courseSlug }: Props) {
                 {isVideoProcessing ? (
                   <>
                     <Loader2 className="h-3.5 w-3.5 mr-2 animate-spin" />
-                    Обработка...
+                    {t("lessons.processing")}
                   </>
                 ) : (
                   <>
                     <Upload className="h-3.5 w-3.5 mr-2" />
-                    {lesson.content_url ? "Заменить видео" : "Загрузить видео"}
+                    {lesson.content_url
+                      ? t("lessons.replace_video")
+                      : t("lessons.upload_video")
+                    }
                   </>
                 )}
               </DropdownMenuItem>
@@ -197,7 +188,7 @@ export function LessonItem({ lesson, onUpdated, courseSlug }: Props) {
               onClick={() => setDeleteOpen(true)}
             >
               <Trash2 className="h-3.5 w-3.5 mr-2" />
-              Удалить
+              {t("common.delete")}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -234,49 +225,55 @@ export function LessonItem({ lesson, onUpdated, courseSlug }: Props) {
                         lesson.lesson_id,
                         data as UpdateLessonRequest
                       )
-                      toast.success("Урок обновлён")
+                      toast.success(t("lessons.update_success"))
                       setEditing(false)
                       onUpdated()
                     } catch {
-                      toast.error("Ошибка обновления")
+                      toast.error(t("lessons.update_error"))
                     }
                   })
                 }}
                 onCancel={() => setEditing(false)}
                 isPending={isPending}
-                submitLabel="Сохранить"
+                submitLabel={t("common.save")}
               />
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
+      {/* Delete Dialog */}
       <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Удалить урок?</AlertDialogTitle>
+            <AlertDialogTitle>{t("lessons.delete_confirm_title")}</AlertDialogTitle>
             <AlertDialogDescription>
-              Урок «{lesson.title}» будет удалён.
+              {t("lessons.delete_confirm_desc", { title: lesson.title })}
             </AlertDialogDescription>
           </AlertDialogHeader>
 
           <AlertDialogFooter>
-            <AlertDialogCancel>Отмена</AlertDialogCancel>
+            <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
 
             <AlertDialogAction
               onClick={() => {
                 startDelete(async () => {
                   try {
                     await LessonsService.delete(lesson.lesson_id)
-                    toast.success("Удалено")
+                    toast.success(t("lessons.delete_success"))
                     onUpdated()
                   } catch {
-                    toast.error("Ошибка удаления")
+                    toast.error(t("lessons.delete_error"))
                   }
                 })
               }}
+              className="bg-destructive hover:bg-destructive/90"
             >
-              {isDeleting ? <Loader2 className="animate-spin" /> : "Удалить"}
+              {isDeleting ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                t("common.delete")
+              )}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

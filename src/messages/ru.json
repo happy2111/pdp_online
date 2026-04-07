@@ -21,8 +21,11 @@
     "viewAll": "Посмотреть все",
     "allCourses": "Все курсы",
     "allCategories": "Все категории",
+    "paid": "Платно",
     "free": "Бесплатно",
-    "paid": "Платно"
+    "lesson_one": "урок",
+    "lesson_few": "урока",
+    "lesson_many": "уроков"
   },
   "video":{
     "status": {
@@ -280,7 +283,62 @@
     "bio_placeholder": "Расскажите немного о себе...",
     "my_courses": "Мои Курсы",
     "courses_tab" : "Мои Курсы",
-    "settings_tab" : "Профиль"
+    "settings_tab" : "Профиль",
+    "hours": "Часы",
+    "price": "Цена"
+  },
+  "modules": {
+    "title": "Модули курса",
+    "add_module": "Добавить модуль",
+    "create_module": "Создать модуль",
+    "create_success": "Модуль создан",
+    "create_error": "Ошибка при создании модуля",
+    "load_error": "Не удалось загрузить модули",
+    "no_modules_yet": "Модулей пока нет",
+    "create_first_module": "Создать первый модуль",
+
+    "update_success": "Модуль обновлён",
+    "update_error": "Не удалось обновить модуль",
+    "delete_success": "Модуль удалён",
+    "delete_error": "Нельзя удалить модуль с уроками",
+    "edit_module": "Редактировать модуль",
+    "lessons": "Уроки",
+    "lesson": "Урока",
+    "add_lesson": "Добавить урок",
+    "create_lesson": "Создать урок",
+    "no_lessons_yet": "Уроков пока нет — нажмите, чтобы добавить",
+    "delete_confirm_title": "Удалить модуль?",
+    "delete_confirm_desc": "Модуль «{title}» будет удалён навсегда. Это действие нельзя отменить.",
+    "delete": "Удалить",
+
+    "form": {
+      "title": "Название модуля",
+      "title_placeholder": "Например: Введение в React",
+      "description": "Описание",
+      "optional": "необязательно",
+      "description_placeholder": "Краткое описание...",
+      "free_preview": "Бесплатный предпросмотр"
+    }
+  },
+  "lessons": {
+    "create_success": "Урок создан",
+    "create_error": "Ошибка при создании урока",
+
+    "types": {
+      "video": "Видео",
+      "text": "Текст",
+      "quiz": "Квиз",
+      "practice": "Практика",
+      "file": "Файл"
+    },
+
+    "form": {
+      "title": "Название урока",
+      "title_placeholder": "Название урока",
+      "type": "Тип",
+      "content_text": "Текст урока",
+      "content_text_placeholder": "Содержимое урока..."
+    }
   },
   "students" : "Студенты"
 }

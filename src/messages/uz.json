@@ -22,16 +22,21 @@
     "allCourses": "Barcha kurslar",
     "allCategories": "Barcha kategoriyalar",
     "free": "Bepul",
-    "paid": "Pullik"
+    "paid": "Pullik",
+    "free_preview": "Bepul oldindan ko‘rish",
+    "delete": "O‘chirish",
+    "lesson_one": "dars",
+    "lesson_few": "dars",
+    "lesson_many": "dars"
   },
-  "video":{
+  "video": {
     "status": {
       "uploaded": "Fayl muvaffaqiyatli yuklandi",
       "processing": "Ishlov berishga tayyorlanmoqda...",
-      "transcoding": "Video formatini optimallashtirish...",
-      "uploaded_hls": "Yakuniy fayllarni saqlash...",
-      "done": "Video ko'rishga tayyor",
-      "failed": "Ishlov berishda xatolik yuz berdi"
+      "transcoding": "Video formatini va sifatini o‘zgartirish...",
+      "uploaded_hls": "Optimallashtirilgan video saqlanmoqda...",
+      "done": "Video ko‘rishga tayyor",
+      "failed": "Video ishlov berishda xatolik yuz berdi"
     }
   },
   "auth": {
@@ -40,15 +45,15 @@
       "verified": "Tasdiqlangan",
       "modal_title": "Elektron pochtani tasdiqlash",
       "enter_code": "Kodni kiriting",
-      "modal_desc": "Biz sizning pochtangizga 6 xonali tasdiqlash kodini yuboramiz:",
-      "code_desc": "Tasdiqlash kodi pochtangizga yuborildi. Tekshirishni yakunlash uchun uni pastga kiriting.",
+      "modal_desc": "Biz sizning pochtangizga 6 xonali kod yuboramiz:",
+      "code_desc": "Kod pochtangizga yuborildi. Tekshirishni yakunlash uchun uni quyida kiriting.",
       "check_spam": "Agar xat kelmasa, Spam jildini tekshiring",
       "send_btn": "Kodni yuborish",
       "confirm_btn": "Kodni tasdiqlash",
-      "resend": "Kodni qaytadan yuborish",
+      "resend": "Kodni qayta yuborish",
       "code_sent": "Kod pochtangizga muvaffaqiyatli yuborildi",
       "success": "Email muvaffaqiyatli tasdiqlandi!",
-      "invalid_code": "Kod noto'g'ri yoki muddati o'tgan"
+      "invalid_code": "Kod noto‘g‘ri yoki muddati o‘tgan"
     },
     "login": {
       "title": "Hisobga kirish",
@@ -138,7 +143,7 @@
     "hero": {
       "titlePrefix": "Keyingi",
       "titleHighlight": "kursingizni",
-      "description": " Tajribali o‘qituvchilardan yangi ko‘nikmalar o‘rganing va karyerangizni rivojlantiring.",
+      "description": "Tajribali o‘qituvchilardan yangi ko‘nikmalar o‘rganing va karyerangizni rivojlantiring.",
       "searchPlaceholder": "Kurslarni qidirish..."
     },
     "level": {
@@ -161,7 +166,6 @@
       "curriculum": "O‘quv dasturi",
       "reviews": "Sharhlar",
       "general": "Umumiy",
-
       "loadingError": "Kursni yuklab bo‘lmadi",
       "updateSuccess": "Kurs muvaffaqiyatli yangilandi",
       "updateError": "O‘zgarishlarni saqlab bo‘lmadi",
@@ -171,7 +175,6 @@
       "thumbnailError": "Muqovani yuklashda xatolik",
       "videoSuccess": "Video yuklandi",
       "videoError": "Videoni yuklashda xatolik",
-
       "basicInfo": "Asosiy ma’lumotlar",
       "courseTitle": "Kurs nomi",
       "shortDescription": "Qisqa tavsif",
@@ -181,15 +184,12 @@
       "language": "Til",
       "price": "Narx (bo‘sh = bepul)",
       "pricePlaceholder": "0.00",
-
       "media": "Media materiallar",
       "mediaDescription": "Kurs muqovasi va preview video. Tahrirlash rejimini yoqing.",
-
       "requirements": "Talablar",
       "requirementsDesc": "Talaba kursni boshlashdan oldin nimani bilishi kerak",
       "learningOutcomes": "O‘quv natijalari",
       "learningOutcomesDesc": "Talaba kursni tugatgandan keyin nimani o‘rganadi",
-
       "selectCategoryPlaceholder": "Kategoriyani tanlang",
       "selectLevelPlaceholder": "Darajani tanlang",
       "selectLanguagePlaceholder": "Tilni tanlang"
@@ -203,7 +203,6 @@
       "publish_confirm_title": "Kursni nashr etish?",
       "publish_confirm_desc": "Nashr etilgandan keyin kurs platformadagi barcha foydalanuvchilarga ochiq bo‘ladi. Hammasi tayyorligiga ishonch hosil qiling.",
       "publish_confirm_action": "Ha, nashr etish",
-
       "loadingError": "Kursni yuklab bo‘lmadi",
       "updateSuccess": "Kurs muvaffaqiyatli yangilandi",
       "updateError": "O‘zgarishlarni saqlab bo‘lmadi",
@@ -213,7 +212,6 @@
       "thumbnailError": "Muqovani yuklashda xatolik",
       "videoSuccess": "Video yuklandi",
       "videoError": "Videoni yuklashda xatolik",
-
       "basicInfo": "Asosiy ma’lumotlar",
       "courseTitle": "Kurs nomi",
       "shortDescription": "Qisqa tavsif",
@@ -223,26 +221,21 @@
       "language": "Til",
       "price": "Narx (bo‘sh = bepul)",
       "pricePlaceholder": "0.00",
-
       "media": "Media materiallar",
       "mediaDescription": "Kurs muqovasi va preview video. Tahrirlash rejimini yoqing.",
-
       "requirements": "Talablar",
       "requirementsDesc": "Talaba kursni boshlashdan oldin nimani bilishi kerak",
       "learningOutcomes": "O‘quv natijalari",
       "learningOutcomesDesc": "Talaba kursni tugatgandan keyin nimani o‘rganadi",
-
       "selectCategoryPlaceholder": "Kategoriyani tanlang",
       "selectLevelPlaceholder": "Darajani tanlang",
       "selectLanguagePlaceholder": "Tilni tanlang",
-
       "tabs": {
         "info": "Asosiy",
         "media": "Media",
         "content": "Kontent",
         "modules": "Modullar"
       },
-
       "stringList": {
         "requirementsLabel": "Talablar ro‘yxati",
         "outcomesLabel": "Natijalar ro‘yxati",
@@ -281,7 +274,74 @@
     "bio_placeholder": "O‘zingiz haqingizda biroz yozing...",
     "my_courses": "Mening kurslarim",
     "courses_tab": "Mening kurslarim",
-    "settings_tab": "Profil"
+    "settings_tab": "Profil",
+    "hours": "O‘quv soati",
+    "price": "Narx"
+  },
+  "modules": {
+    "title": "Kurs modullari",
+    "add_module": "Modul qo‘shish",
+    "create_module": "Modul yaratish",
+    "create_success": "Modul yaratildi",
+    "create_error": "Modul yaratishda xatolik yuz berdi",
+    "load_error": "Modullarni yuklab bo‘lmadi",
+    "no_modules_yet": "Hozircha modullar yo‘q",
+    "create_first_module": "Birinchi modulni yaratish",
+
+    "update_success": "Modul yangilandi",
+    "update_error": "Modulni yangilab bo‘lmadi",
+    "delete_success": "Modul o‘chirildi",
+    "delete_error": "Darslari bor modulni o‘chirib bo‘lmaydi",
+    "edit_module": "Modulni tahrirlash",
+    "lessons": "Darslar",
+    "lesson": "Dars",
+    "add_lesson": "Dars qo‘shish",
+    "create_lesson": "Dars yaratish",
+    "no_lessons_yet": "Hozircha darslar yo‘q — qo‘shish uchun bosing",
+    "delete_confirm_title": "Modulni o‘chirish?",
+    "delete_confirm_desc": "«{title}» moduli butunlay o‘chiriladi. Bu amalni bekor qilib bo‘lmaydi.",
+    "delete": "O‘chirish",
+
+    "form": {
+      "title": "Modul nomi",
+      "title_placeholder": "Masalan: Reactga kirish",
+      "description": "Tavsif",
+      "optional": "ixtiyoriy",
+      "description_placeholder": "Qisqa tavsif...",
+      "free_preview": "Bepul oldindan ko‘rish"
+    }
+  },
+  "lessons": {
+    "create_success": "Dars yaratildi",
+    "create_error": "Dars yaratishda xatolik yuz berdi",
+    "update_success": "Dars yangilandi",
+    "update_error": "Darsni yangilashda xatolik",
+    "delete_success": "Dars o‘chirildi",
+    "delete_error": "Darsni o‘chirishda xatolik yuz berdi",
+    "delete_confirm_title": "Darsni o‘chirish?",
+    "delete_confirm_desc": "«{title}» darsi o‘chiriladi.",
+
+    "video_upload_success": "Video yuklandi, ishlov berish boshlanmoqda...",
+    "video_upload_error": "Video yuklashda xatolik",
+    "processing": "Ishlov berilmoqda...",
+    "upload_video": "Video yuklash",
+    "replace_video": "Videoni almashtirish",
+
+    "types": {
+      "video": "Video",
+      "text": "Matn",
+      "quiz": "Viktorina",
+      "practice": "Amaliyot",
+      "file": "Fayl"
+    },
+
+    "form": {
+      "title": "Dars nomi",
+      "title_placeholder": "Dars nomi",
+      "type": "Tur",
+      "content_text": "Dars matni",
+      "content_text_placeholder": "Dars mazmuni..."
+    }
   },
   "students": "Talabalar"
 }

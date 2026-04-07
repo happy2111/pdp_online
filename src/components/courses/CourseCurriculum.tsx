@@ -1,4 +1,4 @@
-import { PlayCircle, FileText } from "lucide-react";
+import { PlayCircle, Lock } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -7,9 +7,8 @@ import {
 } from "@/components/ui/accordion";
 import { TabsContent } from "@/components/ui/tabs";
 import { CourseModule } from "@/schemas/modules-schema";
-import {formatDuration} from "@/lib/utils";
-import {useRouter} from "@/i18n/navigation";
-import { useLocale } from "next-intl";
+import { formatDuration } from "@/lib/utils";
+import { useRouter } from "@/i18n/navigation";
 
 interface CurriculumProps {
   modules: CourseModule[];
@@ -17,8 +16,7 @@ interface CurriculumProps {
 }
 
 export const CourseCurriculum = ({ modules, courseSlug }: CurriculumProps) => {
-  const router = useRouter()
-  const locale = useLocale();
+  const router = useRouter();
 
   return (
     <TabsContent value="curriculum" className="outline-none">
@@ -34,32 +32,57 @@ export const CourseCurriculum = ({ modules, courseSlug }: CurriculumProps) => {
                 <span className="font-semibold text-sm">
                   Модуль {index + 1}: {module.title}
                 </span>
+
                 <span className="text-xs text-muted-foreground font-normal">
                   {module.lessons.length} уроков
-                  {module.is_free_preview && " • Бесплатный доступ"}
+                  {module.is_free_preview
+                    ? " • Бесплатный доступ"
+                    : " • Есть платный контент"}
                 </span>
               </div>
             </AccordionTrigger>
 
             <AccordionContent className="pt-2 pb-4 space-y-1">
-              {module.lessons.map((lesson) => (
-                <div
-                  onClick={() => {
-                    router.push(`/courses/${courseSlug}/learn/${lesson.lesson_id}`);
-                  }}
-                  key={lesson.lesson_id}
-                  className="flex items-center justify-between p-3 rounded-2xl hover:bg-muted/50 cursor-pointer transition-colors group"
-                >
-                  <div className="flex items-center gap-3">
-                    <PlayCircle className="h-4 w-4 text-primary shrink-0 opacity-70 group-hover:opacity-100 transition-opacity" />
-                    <span className="text-sm font-medium">{lesson.title}</span>
-                  </div>
+              {module.lessons.map((lesson) => {
+                const isLocked =
+                  !lesson.is_free_preview && !module.is_free_preview;
 
-                  <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium px-2 py-1 bg-muted rounded-lg">
-                    {formatDuration(lesson?.duration_seconds)}
-                  </span>
-                </div>
-              ))}
+                return (
+                  <div
+                    key={lesson.lesson_id}
+                    onClick={() => {
+                      if (!isLocked) {
+                        router.push(
+                          `/courses/${courseSlug}/learn/${lesson.lesson_id}`
+                        );
+                      }
+                    }}
+                    className={`flex items-center justify-between p-3 rounded-2xl transition-all group
+                      ${
+                      isLocked
+                        ? "opacity-50 cursor-not-allowed"
+                        : "hover:bg-muted/50 cursor-pointer"
+                    }
+                    `}
+                  >
+                    <div className="flex items-center gap-3">
+                      {isLocked ? (
+                        <Lock className="h-4 w-4 text-muted-foreground" />
+                      ) : (
+                        <PlayCircle className="h-4 w-4 text-primary shrink-0 opacity-70 group-hover:opacity-100 transition-opacity" />
+                      )}
+
+                      <span className="text-sm font-medium">
+                        {lesson.title}
+                      </span>
+                    </div>
+
+                    <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium px-2 py-1 bg-muted rounded-lg">
+                      {formatDuration(lesson?.duration_seconds)}
+                    </span>
+                  </div>
+                );
+              })}
 
               {module.lessons.length === 0 && (
                 <div className="text-center py-4 text-sm text-muted-foreground">

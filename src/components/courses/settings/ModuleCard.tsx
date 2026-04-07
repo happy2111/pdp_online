@@ -26,6 +26,7 @@ import {
 import { ModuleForm } from "./ModuleForm"
 import { LessonForm } from "./LessonForm"
 import { LessonItem } from "./LessonItem"
+import { useTranslations } from "next-intl"
 
 interface Props {
   module: CourseModule
@@ -34,24 +35,26 @@ interface Props {
 }
 
 export function ModuleCard({ module, onUpdated, courseSlug }: Props) {
-  const [expanded, setExpanded]       = useState(false)
-  const [editing, setEditing]         = useState(false)
-  const [addingLesson, setAddingLesson] = useState(false)
-  const [deleteOpen, setDeleteOpen]   = useState(false)
+  const t = useTranslations()   // ← используем next-intl
 
-  const [isPending, startTransition]     = useTransition()
-  const [isDeleting, startDelete]        = useTransition()
-  const [isCreating, startCreateLesson]  = useTransition()
+  const [expanded, setExpanded] = useState(false)
+  const [editing, setEditing] = useState(false)
+  const [addingLesson, setAddingLesson] = useState(false)
+  const [deleteOpen, setDeleteOpen] = useState(false)
+
+  const [isPending, startTransition] = useTransition()
+  const [isDeleting, startDelete] = useTransition()
+  const [isCreating, startCreateLesson] = useTransition()
 
   const handleUpdate = async (data: CreateModuleRequest) => {
     startTransition(async () => {
       try {
         await ModulesService.updateModule(module.id, data as UpdateModuleRequest)
-        toast.success("Модуль обновлён")
+        toast.success(t("modules.update_success"))
         setEditing(false)
         onUpdated()
       } catch {
-        toast.error("Не удалось обновить модуль")
+        toast.error(t("modules.update_error"))
       }
     })
   }
@@ -60,10 +63,10 @@ export function ModuleCard({ module, onUpdated, courseSlug }: Props) {
     startDelete(async () => {
       try {
         await ModulesService.deleteModule(module.id)
-        toast.success("Модуль удалён")
+        toast.success(t("modules.delete_success"))
         onUpdated()
       } catch {
-        toast.error("Нельзя удалить модуль с уроками")
+        toast.error(t("modules.delete_error"))
       }
     })
   }
@@ -72,11 +75,11 @@ export function ModuleCard({ module, onUpdated, courseSlug }: Props) {
     startCreateLesson(async () => {
       try {
         await LessonsService.create(module.id, data)
-        toast.success("Урок создан")
+        toast.success(t("lessons.create_success"))
         setAddingLesson(false)
         onUpdated()
       } catch {
-        toast.error("Ошибка при создании урока")
+        toast.error(t("lessons.create_error"))
       }
     })
   }
@@ -91,7 +94,7 @@ export function ModuleCard({ module, onUpdated, courseSlug }: Props) {
       exit={{ opacity: 0, y: -8 }}
       className="rounded-xl border bg-card overflow-hidden"
     >
-      {/* ── Header ── */}
+      {/* Header */}
       <div className="flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-3">
         <GripVertical className="h-4 w-4 text-muted-foreground/30 shrink-0 cursor-grab hidden sm:block" />
 
@@ -108,40 +111,42 @@ export function ModuleCard({ module, onUpdated, courseSlug }: Props) {
           <div className="flex items-center gap-1.5 shrink-0">
             {module.is_free_preview && (
               <Badge variant="secondary" className="hidden sm:flex gap-1 text-xs">
-                <Eye className="h-3 w-3" />Бесплатно
+                <Eye className="h-3 w-3" /> {t("common.free")}
               </Badge>
             )}
             <Badge variant="outline" className="text-xs whitespace-nowrap">
-              {lessonCount} {lessonCount === 1 ? "урок" : lessonCount < 5 ? "урока" : "уроков"}
+              {lessonCount} {t("modules.lesson", { count: lessonCount })}
             </Badge>
-            {expanded
-              ? <ChevronUp className="h-4 w-4 text-muted-foreground" />
-              : <ChevronDown className="h-4 w-4 text-muted-foreground" />
-            }
+            {expanded ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />}
           </div>
         </button>
 
-        {/* Module actions */}
+        {/* Actions */}
         <div className="flex gap-0.5 shrink-0">
           <Button
-            variant="ghost" size="icon" className="h-8 w-8"
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
             onClick={() => { setEditing(!editing); setExpanded(true) }}
           >
             <Pencil className="h-3.5 w-3.5" />
           </Button>
           <Button
-            variant="ghost" size="icon" className="h-8 w-8 text-destructive"
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 text-destructive"
             onClick={() => setDeleteOpen(true)}
           >
-            {isDeleting
-              ? <Loader2 className="h-3.5 w-3.5 animate-spin" />
-              : <Trash2 className="h-3.5 w-3.5" />
-            }
+            {isDeleting ? (
+              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+            ) : (
+              <Trash2 className="h-3.5 w-3.5" />
+            )}
           </Button>
         </div>
       </div>
 
-      {/* ── Expanded body ── */}
+      {/* Expanded body */}
       <AnimatePresence initial={false}>
         {expanded && (
           <motion.div
@@ -154,77 +159,80 @@ export function ModuleCard({ module, onUpdated, courseSlug }: Props) {
             <div className="px-3 sm:px-4 py-4 space-y-4">
 
               {/* Edit form */}
-              <AnimatePresence initial={false}>
-                {editing && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    className="overflow-hidden"
-                  >
-                    <div className="rounded-lg border bg-muted/30 p-3 sm:p-4">
-                      <p className="text-xs font-medium text-muted-foreground mb-3 uppercase tracking-wide">
-                        Редактировать модуль
-                      </p>
-                      <ModuleForm
-                        defaultValues={{
-                          title:         module.title,
-                          description:   module.description ?? undefined,
-                          isFreePreview: module.is_free_preview,
-                        }}
-                        onSubmit={handleUpdate}
-                        onCancel={() => setEditing(false)}
-                        isPending={isPending}
-                        submitLabel="Сохранить"
-                        schema={UpdateModuleSchema}
-                      />
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {editing && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  className="overflow-hidden"
+                >
+                  <div className="rounded-lg border bg-muted/30 p-3 sm:p-4">
+                    <p className="text-xs font-medium text-muted-foreground mb-3 uppercase tracking-wide">
+                      {t("modules.edit_module")}
+                    </p>
+                    <ModuleForm
+                      defaultValues={{
+                        title: module.title,
+                        description: module.description ?? undefined,
+                        isFreePreview: module.is_free_preview,
+                      }}
+                      onSubmit={handleUpdate}
+                      onCancel={() => setEditing(false)}
+                      isPending={isPending}
+                      submitLabel={t("common.save")}
+                      schema={UpdateModuleSchema}
+                    />
+                  </div>
+                </motion.div>
+              )}
 
               {/* Description */}
               {!editing && module.description && (
                 <p className="text-sm text-muted-foreground">{module.description}</p>
               )}
 
-              {/* ── Lessons section ── */}
+              {/* Lessons section */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                    Уроки
+                    {t("modules.lessons")}
                   </p>
                   <Button
-                    variant="ghost" size="sm" className="h-7 text-xs gap-1.5"
+                    variant="ghost"
+                    size="sm"
+                    className="h-7 text-xs gap-1.5"
                     onClick={() => setAddingLesson(v => !v)}
                   >
-                    {addingLesson
-                      ? <><X className="h-3 w-3" />Отмена</>
-                      : <><Plus className="h-3 w-3" />Добавить урок</>
-                    }
+                    {addingLesson ? (
+                      <>
+                        <X className="h-3 w-3" /> {t("common.cancel")}
+                      </>
+                    ) : (
+                      <>
+                        <Plus className="h-3 w-3" /> {t("modules.add_lesson")}
+                      </>
+                    )}
                   </Button>
                 </div>
 
                 {/* New lesson form */}
-                <AnimatePresence initial={false}>
-                  {addingLesson && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      className="overflow-hidden"
-                    >
-                      <div className="rounded-lg border border-dashed bg-muted/20 p-3">
-                        <LessonForm
-                          onSubmit={handleCreateLesson}
-                          onCancel={() => setAddingLesson(false)}
-                          isPending={isCreating}
-                          submitLabel="Создать урок"
-                        />
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                {addingLesson && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="rounded-lg border border-dashed bg-muted/20 p-3">
+                      <LessonForm
+                        onSubmit={handleCreateLesson}
+                        onCancel={() => setAddingLesson(false)}
+                        isPending={isCreating}
+                        submitLabel={t("modules.create_lesson")}
+                      />
+                    </div>
+                  </motion.div>
+                )}
 
                 {/* Lesson list */}
                 {module.lessons.length > 0 ? (
@@ -254,7 +262,7 @@ export function ModuleCard({ module, onUpdated, courseSlug }: Props) {
                     className="w-full flex flex-col items-center gap-2 rounded-lg border border-dashed py-6 text-center text-muted-foreground hover:bg-muted/20 transition-colors"
                   >
                     <Lock className="h-5 w-5 opacity-30" />
-                    <span className="text-xs">Уроков пока нет — нажмите, чтобы добавить</span>
+                    <span className="text-xs">{t("modules.no_lessons_yet")}</span>
                   </button>
                 ) : null}
               </div>
@@ -267,15 +275,18 @@ export function ModuleCard({ module, onUpdated, courseSlug }: Props) {
       <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Удалить модуль?</AlertDialogTitle>
+            <AlertDialogTitle>{t("modules.delete_confirm_title")}</AlertDialogTitle>
             <AlertDialogDescription>
-              Модуль «{module.title}» будет удалён навсегда. Это действие нельзя отменить.
+              {t("modules.delete_confirm_desc", { title: module.title })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Отмена</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete} className="bg-destructive hover:bg-destructive/90">
-              Удалить
+            <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDelete}
+              className="bg-destructive hover:bg-destructive/90"
+            >
+              {t("modules.delete")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

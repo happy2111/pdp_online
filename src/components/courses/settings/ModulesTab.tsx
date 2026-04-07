@@ -15,6 +15,7 @@ import { Separator } from "@/components/ui/separator"
 
 import { ModuleForm } from "./ModuleForm"
 import { ModuleCard } from "./ModuleCard"
+import {useTranslations} from "next-intl";
 
 interface Props {
   slug: string
@@ -22,33 +23,37 @@ interface Props {
 }
 
 export default function ModulesTab({ slug, courseId }: Props) {
-  const [modules, setModules]           = useState<CourseModule[]>([])
-  const [loading, setLoading]           = useState(true)
-  const [showCreate, setShowCreate]     = useState(false)
-  const [isPending, startTransition]    = useTransition()
+  const t  = useTranslations()
+
+  const [modules, setModules] = useState<CourseModule[]>([])
+  const [loading, setLoading] = useState(true)
+  const [showCreate, setShowCreate] = useState(false)
+  const [isPending, startTransition] = useTransition()
 
   const loadModules = async () => {
     try {
       const res = await ModulesService.getCourseModules(slug)
       setModules(res.data ?? [])
     } catch {
-      toast.error("Не удалось загрузить модули")
+      toast.error(t("modules.load_error"))
     } finally {
       setLoading(false)
     }
   }
 
-  useEffect(() => { loadModules() }, [slug])
+  useEffect(() => {
+    loadModules()
+  }, [slug])
 
   const handleCreate = async (data: CreateModuleRequest) => {
     startTransition(async () => {
       try {
         await ModulesService.createModule(courseId, data)
-        toast.success("Модуль создан")
+        toast.success(t("modules.create_success"))
         setShowCreate(false)
         await loadModules()
       } catch {
-        toast.error("Ошибка при создании модуля")
+        toast.error(t("modules.create_error"))
       }
     })
   }
@@ -64,13 +69,12 @@ export default function ModulesTab({ slug, courseId }: Props) {
   return (
     <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
 
-      {/* Create module card */}
       <Card className="border bg-card/60 backdrop-blur-sm">
         <CardHeader className="pb-4">
           <div className="flex items-center justify-between gap-2">
             <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
               <BookOpen className="h-4 w-4 text-primary" />
-              Модули курса
+              {t("modules.title")}
               <Badge variant="secondary">{modules.length}</Badge>
             </CardTitle>
             <Button
@@ -79,10 +83,17 @@ export default function ModulesTab({ slug, courseId }: Props) {
               onClick={() => setShowCreate(!showCreate)}
               className="gap-1.5 shrink-0"
             >
-              {showCreate
-                ? <><X className="h-3.5 w-3.5" /><span className="hidden sm:inline">Отмена</span></>
-                : <><Plus className="h-3.5 w-3.5" /><span className="hidden sm:inline">Добавить модуль</span></>
-              }
+              {showCreate ? (
+                <>
+                  <X className="h-3.5 w-3.5" />
+                  <span className="hidden sm:inline">{t("common.cancel")}</span>
+                </>
+              ) : (
+                <>
+                  <Plus className="h-3.5 w-3.5" />
+                  <span className="hidden sm:inline">{t("modules.add_module")}</span>
+                </>
+              )}
             </Button>
           </div>
         </CardHeader>
@@ -100,7 +111,7 @@ export default function ModulesTab({ slug, courseId }: Props) {
                   onSubmit={handleCreate}
                   onCancel={() => setShowCreate(false)}
                   isPending={isPending}
-                  submitLabel="Создать модуль"
+                  submitLabel={t("modules.create_module")}
                 />
               </CardContent>
             </motion.div>
@@ -108,20 +119,25 @@ export default function ModulesTab({ slug, courseId }: Props) {
         </AnimatePresence>
       </Card>
 
-      {/* Module list */}
       {modules.length === 0 ? (
         <div className="flex flex-col items-center justify-center gap-3 rounded-xl border border-dashed py-14 text-center text-muted-foreground">
           <BookOpen className="h-10 w-10 opacity-30" />
-          <p className="text-sm">Модулей пока нет</p>
+          <p className="text-sm">{t("modules.no_modules_yet")}</p>
           <Button variant="outline" size="sm" onClick={() => setShowCreate(true)}>
-            <Plus className="mr-2 h-3.5 w-3.5" />Создать первый модуль
+            <Plus className="mr-2 h-3.5 w-3.5" />
+            {t("modules.create_first_module")}
           </Button>
         </div>
       ) : (
         <div className="space-y-3">
           <AnimatePresence mode="popLayout">
             {modules.map((module) => (
-              <ModuleCard courseSlug={slug} key={module.id} module={module} onUpdated={loadModules} />
+              <ModuleCard
+                courseSlug={slug}
+                key={module.id}
+                module={module}
+                onUpdated={loadModules}
+              />
             ))}
           </AnimatePresence>
         </div>
