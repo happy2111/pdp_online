@@ -9,6 +9,7 @@ import { TabsContent } from "@/components/ui/tabs";
 import { CourseModule } from "@/schemas/modules-schema";
 import { formatDuration } from "@/lib/utils";
 import { useRouter } from "@/i18n/navigation";
+import {useTranslations} from "next-intl";
 
 interface CurriculumProps {
   modules: CourseModule[];
@@ -17,9 +18,10 @@ interface CurriculumProps {
 
 export const CourseCurriculum = ({ modules, courseSlug }: CurriculumProps) => {
   const router = useRouter();
+  const t = useTranslations();
 
   return (
-    <TabsContent value="curriculum" className="outline-none">
+    <TabsContent value="curriculum" className="outline-none pb-3">
       <Accordion type="single" collapsible className="w-full space-y-3">
         {modules.map((module, index) => (
           <AccordionItem
@@ -30,22 +32,18 @@ export const CourseCurriculum = ({ modules, courseSlug }: CurriculumProps) => {
             <AccordionTrigger className="hover:no-underline py-4">
               <div className="flex flex-col items-start text-left gap-1">
                 <span className="font-semibold text-sm">
-                  Модуль {index + 1}: {module.title}
+                  {t("common.module")} {index + 1}: {module.title}
                 </span>
 
                 <span className="text-xs text-muted-foreground font-normal">
-                  {module.lessons.length} уроков
-                  {module.is_free_preview
-                    ? " • Бесплатный доступ"
-                    : " • Есть платный контент"}
+                  {module.lessons.length} {t("common.lesson_many")}
                 </span>
               </div>
             </AccordionTrigger>
 
             <AccordionContent className="pt-2 pb-4 space-y-1">
               {module.lessons.map((lesson) => {
-                const isLocked =
-                  !lesson.is_free_preview && !module.is_free_preview;
+                const isLocked = !lesson.is_free_preview;
 
                 return (
                   <div
@@ -86,7 +84,7 @@ export const CourseCurriculum = ({ modules, courseSlug }: CurriculumProps) => {
 
               {module.lessons.length === 0 && (
                 <div className="text-center py-4 text-sm text-muted-foreground">
-                  В этом модуле пока нет уроков
+                  {t("module.empty_lessons")}
                 </div>
               )}
             </AccordionContent>

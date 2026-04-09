@@ -25,7 +25,9 @@
     "free": "Бесплатно",
     "lesson_one": "урок",
     "lesson_few": "урока",
-    "lesson_many": "уроков"
+    "lesson_many": "уроков",
+    "module" : "Модуль",
+    "modules" : "Модули"
   },
   "video":{
     "status": {
@@ -310,7 +312,7 @@
     "delete_confirm_title": "Удалить модуль?",
     "delete_confirm_desc": "Модуль «{title}» будет удалён навсегда. Это действие нельзя отменить.",
     "delete": "Удалить",
-
+    "empty_lessons": "В этом модуле пока нет уроков",
     "form": {
       "title": "Название модуля",
       "title_placeholder": "Например: Введение в React",
