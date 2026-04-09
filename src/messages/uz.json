@@ -27,7 +27,9 @@
     "delete": "O‘chirish",
     "lesson_one": "dars",
     "lesson_few": "dars",
-    "lesson_many": "dars"
+    "lesson_many": "dars",
+    "module" : "Modul",
+    "modules" : "Modullar"
   },
   "video": {
     "status": {
@@ -287,6 +289,8 @@
     "load_error": "Modullarni yuklab bo‘lmadi",
     "no_modules_yet": "Hozircha modullar yo‘q",
     "create_first_module": "Birinchi modulni yaratish",
+    "empty_lessons": "Bu modulda hali darslar yo‘q",
+
 
     "update_success": "Modul yangilandi",
     "update_error": "Modulni yangilab bo‘lmadi",
