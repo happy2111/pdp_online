@@ -276,8 +276,9 @@
     "department": "Kafedra / Bo‘lim",
     "bio": "O‘zim haqimda",
     "bio_placeholder": "O‘zingiz haqingizda biroz yozing...",
-    "my_courses": "Mening kurslarim",
+    "my_courses_tab": "Mening kurslarim",
     "courses_tab": "Mening kurslarim",
+    "enrolled_tab": "O‘qiyotgan kurslarim",
     "settings_tab": "Profil",
     "hours": "O‘quv soati",
     "price": "Narx"

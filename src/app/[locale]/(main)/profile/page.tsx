@@ -21,13 +21,14 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import {RoleLabels, Roles} from "@/schemas/auth-schema";
+import {RoleLabels, Roles, RolesSchema} from "@/schemas/auth-schema";
 import Protected from "@/components/protecters/Protected";
 import {useAuthStore} from "@/stores/auth-store";
 import {MyCoursesList} from "@/components/courses/MyCoursesList";
 import {useRouter} from "next/navigation";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import {VerifyEmailModal} from "@/components/profile/verify-email-modal";
+import {EnrolledCoursesList} from "@/components/courses/EnrolledCoursesList";
 
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -42,7 +43,7 @@ export default function ProfileSettings() {
   const [isUploading, setIsUploading] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);
-  const userId = useAuthStore(state => state.user?.id);
+  const user = useAuthStore(state => state.user);
   const {
     register,
     handleSubmit,
@@ -211,16 +212,24 @@ export default function ProfileSettings() {
         <motion.div variants={cardVariants} className="lg:col-span-8 gap-10 flex flex-col">
 
           <Tabs defaultValue="settings" className="w-full space-y-6">
-            <div className="flex justify-center sm:justify-start">
-              <TabsList className="grid w-full max-w-[400px] grid-cols-2 p-1 bg-muted/50 rounded-2xl">
-                <TabsTrigger value="settings" className="rounded-xl gap-2">
+            <div className="">
+              <TabsList className="flex w-full max-w-[600px] gap-2 p-1 bg-muted/50 rounded-2xl">
+                <TabsTrigger value="settings" className=" flex-1 text-center  rounded-xl gap-2">
                   <User className="h-4 w-4" />
-                  {t("profile.settings_tab") || "Профиль"}
+                  <span className="">{t("profile.settings_tab")}</span>
                 </TabsTrigger>
-                <TabsTrigger value="courses" className="rounded-xl gap-2">
-                  <BookOpen className="h-4 w-4" />
-                  {t("profile.courses_tab") || "Мои курсы"}
+
+                <TabsTrigger value="enrolled" className=" flex-1 text-center rounded-xl gap-2">
+                  <GraduationCap className="h-4 w-4" />
+                  {t("profile.enrolled_tab") || "Обучение"}
                 </TabsTrigger>
+
+                {user?.role_name === RolesSchema.enum.TEACHER && (
+                  <TabsTrigger value="courses" className=" flex-1 text-center rounded-xl gap-2">
+                    <BookOpen className="h-4 w-4" />
+                    {t("profile.my_courses_tab") || "Преподавание"}
+                  </TabsTrigger>
+                )}
               </TabsList>
             </div>
 
@@ -414,11 +423,16 @@ export default function ProfileSettings() {
             </Card>
           </TabsContent>
 
-          <TabsContent value="courses" className="mt-0 focus-visible:ring-0">
-            {userId && (
-              <MyCoursesList userId={userId}/>
+
+            <TabsContent value="enrolled">
+              {user && <EnrolledCoursesList userId={user.id} />}
+            </TabsContent>
+
+            {user?.role_name === RolesSchema.enum.TEACHER && (
+              <TabsContent value="courses">
+                <MyCoursesList userId={user.id} />
+              </TabsContent>
             )}
-          </TabsContent>
         </Tabs>
 
         </motion.div>

@@ -286,9 +286,10 @@
     "department": "Кафедра / Департамент",
     "bio": "О себе",
     "bio_placeholder": "Расскажите немного о себе...",
-    "my_courses": "Мои Курсы",
+    "my_courses_tab": "Мои Курсы",
     "courses_tab" : "Мои Курсы",
     "settings_tab" : "Профиль",
+    "enrolled_tab": "Записанные курсы",
     "hours": "Часы",
     "price": "Цена"
   },

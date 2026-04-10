@@ -42,7 +42,7 @@ export function MyCoursesList({ userId }: { userId: number }) {
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap max-sm:flex-col max-sm:gap-3 justify-between ms:items-center">
-        <h2 className="text-2xl font-bold">{t('profile.my_courses')}</h2>
+        <h2 className="text-2xl font-bold">{t('profile.my_courses_tab')}</h2>
         <Button onClick={() => setIsCreateOpen(true)} className="rounded-full">
           <PlusCircle className="w-4 h-4 mr-2" />
           {t('courses.create_new')}

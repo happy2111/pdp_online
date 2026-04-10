@@ -36,6 +36,22 @@ export class CoursesService {
     return res.data;
   }
 
+  static async getEnrolledCourses(
+    params?: GetMyCoursesParams
+  ): Promise<Pagination<ApiResponseItems<CourseListItem[]>>> {
+    const res = await api.get<Pagination<ApiResponseItems<CourseListItem[]>>>(
+      `${process.env.NEXT_PUBLIC_API_URL}/courses/my/enrolled`,
+      {
+        params: {
+          page: params?.page ?? 0,
+          size: params?.size ?? 10,
+        },
+      }
+    );
+
+    return res.data;
+  }
+
   static async getAllCourses(
     params?: GetAllCoursesParams
   ): Promise<Pagination<ApiResponseItems<CourseListItem[]>>> {
