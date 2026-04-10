@@ -29,7 +29,9 @@
     "lesson_few": "dars",
     "lesson_many": "dars",
     "module" : "Modul",
-    "modules" : "Modullar"
+    "modules" : "Modullar",
+    "hour": "soat",
+    "hours": "soat"
   },
   "video": {
     "status": {
@@ -345,6 +347,22 @@
       "type": "Tur",
       "content_text": "Dars matni",
       "content_text_placeholder": "Dars mazmuni..."
+    }
+  },
+  "sidebar_course": {
+    "enrolled": "O'qishni davom ettirish",
+    "buy": "Kursni sotib olish",
+    "enroll_free": "Bepul ro'yxatdan o'tish",
+    "includes": "Kurs quyidagilarni o'z ichiga oladi:",
+    "share": "Kursni ulashish",
+    "link_copied": "Havola nusxalandi",
+    "auth_error_preview": "Kurs videosini ko'rish uchun tizimga kiring.",
+    "course_started": "Muvaffaqiyatli dars boshlandi! Darsga o'tilmoqda...",
+    "items": {
+      "hours": "{count} soatlik video",
+      "resources": "Maqolalar va resurslar",
+      "tasks": "Amaliy topshiriqlar",
+      "certificate": "Muvaffaqiyatli yakunlanganlik haqida sertifikat"
     }
   },
   "students": "Talabalar"

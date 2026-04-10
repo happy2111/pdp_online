@@ -95,6 +95,8 @@ export const CourseDetailsSchema = z.object({
 
   requirements: z.array(z.string()),
   learning_outcomes: z.array(z.string()),
+
+  enrolled: z.boolean().optional(),
 });
 
 export type CourseDetails = z.infer<typeof CourseDetailsSchema>;
@@ -159,3 +161,7 @@ export const UpdateCourseSchema = z.object({
 });
 
 export type UpdateCourseRequest = z.infer<typeof UpdateCourseSchema>;
+
+
+export const StartCourseSchema = z.object({ last_lesson_id: z.number() });
+export type StartCourseResponse = z.infer<typeof StartCourseSchema>;

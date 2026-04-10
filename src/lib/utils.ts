@@ -5,6 +5,22 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+
+export  const formatDurationHour = (decimalHours: number) => {
+  const hours = Math.floor(decimalHours);
+  const minutes = Math.round((decimalHours - hours) * 60);
+
+  if (hours > 0 && minutes > 0) {
+    // Если есть и часы, и минуты
+    return `${hours} ч. ${minutes} мин.`;
+  } else if (hours > 0) {
+    // Если только ровные часы
+    return `${hours} ч.`;
+  }
+  // Если меньше часа
+  return `${minutes} мин.`;
+};
+
 export function formatDuration(seconds: number | null | undefined) {
   if (typeof seconds !== "number") return "0:00";
   const mins = Math.floor(seconds / 60);

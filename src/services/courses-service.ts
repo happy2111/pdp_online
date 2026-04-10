@@ -9,7 +9,7 @@ import {
   CourseListItem,
   CourseDetails, GetAllCoursesParams, WithPagination, CreateCourseSchema,
   CreateCourseRequest, GetMyCoursesParams, ThumbnailPresignRequest,
-  ThumbnailPresignResponse, UpdateCourseRequest,
+  ThumbnailPresignResponse, UpdateCourseRequest, StartCourseResponse,
 } from "@/schemas/courses-schema";
 import {subscribeToVideoProgress} from "@/services/subscribe-to-video-progress";
 
@@ -204,6 +204,14 @@ export class CoursesService {
     slug: string
   ) : Promise<BaseResponse>{
     const res = await api.patch<BaseResponse>(`${process.env.NEXT_PUBLIC_API_URL}/courses/${slug}/publish`, )
+    return res.data
+  }
+
+
+  static async startCourse(
+    courseId: number
+  ): Promise<ApiResponse<StartCourseResponse>> {
+    const res = await api.post<ApiResponse<StartCourseResponse>>(`${process.env.NEXT_PUBLIC_API_URL}/courses/${courseId}/start`, null)
     return res.data
   }
 }

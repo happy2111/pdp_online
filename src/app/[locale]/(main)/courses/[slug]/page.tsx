@@ -17,7 +17,7 @@ import { CoursesService } from "@/services/courses-service"
 import { CourseDetails } from "@/schemas/courses-schema"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { CourseSidebar } from "@/components/courses/course-sidebar"
+import { CourseSidebar } from "@/components/courses/CourseSidebar"
 import { ModulesService } from "@/services/modules-service"
 import { CourseCurriculum } from "@/components/courses/CourseCurriculum"
 import { useTranslations } from "next-intl"
@@ -31,7 +31,7 @@ export default function CourseDetailPage() {
   const { slug } = useParams()
   const t = useTranslations('courses')        // основной namespace
   const tDetail = useTranslations('courses.detail') // для детальной страницы
-
+  const tMain = useTranslations()
   const [course, setCourse] = useState<CourseDetails | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [modules, setModules] = useState<any[]>([])
