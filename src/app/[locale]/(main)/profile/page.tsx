@@ -211,21 +211,32 @@ export default function ProfileSettings() {
         {/* Правая колонка — форма */}
         <motion.div variants={cardVariants} className="lg:col-span-8 gap-10 flex flex-col">
 
-          <Tabs defaultValue="settings" className="w-full space-y-6">
+          <Tabs defaultValue="settings" className="space-y-6">
             <div className="">
-              <TabsList className="flex w-full max-w-[600px] gap-2 p-1 bg-muted/50 rounded-2xl">
-                <TabsTrigger value="settings" className=" flex-1 text-center  rounded-xl gap-2">
+              <TabsList className="
+                 flex
+              w-full
+              overflow-x-auto
+              no-scrollbar
+              whitespace-nowrap
+              bg-card/30
+              backdrop-blur-md
+              p-1
+              rounded-2xl
+              border border-border/50
+              gap-1">
+                <TabsTrigger value="settings" className="shrink-0! rounded-xl px-3 sm:px-6 font-bold text-xs uppercase">
                   <User className="h-4 w-4" />
-                  <span className="">{t("profile.settings_tab")}</span>
+                  <span>{t("profile.settings_tab")}</span>
                 </TabsTrigger>
 
-                <TabsTrigger value="enrolled" className=" flex-1 text-center rounded-xl gap-2">
+                <TabsTrigger value="enrolled" className="shrink-0 rounded-xl px-3 sm:px-6 font-bold text-xs uppercase">
                   <GraduationCap className="h-4 w-4" />
                   {t("profile.enrolled_tab") || "Обучение"}
                 </TabsTrigger>
 
                 {user?.role_name === RolesSchema.enum.TEACHER && (
-                  <TabsTrigger value="courses" className=" flex-1 text-center rounded-xl gap-2">
+                  <TabsTrigger value="courses" className="shrink-0 rounded-xl px-3 sm:px-6 font-bold text-xs uppercase">
                     <BookOpen className="h-4 w-4" />
                     {t("profile.my_courses_tab") || "Преподавание"}
                   </TabsTrigger>
