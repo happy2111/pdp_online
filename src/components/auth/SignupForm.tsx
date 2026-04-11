@@ -3,11 +3,11 @@
 import Image from 'next/image';
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
-import { Loader2, ChevronLeft, ChevronRight, Check, Eye, EyeOff } from "lucide-react";
+import { Loader2, ChevronLeft, ChevronRight, Eye, EyeOff } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
 
 import { RegisterSchema, RegisterSchemaType } from "@/schemas/auth-schema";
 import { useAuthStore } from "@/stores/auth-store";

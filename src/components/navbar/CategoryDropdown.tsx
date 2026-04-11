@@ -2,7 +2,8 @@
 
 import * as React from "react"
 import { useState, useEffect } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
 import { ChevronRight, LayoutGrid, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { CategoriesService } from "@/services/categories-service"

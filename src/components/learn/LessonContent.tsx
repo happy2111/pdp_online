@@ -1,6 +1,7 @@
 'use client'
 
-import { useRouter, useParams } from "next/navigation"
+import { useParams } from "next/navigation"
+import { useRouter } from "@/i18n/navigation";
 import { Play, FileText, Loader2, ChevronLeft, ChevronRight, Lock } from "lucide-react"
 
 import { LessonTitle } from "@/schemas/modules-schema"
@@ -12,7 +13,6 @@ interface Props {
   lesson: LessonTitle | null
   allLessons: LessonTitle[]
   isEnrolled: boolean
-  slug: string
 }
 
 function VideoLesson({ lesson }: { lesson: LessonTitle }) {
@@ -71,7 +71,7 @@ function LockedLesson() {
   )
 }
 
-export function LessonContent({ lesson, allLessons, isEnrolled, slug }: Props) {
+export function LessonContent({ lesson, allLessons, isEnrolled }: Props) {
   const router = useRouter()
   const params = useParams<{ slug: string }>()
 

@@ -35,7 +35,7 @@
   },
   "video": {
     "status": {
-      "uploaded": "Fayl muvaffaqiyatli yuklandi",
+      "uploaded": "Fayl yuklanmoqda...",
       "processing": "Ishlov berishga tayyorlanmoqda...",
       "transcoding": "Video formatini va sifatini o‘zgartirish...",
       "uploaded_hls": "Optimallashtirilgan video saqlanmoqda...",

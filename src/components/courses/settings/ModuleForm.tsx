@@ -11,7 +11,6 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
-import { Switch } from "@/components/ui/switch"
 import { useTranslations } from "next-intl"
 
 interface Props {
@@ -31,21 +30,20 @@ export function ModuleForm({
                              submitLabel,
                              schema = CreateModuleSchema,
                            }: Props) {
-  const t = useTranslations()   // ← используем next-intl
+  const t = useTranslations()
 
-  const { register, handleSubmit, setValue, watch, reset, formState: { errors } } =
+  const { register, handleSubmit, reset, formState: { errors } } =
     useForm<CreateModuleRequest>({
       resolver: zodResolver(schema as any),
-      defaultValues: { isFreePreview: false, ...defaultValues },
+      defaultValues: {...defaultValues },
     })
 
   useEffect(() => {
     if (defaultValues) {
-      reset({ isFreePreview: false, ...defaultValues })
+      reset({...defaultValues })
     }
   }, [defaultValues, reset])
 
-  const isFreePreview = watch("isFreePreview")
 
   return (
     <form onSubmit={handleSubmit((d) => onSubmit(d as CreateModuleRequest))} className="space-y-4">
@@ -79,16 +77,6 @@ export function ModuleForm({
         />
       </div>
 
-      <div className="flex items-center gap-3">
-        <Switch
-          id="module-fp"
-          checked={!!isFreePreview}
-          onCheckedChange={(v) => setValue("isFreePreview", v)}
-        />
-        <Label htmlFor="module-fp" className="cursor-pointer text-sm">
-          {t("modules.form.free_preview")}
-        </Label>
-      </div>
 
       <div className="flex gap-2 pt-1">
         <Button type="submit" size="sm" disabled={isPending} className="gap-1.5">

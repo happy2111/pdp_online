@@ -4,7 +4,7 @@ import { useState, useTransition } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { toast } from "sonner"
 import {
-  ChevronDown, ChevronUp, Eye, GripVertical,
+  ChevronDown, ChevronUp, GripVertical,
   Loader2, Pencil, Plus, Trash2, X, Lock,
 } from "lucide-react"
 
@@ -109,11 +109,6 @@ export function ModuleCard({ module, onUpdated, courseSlug }: Props) {
           <span className="flex-1 font-medium text-sm sm:text-base truncate">{module.title}</span>
 
           <div className="flex items-center gap-1.5 shrink-0">
-            {module.is_free_preview && (
-              <Badge variant="secondary" className="hidden sm:flex gap-1 text-xs">
-                <Eye className="h-3 w-3" /> {t("common.free")}
-              </Badge>
-            )}
             <Badge variant="outline" className="text-xs whitespace-nowrap">
               {lessonCount} {t("modules.lesson", { count: lessonCount })}
             </Badge>
@@ -174,7 +169,6 @@ export function ModuleCard({ module, onUpdated, courseSlug }: Props) {
                       defaultValues={{
                         title: module.title,
                         description: module.description ?? undefined,
-                        isFreePreview: module.is_free_preview,
                       }}
                       onSubmit={handleUpdate}
                       onCancel={() => setEditing(false)}

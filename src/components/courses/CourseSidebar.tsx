@@ -21,7 +21,8 @@ import { useAuthStore } from "@/stores/auth-store"
 import { useTranslations } from 'next-intl';
 import {formatDurationHour} from "@/lib/utils";
 import {CoursesService} from "@/services/courses-service";
-import { useRouter, useParams } from "next/navigation"
+import { useRouter } from "@/i18n/navigation";
+import {useParams} from "next/navigation";
 
 export const CourseSidebar = ({ course }: { course: CourseDetails }) => {
   const isAuth = useAuthStore((state) => state.isAuthenticated)
@@ -76,6 +77,7 @@ export const CourseSidebar = ({ course }: { course: CourseDetails }) => {
 
       },
       error: (err) => {
+        console.log(JSON.stringify(err))
         setIsPending(false);
         return t('sidebar_course.start_error');
       },

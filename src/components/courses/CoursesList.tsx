@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
 import { CoursesService } from "@/services/courses-service";
 import { CourseListItem } from "@/schemas/courses-schema";
 import { CourseCard } from "./CourseCard";

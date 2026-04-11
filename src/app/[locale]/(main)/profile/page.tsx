@@ -25,7 +25,6 @@ import {RoleLabels, Roles, RolesSchema} from "@/schemas/auth-schema";
 import Protected from "@/components/protecters/Protected";
 import {useAuthStore} from "@/stores/auth-store";
 import {MyCoursesList} from "@/components/courses/MyCoursesList";
-import {useRouter} from "next/navigation";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import {VerifyEmailModal} from "@/components/profile/verify-email-modal";
 import {EnrolledCoursesList} from "@/components/courses/EnrolledCoursesList";
@@ -37,7 +36,6 @@ const cardVariants = {
 
 export default function ProfileSettings() {
   const t = useTranslations()
-  const router = useRouter()
   const [profile, setProfile] = useState<Profile | null>(null)
   const [isPending, startTransition] = useTransition()
   const [isUploading, setIsUploading] = useState(false)
@@ -373,7 +371,7 @@ export default function ProfileSettings() {
                       disabled={!isEditing}
                       rows={4}
                       placeholder={t("profile.bio_placeholder") || "Несколько слов о себе..."}
-                      className={cn("min-h-[108px] resize-none transition-all", !isEditing && "bg-muted/20 opacity-80")}
+                      className={cn("min-h-27 resize-none transition-all", !isEditing && "bg-muted/20 opacity-80")}
                     />
                   </div>
 

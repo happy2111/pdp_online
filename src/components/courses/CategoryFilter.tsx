@@ -1,6 +1,7 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from  "@/i18n/navigation";
 import { useEffect, useState, useMemo } from "react";
 import { CategoriesService } from "@/services/categories-service";
 import { Category } from "@/schemas/categories-schema";

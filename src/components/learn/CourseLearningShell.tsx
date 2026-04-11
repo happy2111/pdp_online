@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useCallback } from "react"
-import { useRouter, useParams } from "next/navigation"
 import { ChevronLeft, Menu, X } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
@@ -11,6 +10,8 @@ import { Button } from "@/components/ui/button"
 
 import { CourseSidebar } from "./CourseSidebar"
 import { LearnContext } from "./LearnContext"
+import {useRouter} from "@/i18n/navigation";
+import {useParams} from "next/navigation";
 
 interface Props {
   course: CourseDetails

@@ -8,7 +8,6 @@ import {
 import {Label} from "@/components/ui/label";
 import {VideoPlayer} from "@/components/video-player";
 import { toast } from "sonner";
-import {VideoProgressType} from "@/schemas/video-progress";
 import {subscribeToVideoProgress} from "@/services/subscribe-to-video-progress";
 import {VideoProcessingOverlay} from "@/components/VideoProcessingOverlay";
 
