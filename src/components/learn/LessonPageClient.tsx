@@ -19,7 +19,6 @@ export function LessonPageClient({ lessonId }: Props) {
       lesson={lesson}
       allLessons={allLessons}
       isEnrolled={isEnrolled}
-      slug={slug}
     />
   )
 }
