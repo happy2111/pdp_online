@@ -21,8 +21,8 @@ import { useAuthStore } from "@/stores/auth-store"
 import { useTranslations } from 'next-intl';
 import {formatDurationHour} from "@/lib/utils";
 import {CoursesService} from "@/services/courses-service";
-import { useRouter } from "@/i18n/navigation";
 import {useParams} from "next/navigation";
+import {useRouter} from "next/navigation";
 
 export const CourseSidebar = ({ course }: { course: CourseDetails }) => {
   const isAuth = useAuthStore((state) => state.isAuthenticated)
@@ -56,7 +56,7 @@ export const CourseSidebar = ({ course }: { course: CourseDetails }) => {
   }
 
   const handleStart = async (courseId: number) => {
-    setIsPending(true); // Включаем анимацию на кнопке
+    setIsPending(true);
 
     toast.promise(CoursesService.startCourse(courseId), {
       loading: t('common.loading'),

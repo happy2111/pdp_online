@@ -3,13 +3,14 @@
 import { useState, useEffect } from "react"
 import {
   ChevronDown, ChevronUp, Play, FileText, BookOpen,
-  Code, File, Lock, CheckCircle2, Loader2,
+  Code, File, Lock, CheckCircle2, Loader2, X, Menu,
 } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
 import { CourseModule, LessonTitle } from "@/schemas/modules-schema"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { cn } from "@/lib/utils"
+import {Button} from "@/components/ui/button";
 
 const LESSON_TYPE_ICON: Record<string, React.ElementType> = {
   VIDEO:    Play,
@@ -174,6 +175,8 @@ interface Props {
   onSelectLesson: (lesson: LessonTitle) => void
   // TODO: pass real enrollment status
   isEnrolled?: boolean
+  sidebarOpen?: boolean
+  setSidebarOpen: () => void;
 }
 
 export function CourseSidebar({
@@ -181,19 +184,28 @@ export function CourseSidebar({
                                 activeLessonId,
                                 onSelectLesson,
                                 isEnrolled = true,
+                                sidebarOpen = false,
+                                setSidebarOpen,
                               }: Props) {
   const totalLessons = modules.reduce((acc, m) => acc + m.lessons.length, 0)
 
   return (
     <>
       {/* Header */}
-      <div className="px-4 py-3 border-b border-border/60 shrink-0">
+      <div className="px-4 py-3 border-b border-border/60 shrink-0 relative">
         <p className="text-sm font-semibold">Содержание курса</p>
         <p className="text-xs text-muted-foreground mt-0.5">
           {modules.length} {modules.length === 1 ? "модуль" : modules.length < 5 ? "модуля" : "модулей"}
           {" · "}
           {totalLessons} {totalLessons === 1 ? "урок" : totalLessons < 5 ? "урока" : "уроков"}
         </p>
+
+        <Button
+          variant="ghost" size="icon" className="h-8 w-8 shrink-0 lg:hidden absolute top-1/2 -translate-y-1/2 right-3"
+          onClick={() => setSidebarOpen()}
+        >
+          {sidebarOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+        </Button>
       </div>
 
       {/* List */}

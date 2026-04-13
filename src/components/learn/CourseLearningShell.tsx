@@ -10,8 +10,8 @@ import { Button } from "@/components/ui/button"
 
 import { CourseSidebar } from "./CourseSidebar"
 import { LearnContext } from "./LearnContext"
-import {useRouter} from "@/i18n/navigation";
-import {useParams} from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
+import { useParams } from "next/navigation";
 
 interface Props {
   course: CourseDetails
@@ -24,9 +24,7 @@ export function CourseLearningShell({ course, modules, children }: Props) {
   const params = useParams<{ slug: string; lessonId?: string }>()
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
-  // TODO: replace with real enrollment check from your store/API
   const isEnrolled = true
-
   const activeLessonId = params.lessonId ? Number(params.lessonId) : null
 
   const activeLesson = modules
@@ -38,12 +36,17 @@ export function CourseLearningShell({ course, modules, children }: Props) {
     router.push(`/courses/${params.slug}/learn/${lesson.lesson_id}`)
   }, [router, params.slug])
 
+
+  const handleClose = () => {
+    setSidebarOpen(false);
+  }
   return (
     <LearnContext.Provider value={{ course, modules, slug: params.slug, isEnrolled }}>
-      <div className="flex flex-col h-dvh bg-background overflow-hidden container-custom">
+      {/* Убрали overflow-hidden, чтобы страница могла скроллиться, если контента много */}
+      <div className="flex flex-col min-h-screen bg-background">
 
         {/* ── Top bar ── */}
-        <header className="flex items-center gap-3 h-14 border-b border-border/60 bg-background/95 backdrop-blur shrink-0 z-20">
+        <header className="sticky top-0 flex items-center gap-3 h-14 border-b border-border/60 bg-background/95 backdrop-blur shrink-0 z-20 px-4">
           <Button
             variant="ghost" size="icon" className="h-8 w-8 shrink-0"
             onClick={() => router.push(`/courses/${params.slug}`)}
@@ -69,13 +72,17 @@ export function CourseLearningShell({ course, modules, children }: Props) {
         </header>
 
         {/* ── Body ── */}
-        <div className="flex flex-1 overflow-hidden">
-          <main className="flex-1 flex flex-col overflow-hidden min-w-0">
-            {children}
+        <div className="flex flex-1">
+          {/* Контентная часть */}
+          <main className="flex-1 min-w-0">
+            {/* Добавляем ваш container-custom здесь */}
+            <div className="container-custom py-6">
+              {children}
+            </div>
           </main>
 
           {/* Desktop sidebar */}
-          <aside className="hidden lg:flex flex-col w-80 xl:w-96 border-l border-border/60 bg-background shrink-0 overflow-hidden">
+          <aside className="hidden lg:flex flex-col w-80 xl:w-96 border-l border-border/60 bg-background shrink-0 sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto">
             <CourseSidebar
               modules={modules}
               activeLessonId={activeLessonId}
@@ -97,13 +104,15 @@ export function CourseLearningShell({ course, modules, children }: Props) {
                 <motion.aside
                   initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }}
                   transition={{ type: "tween", duration: 0.22 }}
-                  className="fixed right-0 top-14 bottom-0 z-40 w-80 flex flex-col bg-background border-l border-border/60 shadow-2xl lg:hidden overflow-hidden"
+                  className="z-999 fixed right-0 top-0 bottom-0 w-80 flex flex-col bg-background border-l border-border/60 shadow-2xl lg:hidden overflow-hidden"
                 >
                   <CourseSidebar
                     modules={modules}
                     activeLessonId={activeLessonId}
                     isEnrolled={isEnrolled}
                     onSelectLesson={handleSelectLesson}
+                    sidebarOpen={sidebarOpen}
+                    setSidebarOpen={handleClose}
                   />
                 </motion.aside>
               </>
