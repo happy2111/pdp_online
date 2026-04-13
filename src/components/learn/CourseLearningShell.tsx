@@ -88,6 +88,7 @@ export function CourseLearningShell({ course, modules, children }: Props) {
               activeLessonId={activeLessonId}
               isEnrolled={isEnrolled}
               onSelectLesson={handleSelectLesson}
+              setSidebarOpen={() => handleClose()}
             />
           </aside>
 
