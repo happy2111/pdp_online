@@ -2,7 +2,7 @@ import { z } from "zod";
 import {ApiResponse} from "@/schemas/response-schema";
 
 export const ProgressHeartbeatSchema = z.object({
-  lessonId: z.number(),
+  lesson_id: z.number(),
   seconds: z.number().nonnegative(),
 });
 

@@ -60,6 +60,10 @@ export const VideoPlayer = ({ slug, endpoint, lessonId }: { slug: string | null;
   }, [])
 
   useEffect(() => {
+    alert(lessonId)
+  }, [lessonId, endpoint, slug]);
+
+  useEffect(() => {
     if (!endpoint || !containerRef.current) return
     if (playerRef.current && !playerRef.current.isDisposed()) return
 
@@ -86,6 +90,23 @@ export const VideoPlayer = ({ slug, endpoint, lessonId }: { slug: string | null;
           console.log('401 Unauthorized')
           window.location.href = '/login'
         }
+      }
+    }
+
+    const stopHeartbeat = () => {
+      if (heartbeatIntervalRef.current) {
+        clearInterval(heartbeatIntervalRef.current)
+        heartbeatIntervalRef.current = null
+      }
+    }
+
+    const sendHeartbeat = () => {
+      const currentTime = player.currentTime()
+      if (currentTime && lessonId) {
+        ProgressService.sendHeartbeat({
+          lesson_id: lessonId,
+          seconds: currentTime
+        })
       }
     }
 
@@ -130,7 +151,7 @@ export const VideoPlayer = ({ slug, endpoint, lessonId }: { slug: string | null;
             const currentTime = player.currentTime()
             if (currentTime && currentTime > 0) {
               ProgressService.sendHeartbeat({
-                lessonId: lessonId,
+                lesson_id: lessonId,
                 seconds: currentTime
               }).catch(err => console.error('Heartbeat error:', err))
             }
@@ -140,22 +161,7 @@ export const VideoPlayer = ({ slug, endpoint, lessonId }: { slug: string | null;
 
     })
 
-    const stopHeartbeat = () => {
-      if (heartbeatIntervalRef.current) {
-        clearInterval(heartbeatIntervalRef.current)
-        heartbeatIntervalRef.current = null
-      }
-    }
 
-    const sendHeartbeat = () => {
-      const currentTime = player.currentTime()
-      if (currentTime && lessonId) {
-        ProgressService.sendHeartbeat({
-          lessonId: lessonId,
-          seconds: currentTime
-        })
-      }
-    }
 
     player.on('pause', () => {
       setPlaying(false)
