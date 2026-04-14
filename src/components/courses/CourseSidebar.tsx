@@ -91,7 +91,7 @@ export const CourseSidebar = ({ course }: { course: CourseDetails }) => {
 
       <div className="relative group cursor-pointer z-50">
         {isAuth ? (
-          <VideoPlayer slug={course.slug} endpoint={course.preview_video_url} />
+          <VideoPlayer slug={course.slug} endpoint={course.preview_video_url} lessonId={null} />
         ) : (
           <div onClick={() => toast.error(t('sidebar_course.auth_error_preview'))}>
             <img

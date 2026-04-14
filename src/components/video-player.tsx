@@ -8,6 +8,7 @@ import {
   Play, Pause, Volume2, VolumeX, Maximize, Minimize,
   Gauge, RotateCcw, RotateCw, Loader2, Settings
 } from 'lucide-react'
+import {ProgressService} from "@/services/lesson-progress-service";
 
 const SPEEDS = [0.5, 0.75, 1, 1.25, 1.5, 2]
 
@@ -27,12 +28,13 @@ interface QualityLevel {
 
 type MenuType = 'speed' | 'quality' | null
 
-export const VideoPlayer = ({ slug, endpoint }: { slug: string; endpoint: string | null }) => {
+export const VideoPlayer = ({ slug, endpoint, lessonId }: { slug: string | null; endpoint: string | null, lessonId: number | null }) => {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const playerRef = useRef<any>(null)
   const progressRef = useRef<HTMLDivElement | null>(null)
   const hideControlsTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const wrapperRef = useRef<HTMLDivElement | null>(null)
+  const heartbeatIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   const [playing, setPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
@@ -94,9 +96,21 @@ export const VideoPlayer = ({ slug, endpoint }: { slug: string; endpoint: string
       sources: [{ src: `${process.env.NEXT_PUBLIC_BASE_URL}${endpoint}`, type: 'application/x-mpegURL' }],
     })
 
+    player.ready(async () => {
+      if (lessonId) {
+        try {
+          const response = await ProgressService.getLessonProgress(lessonId)
+          if (response.data && response.data > 0) {
+            player.currentTime(response.data)
+          }
+        } catch (error) {
+          console.error('Failed to fetch video progress:', error)
+        }
+      }
+    })
+
     player.on('error', () => {
       const err = player.error()
-
       console.log('VIDEO ERROR:', err)
 
       // @ts-ignore
@@ -106,16 +120,68 @@ export const VideoPlayer = ({ slug, endpoint }: { slug: string; endpoint: string
         window.location.href = '/login'
       }
     })
-    player.on('play',           () => setPlaying(true))
-    player.on('pause',          () => setPlaying(false))
+
+    player.on('play',           () => {
+      setPlaying(true)
+
+      if (lessonId) {
+        if (!heartbeatIntervalRef.current) {
+          heartbeatIntervalRef.current = setInterval(() => {
+            const currentTime = player.currentTime()
+            if (currentTime && currentTime > 0) {
+              ProgressService.sendHeartbeat({
+                lessonId: lessonId,
+                seconds: currentTime
+              }).catch(err => console.error('Heartbeat error:', err))
+            }
+          }, 15000)
+        }
+      }
+
+    })
+
+    const stopHeartbeat = () => {
+      if (heartbeatIntervalRef.current) {
+        clearInterval(heartbeatIntervalRef.current)
+        heartbeatIntervalRef.current = null
+      }
+    }
+
+    const sendHeartbeat = () => {
+      const currentTime = player.currentTime()
+      if (currentTime && lessonId) {
+        ProgressService.sendHeartbeat({
+          lessonId: lessonId,
+          seconds: currentTime
+        })
+      }
+    }
+
+    player.on('pause', () => {
+      setPlaying(false)
+      if (lessonId) {
+        stopHeartbeat()
+        sendHeartbeat()
+      }
+    })
+
+    player.on('ended', () => {
+      if (lessonId) {
+        stopHeartbeat()
+        sendHeartbeat()
+      }
+    })
     player.on('waiting',        () => setWaiting(true))
     player.on('canplay',        () => setWaiting(false))
     player.on('playing',        () => setWaiting(false))
-    // @ts-ignore
-    player.on('loadedmetadata', () => setDuration(player.duration()))
+    player.on('loadedmetadata', () => {
+      const d = player.duration()
+      if (d && isFinite(d)) {
+        setDuration(d)
+      }
+    })
     player.on('timeupdate', () => {
-      // @ts-ignore
-      setCurrentTime(player.currentTime())
+      setCurrentTime(player.currentTime() ?? 0)
       setBuffered(player.bufferedEnd?.() ?? 0)
     })
 
@@ -160,7 +226,7 @@ export const VideoPlayer = ({ slug, endpoint }: { slug: string; endpoint: string
         playerRef.current = null
       }
     }
-  }, [slug, endpoint])
+  }, [slug, endpoint, lessonId])
 
   useEffect(() => { playerRef.current?.playbackRate(speed) }, [speed])
   useEffect(() => {
@@ -168,7 +234,6 @@ export const VideoPlayer = ({ slug, endpoint }: { slug: string; endpoint: string
     playerRef.current?.muted(muted)
   }, [volume, muted])
 
-  // Применяем выбранное качество
   const applyQuality = (selected: number | 'auto') => {
     const ql = (playerRef.current as any)?.qualityLevels?.()
     if (!ql) return
@@ -176,7 +241,6 @@ export const VideoPlayer = ({ slug, endpoint }: { slug: string; endpoint: string
       if (selected === 'auto') {
         ql[i].enabled = true
       } else {
-        // Включаем только уровни с нужной высотой
         ql[i].enabled = (ql[i].height === selected)
       }
     }
