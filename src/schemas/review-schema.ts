@@ -22,20 +22,20 @@ export const CourseReviewSchema = z.object({
 
   user: z.object({
     id: z.number(),
-    fullName: z.string().optional(), // или username, firstName + lastName
-    avatarUrl: z.string().url().nullable().optional(),
+    full_name: z.string().optional(), // или username, firstName + lastName
+    avatar_url: z.string().url().nullable().optional(),
   }).nullable().optional(),
 
   rating: ReviewRatingEnum,
 
   comment: z.string().nullable().optional(),
 
-  isVerifiedPurchase: z.boolean().default(false),
+  is_verified_purchase: z.boolean().default(false),
 
-  helpfulCount: z.number().int().nonnegative().default(0),
+  helpful_count: z.number().int().nonnegative().default(0),
 
-  createdAt: z.string().datetime().optional(), // ISO string от OffsetDateTime
-  updatedAt: z.string().datetime().nullable().optional(),
+  created_at: z.string().datetime().optional(), // ISO string от OffsetDateTime
+  updated_at: z.string().datetime().nullable().optional(),
 });
 
 export type CourseReview = z.infer<typeof CourseReviewSchema>;
