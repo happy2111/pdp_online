@@ -60,10 +60,6 @@ export const VideoPlayer = ({ slug, endpoint, lessonId }: { slug: string | null;
   }, [])
 
   useEffect(() => {
-    alert(lessonId)
-  }, [lessonId, endpoint, slug]);
-
-  useEffect(() => {
     if (!endpoint || !containerRef.current) return
     if (playerRef.current && !playerRef.current.isDisposed()) return
 
