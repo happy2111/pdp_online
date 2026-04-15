@@ -3,7 +3,6 @@
 import { useState } from "react"
 import { useTranslations } from "next-intl"
 import { Loader2, Mail, ShieldCheck, AlertCircle } from "lucide-react"
-import { toast } from "sonner"
 
 import {
   Dialog,
@@ -21,6 +20,7 @@ import {
 } from "@/components/ui/input-otp"
 import { AuthService } from "@/services/auth-service"
 import {cn} from "@/lib/utils";
+import {toast} from "sonner";
 
 interface VerifyEmailModalProps {
   email: string

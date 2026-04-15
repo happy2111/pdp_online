@@ -366,5 +366,35 @@
       "certificate": "Muvaffaqiyatli yakunlanganlik haqida sertifikat"
     }
   },
+  "reviews": {
+    "title": "Talabalar fikrlari",
+    "subtitle": "O'z tajribasi bilan o'rtoqlashayotgan {count} dan ortiq talabalarga qo'shiling",
+    "write_review": "Fikr qoldirish",
+    "share_experience": "Tajribangiz bilan o'rtoqlashing",
+    "your_review": "Sizning fikringiz",
+    "placeholder": "Ushbu kurs haqida nima deb o'ylaysiz? Samimiy fikringiz boshqa talabalarga yordam beradi...",
+    "min_characters": "Kamida 10 ta belgi",
+    "submit": "Fikrni yuborish",
+    "submitting": "Yuborilmoqda...",
+    "no_reviews": "Hozircha fikrlar yo'q",
+    "no_reviews_desc": "O'z tajribangiz bilan o'rtoqlashgan birinchi foydalanuvchi bo'ling!",
+    "first_review_btn": "Birinchi fikrni yozish",
+    "verified_purchase": "Tasdiqlangan xarid",
+    "helpful": "Foydali",
+    "report": "Shikoyat qilish",
+    "rating_1": "Yomon - yaxshilash kerak",
+    "rating_2": "O'rtacha - yaxshiroq bo'lishi mumkin edi",
+    "rating_3": "Yaxshi - qoniqarli",
+    "rating_4": "Juda yaxshi - taassurot qoldirdi",
+    "rating_5": "A'lo - ajoyib kurs!",
+    "success_submit": "Fikr muvaffaqiyatli yuborildi!",
+    "login_required": "Iltimos, akkauntingizga kiring",
+    "report_submitted": "Shikoyat yuborildi",
+    "edit_review": "Fikrni tahrirlash",
+    "success_update": "Fikr muvaffaqiyatli yangilandi",
+    "confirm_delete": "Fikrni o'chirib tashlaysizmi?",
+    "delete_success": "Fikr o'chirildi",
+    "delete_error": "Fikrni o'chirishda xatolik yuz berdi"
+  },
   "students": "Talabalar"
 }

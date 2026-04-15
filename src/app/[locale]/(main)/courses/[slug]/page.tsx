@@ -202,12 +202,8 @@ export default function CourseDetailPage() {
                   </div>
                 </TabsContent>
 
-                {/* Modules */}
-                <TabsContent value="curriculum" className="outline-none">
-                  <CourseCurriculum modules={modules} courseSlug={slug as string} />
-                </TabsContent>
+                <CourseCurriculum modules={modules} courseSlug={slug as string} />
 
-                {/* Reviews */}
                 <TabsContent value="reviews" className="outline-none">
                   <ReviewsTab courseId={course.id} courseSlug={slug as string} />
                 </TabsContent>
