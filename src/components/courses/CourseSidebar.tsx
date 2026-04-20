@@ -30,6 +30,7 @@ export const CourseSidebar = ({ course }: { course: CourseDetails }) => {
   const router = useRouter()
   const params = useParams()
   const locale = params.locale as string
+  const [showPlayer, setShowPlayer] = useState(false);
 
   const [isPending, setIsPending] = useState(false);
   const t = useTranslations()
@@ -91,16 +92,39 @@ export const CourseSidebar = ({ course }: { course: CourseDetails }) => {
 
       <div className="relative group cursor-pointer z-50">
         {isAuth ? (
-          <VideoPlayer slug={course.slug} endpoint={course.preview_video_url} lessonId={null} />
+          <div className="aspect-video w-full overflow-hidden rounded-2xl bg-black">
+            {showPlayer ? (
+              <VideoPlayer
+                slug={course.slug}
+                endpoint={course.preview_video_url}
+                lessonId={null}
+                poster={course.thumbnail_url}
+              />
+            ) : (
+              <div
+                className="relative w-full h-full"
+                onClick={() => setShowPlayer(true)}
+              >
+                <img
+                  src={course.thumbnail_url}
+                  alt={course.title}
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 flex items-center justify-center bg-black/40">
+                  <PlayCircle className="h-14 w-14 text-white opacity-50" />
+                </div>
+              </div>
+            )}
+          </div>
         ) : (
           <div onClick={() => toast.error(t('sidebar_course.auth_error_preview'))}>
             <img
               src={course.thumbnail_url}
               alt={course.title}
-              className="aspect-video w-full object-cover transition-transform duration-300 group-hover:scale-105"
+              className="aspect-video w-full object-cover"
             />
-            <div className="absolute inset-0 flex items-center justify-center bg-black/40 group-hover:bg-black/20 transition-colors">
-              <PlayCircle className="h-14 w-14 text-white drop-shadow-lg" />
+            <div className="absolute inset-0 flex items-center justify-center bg-black/40">
+              <PlayCircle className="h-14 w-14 text-white opacity-50" />
             </div>
           </div>
         )}

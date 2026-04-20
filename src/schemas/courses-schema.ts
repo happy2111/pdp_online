@@ -51,6 +51,7 @@ export const CourseListItemSchema = z.object({
 
   category_id: z.number(),
   category_name: z.string(),
+  price: z.number(),
 
   teacher_id: z.number().nullable(),
   teacher_full_name: z.string(),

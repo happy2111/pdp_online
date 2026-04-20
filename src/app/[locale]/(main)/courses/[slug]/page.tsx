@@ -113,6 +113,7 @@ export default function CourseDetailPage() {
                     <Star className="fill-current h-4 w-4" />
                     {course.rating_avg.toFixed(1)}
                     <span className="text-muted-foreground font-normal underline decoration-dotted ml-1">
+                      {/*// TODO get from backend*/}
                     {tDetail('ratingReviews', { count: 957 })}
                   </span>
                   </div>

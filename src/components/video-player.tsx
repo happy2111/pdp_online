@@ -28,7 +28,7 @@ interface QualityLevel {
 
 type MenuType = 'speed' | 'quality' | null
 
-export const VideoPlayer = ({ slug, endpoint, lessonId }: { slug: string | null; endpoint: string | null, lessonId: number | null }) => {
+export const VideoPlayer = ({ slug, endpoint, lessonId, poster}: { slug: string | null; endpoint: string | null, lessonId: number | null, poster: string }) => {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const playerRef = useRef<any>(null)
   const progressRef = useRef<HTMLDivElement | null>(null)
@@ -109,6 +109,7 @@ export const VideoPlayer = ({ slug, endpoint, lessonId }: { slug: string | null;
     const player = videojs(videoEl, {
       controls: false,
       fluid: true,
+      poster: poster,
       html5: { vhs: { overrideNative: true } },
       sources: [{ src: `${process.env.NEXT_PUBLIC_BASE_URL}${endpoint}`, type: 'application/x-mpegURL' }],
     })

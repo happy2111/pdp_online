@@ -1,12 +1,12 @@
 "use client";
 
-import { CourseLevelLabels, CourseListItem } from "@/schemas/courses-schema";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { useTranslations } from "next-intl";
-import { Star, Settings } from "lucide-react";
-import { useRouter } from "@/i18n/navigation"
+import {CourseLevelLabels, CourseListItem} from "@/schemas/courses-schema";
+import {Card, CardContent} from "@/components/ui/card";
+import {Badge} from "@/components/ui/badge";
+import {Button} from "@/components/ui/button";
+import {useTranslations} from "next-intl";
+import {Star, Settings, StarHalf} from "lucide-react";
+import {useRouter} from "@/i18n/navigation"
 
 interface Props {
   course: CourseListItem;
@@ -14,7 +14,7 @@ interface Props {
   customPath?: string;
 }
 
-export function CourseCard({ course, isOwner, customPath }: Props) {
+export function CourseCard({course, isOwner, customPath}: Props) {
   const t = useTranslations();
   const router = useRouter();
 
@@ -77,19 +77,57 @@ export function CourseCard({ course, isOwner, customPath }: Props) {
         <div className="my-3 border-t border-dashed border-border" />
 
         <div className="mt-auto space-y-3">
-          <div className="flex items-center justify-between text-[13px] font-medium">
-            <span className="flex items-center gap-1.5 py-1 px-2.5 rounded-lg bg-secondary/50 text-secondary-foreground">
-               <Star className="size-3.5 text-yellow-500 fill-yellow-500" />
-              {course.rating_avg.toFixed(1)}
-            </span>
-            <Badge variant="outline" className="rounded-md border-primary/20 text-primary bg-primary/5">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-0.5">
+              {[1, 2, 3, 4, 5].map((star) => {
+                const rating = course.rating_avg;
+                if (rating >= star) {
+                  return <Star
+                    key={star}
+                    className="size-3.5 text-yellow-500 fill-yellow-500"
+                  />;
+                }
+                if (rating > star - 1 && rating < star) {
+                  return <StarHalf
+                    key={star}
+                    className="size-3.5 text-yellow-500 fill-yellow-500"
+                  />;
+                }
+                return <Star
+                  key={star}
+                  className="size-3.5 text-muted-foreground/30"
+                />;
+              })}
+              <span className="ml-1.5 text-[13px] font-bold text-foreground">
+                {course.rating_avg.toFixed(1)}
+              </span>
+            </div>
+
+            <Badge
+              variant="outline"
+              className="rounded-md border-primary/20 text-primary bg-primary/5 text-[10px]"
+            >
               {t(CourseLevelLabels[course.level])}
             </Badge>
           </div>
 
-          <div className="flex items-center justify-between text-[11px] uppercase tracking-wider font-semibold text-muted-foreground/70">
-            <span>{course.duration_hours}h</span>
-            <span>{course.enrolled_count} {t("students")}</span>
+          <div className="flex items-center justify-between items-end">
+            <div className="flex flex-col gap-1 text-[11px] uppercase tracking-wider font-semibold text-muted-foreground/70">
+              <span>{course.duration_hours}h • {course.enrolled_count} {t("students")}</span>
+            </div>
+
+            <div className="text-right">
+              {course.is_free ? (
+                <span className="text-sm font-bold text-green-600 dark:text-green-400">
+                  {t("common.free")}
+                </span>
+              ) : (
+                <span className="text-sm font-bold text-foreground">
+                  {new Intl.NumberFormat('ru-RU').format(course.price)}
+                        <span className="ml-1 text-[10px] text-muted-foreground uppercase">UZS</span>
+                </span>
+              )}
+            </div>
           </div>
         </div>
       </CardContent>
