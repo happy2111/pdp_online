@@ -28,7 +28,7 @@ interface QualityLevel {
 
 type MenuType = 'speed' | 'quality' | null
 
-export const VideoPlayer = ({ slug, endpoint, lessonId, poster}: { slug: string | null; endpoint: string | null, lessonId: number | null, poster: string }) => {
+export const VideoPlayer = ({ slug, endpoint, lessonId, poster}: { slug: string | null; endpoint: string | null, lessonId: number | null, poster: string | undefined }) => {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const playerRef = useRef<any>(null)
   const progressRef = useRef<HTMLDivElement | null>(null)

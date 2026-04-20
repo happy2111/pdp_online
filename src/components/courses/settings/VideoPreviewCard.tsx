@@ -71,7 +71,7 @@ export default function VideoPreviewCard({
 
         {course.preview_video_url ? (
           isAuth ? (
-            <VideoPlayer slug={course.slug} endpoint={course.preview_video_url} lessonId={null} />
+            <VideoPlayer slug={course.slug} endpoint={course.preview_video_url} lessonId={null} poster={course.thumbnail_url}/>
           ) : (
             <div
               className="cursor-pointer h-full w-full"

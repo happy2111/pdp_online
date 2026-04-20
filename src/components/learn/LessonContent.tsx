@@ -30,6 +30,7 @@ function VideoLesson({ lesson }: { lesson: LessonTitle }) {
       slug={null}
       endpoint={`/api/v1/videos/lesson/stream/${lesson.lesson_id}/master.m3u8`}
       lessonId={lesson.lesson_id}
+      poster={undefined}
     />
   )
 }
