@@ -212,18 +212,20 @@ export default function ProfileSettings() {
           <Tabs defaultValue="settings" className="space-y-6">
             <div className="">
               <TabsList className="
-                 flex
-              w-full
-              overflow-x-auto
-              no-scrollbar
-              whitespace-nowrap
-              bg-card/30
-              backdrop-blur-md
-              p-1
-              rounded-2xl
-              border border-border/50
-              gap-1">
-                <TabsTrigger value="settings" className="shrink-0! rounded-xl px-3 sm:px-6 font-bold text-xs uppercase">
+                  flex
+                  w-full
+                  overflow-x-auto
+                  no-scrollbar
+                  whitespace-nowrap
+                  bg-card/30
+                  backdrop-blur-md
+                  p-1.5
+                  h-14
+                  rounded-2xl
+                  border border-border/50
+                  gap-1
+                ">
+                <TabsTrigger value="settings" className="shrink-0 rounded-xl px-3 sm:px-6 font-bold text-xs uppercase">
                   <User className="h-4 w-4" />
                   <span>{t("profile.settings_tab")}</span>
                 </TabsTrigger>

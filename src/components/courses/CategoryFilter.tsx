@@ -8,6 +8,7 @@ import { Category } from "@/schemas/categories-schema";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import {useTranslations} from "next-intl";
+import {cn} from "@/lib/utils";
 
 export function CategoryFilter() {
   const router = useRouter();
@@ -33,16 +34,13 @@ export function CategoryFilter() {
     fetchCats();
   }, []);
 
-  // 1. Находим активную категорию и её уровень в дереве
   const findActiveInfo = useMemo(() => {
     if (!currentId) return { activeParentId: null, subCategories: [] };
 
     for (const parent of categories) {
-      // Если выбрана сама родительская категория
       if (parent.id.toString() === currentId) {
         return { activeParentId: parent.id, subCategories: parent.children || [] };
       }
-      // Если выбран кто-то из детей
       const child = parent.children?.find(c => c.id.toString() === currentId);
       if (child) {
         return { activeParentId: parent.id, subCategories: parent.children || [] };
@@ -65,13 +63,17 @@ export function CategoryFilter() {
   if (loading) return <Loader2 className="animate-spin h-5 w-5 mb-6" />;
 
   return (
-    <div className="flex flex-col gap-4 mb-8">
-      {/* Первый уровень: Основные категории */}
-      <div className="flex flex-wrap gap-2">
+    <div className="flex flex-col gap-3 mb-8">
+      <div className="flex w-full overflow-x-auto no-scrollbar gap-2 pb-0.5">
         <Button
-          variant={!currentId ? "default" : "outline"}
+          variant="ghost"
           size="sm"
-          className="rounded-full"
+          className={cn(
+            "shrink-0 rounded-2xl h-10 px-5 font-semibold text-sm transition-all duration-200",
+            !currentId
+              ? "bg-primary text-primary-foreground hover:bg-primary/90"
+              : "bg-muted/60 text-muted-foreground hover:text-foreground hover:bg-muted"
+          )}
           onClick={() => handleCategoryClick(null)}
         >
           {t("common.allCategories")}
@@ -79,9 +81,14 @@ export function CategoryFilter() {
         {categories.map((cat) => (
           <Button
             key={cat.id}
-            variant={findActiveInfo.activeParentId === cat.id ? "default" : "outline"}
+            variant="ghost"
             size="sm"
-            className="rounded-full"
+            className={cn(
+              "shrink-0 rounded-2xl h-10 px-5 font-semibold text-sm transition-all duration-200",
+              findActiveInfo.activeParentId === cat.id
+                ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                : "bg-muted/60 text-muted-foreground hover:text-foreground hover:bg-muted"
+            )}
             onClick={() => handleCategoryClick(cat.id)}
           >
             {cat.name}
@@ -89,15 +96,19 @@ export function CategoryFilter() {
         ))}
       </div>
 
-      {/* Второй уровень: Подкатегории (появляются только если есть дети) */}
       {findActiveInfo.subCategories.length > 0 && (
-        <div className="flex flex-wrap gap-2 p-3 bg-muted/50 rounded-xl border animate-in fade-in slide-in-from-top-1">
+        <div className="flex w-full overflow-x-auto no-scrollbar gap-2 px-3 py-2.5 bg-muted/40 rounded-2xl border border-border/50 animate-in fade-in slide-in-from-top-2 duration-200">
           {findActiveInfo.subCategories.map((sub) => (
             <Button
               key={sub.id}
-              variant={currentId === sub.id.toString() ? "secondary" : "ghost"}
+              variant="ghost"
               size="sm"
-              className="rounded-full h-8 text-xs"
+              className={cn(
+                "shrink-0 rounded-xl h-9 px-4 text-xs font-semibold transition-all duration-200",
+                currentId === sub.id.toString()
+                  ? "bg-background text-foreground shadow-sm border border-border/60"
+                  : "text-muted-foreground hover:text-foreground hover:bg-background/70"
+              )}
               onClick={() => handleCategoryClick(sub.id)}
             >
               {sub.name}

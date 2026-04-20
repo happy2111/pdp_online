@@ -149,7 +149,7 @@ export default function CourseDetailPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
             <div className="lg:col-span-8">
               <Tabs defaultValue="general" className="w-full space-y-6">
-                <TabsList className="flex w-full overflow-x-auto no-scrollbar whitespace-nowrap bg-card/30 backdrop-blur-md p-1 rounded-2xl border border-border/50 gap-1">
+                <TabsList className="flex w-full overflow-x-auto no-scrollbar whitespace-nowrap bg-card/30 backdrop-blur-md p-1.5 h-14 rounded-2xl border border-border/50 gap-1">
                   {["general", "curriculum", "reviews"].map((tab) => {
                     const labels: Record<string, string> = {
                       general: tDetail('general'),
@@ -157,13 +157,13 @@ export default function CourseDetailPage() {
                       reviews: tDetail('reviews'),
                     }
                     return (
-                        <TabsTrigger
-                            key={tab}
-                            value={tab}
-                            className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground shrink-0 rounded-xl px-6 font-bold text-xs uppercase tracking-tighter"
-                        >
-                          {labels[tab]}
-                        </TabsTrigger>
+                      <TabsTrigger
+                        key={tab}
+                        value={tab}
+                        className="relative shrink-0 rounded-xl px-6 font-bold text-xs uppercase tracking-tighter data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-200"
+                      >
+                        {labels[tab]}
+                      </TabsTrigger>
                     )
                   })}
                 </TabsList>
