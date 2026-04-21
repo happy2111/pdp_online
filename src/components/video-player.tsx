@@ -87,6 +87,7 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster}: { slug: string 
       }
 
       VHS.xhr.onResponse = (request: any, error: any, response: any) => {
+        alert(`VHS response: Status ${response?.status}, Error: ${error?.message || 'none'}`)
         if (response?.status === 401) {
           console.log('401 Unauthorized')
           window.location.href = '/login'
@@ -130,7 +131,11 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster}: { slug: string 
       }],
     })
 
+    // Добавляем алерт для дебага инициализации
+    alert(`Player initialized. Override native: ${!videojs.browser.IS_ANY_SAFARI && !videojs.browser.IS_ANDROID}. Endpoint: ${process.env.NEXT_PUBLIC_BASE_URL}${endpoint}. Token present: ${!!token}`)
+
     player.ready(async () => {
+      alert('Player ready')
       if (lessonId) {
         try {
           const response = await ProgressService.getLessonProgress(lessonId)
@@ -146,6 +151,7 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster}: { slug: string 
     player.on('error', () => {
       const err = player.error()
       console.log('VIDEO ERROR:', err)
+      alert(`Video error: ${err?.message || 'Unknown error'}. Code: ${err?.code}. Status: ${err?.status}`)
 
       // @ts-ignore
       if (err?.status === 401) {
@@ -506,3 +512,4 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster}: { slug: string 
     </div>
   )
 }
+
