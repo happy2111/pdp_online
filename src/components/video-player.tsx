@@ -65,6 +65,11 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster}: { slug: string 
 
     const videoEl = document.createElement('video')
     videoEl.className = 'video-js'
+
+    videoEl.setAttribute('playsinline', 'true');
+    videoEl.setAttribute('webkit-playsinline', 'true');
+    videoEl.setAttribute('preload', 'auto');
+
     containerRef.current.innerHTML = ''
     containerRef.current.appendChild(videoEl)
 
@@ -110,8 +115,19 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster}: { slug: string 
       controls: false,
       fluid: true,
       poster: poster,
-      html5: { vhs: { overrideNative: true } },
-      sources: [{ src: `${process.env.NEXT_PUBLIC_BASE_URL}${endpoint}`, type: 'application/x-mpegURL' }],
+      // Умное переключение: на мобилках доверяем нативному плееру,
+      // на десктопе используем VHS (Videojs HTTP Streaming)
+      html5: {
+        vhs: {
+          overrideNative: !videojs.browser.IS_ANY_SAFARI && !videojs.browser.IS_ANDROID,
+        },
+        nativeAudioTracks: false,
+        nativeVideoTracks: false,
+      },
+      sources: [{
+        src: `${process.env.NEXT_PUBLIC_BASE_URL}${endpoint}`,
+        type: 'application/x-mpegURL'
+      }],
     })
 
     player.ready(async () => {
