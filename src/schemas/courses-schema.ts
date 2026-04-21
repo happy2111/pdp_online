@@ -98,6 +98,8 @@ export const CourseDetailsSchema = z.object({
   learning_outcomes: z.array(z.string()),
 
   enrolled: z.boolean().optional(),
+
+  total_reviews: z.number(),
 });
 
 export type CourseDetails = z.infer<typeof CourseDetailsSchema>;
