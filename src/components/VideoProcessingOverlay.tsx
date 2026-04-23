@@ -5,19 +5,35 @@ import {useTranslations} from "next-intl";
 interface VideoProcessingOverlayProps {
   status: string;
   progress: number | null;
+  message: string | null;
 }
 
-export function VideoProcessingOverlay({ status, progress }: VideoProcessingOverlayProps) {
-  const statusMap: Record<string, string> = {
-    'UPLOADED': 'video.status.uploaded',
-    'PROCESSING': 'video.status.processing',
-    'TRANSCODING': 'video.status.transcoding',
-    'UPLOADED_HLS': 'video.status.uploaded_hls',
-    'DONE': 'video.status.done',
-    'FAILED': 'video.status.failed',
-  };0
+export function VideoProcessingOverlay({ status, progress, message }: VideoProcessingOverlayProps) {
 
-  const t  = useTranslations();
+  const t = useTranslations();
+
+  const renderMessage = () => {
+    if (!message) return t('video.status.failed');
+
+    if (message.includes(':')) {
+      const [key, value] = message.split(':');
+
+      return t(key, { minutes: value });
+    }
+
+    return t(message);
+  };
+
+
+  const statusMap: Record<string, any> = {
+    'UPLOADED': t('video.status.uploaded'),
+    'PROCESSING': t('video.status.processing'),
+    'TRANSCODING': t('video.status.transcoding'),
+    'UPLOADED_HLS': t('video.status.uploaded_hls'),
+    'DONE': t('video.status.done'),
+    'FAILED': renderMessage(),
+  };
+
 
   return (
     <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/60 backdrop-blur-[2px] p-4 transition-all">
@@ -32,7 +48,7 @@ export function VideoProcessingOverlay({ status, progress }: VideoProcessingOver
 
         <div className="space-y-1.5">
           <p className="text-sm font-medium text-white">
-            {t(statusMap[status]) || 'Обработка...'}
+            {statusMap[status] || t('video.status.processing')}
           </p>
 
           {progress !== null && progress > 0 && (

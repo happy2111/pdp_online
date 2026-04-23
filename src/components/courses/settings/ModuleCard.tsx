@@ -35,7 +35,7 @@ interface Props {
 }
 
 export function ModuleCard({ module, onUpdated, courseSlug }: Props) {
-  const t = useTranslations()   // ← используем next-intl
+  const t = useTranslations()
 
   const [expanded, setExpanded] = useState(false)
   const [editing, setEditing] = useState(false)

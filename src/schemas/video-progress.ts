@@ -11,6 +11,7 @@ export const VideoProgressSchema = z.object({
   id: z.string(),
   status: z.string(),
   progress: z.coerce.number(),
+  message: z.string().nullable()
 })
 
 export type VideoProgressType = z.infer<typeof VideoProgressSchema>

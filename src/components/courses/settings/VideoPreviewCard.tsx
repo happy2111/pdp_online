@@ -21,8 +21,10 @@ export default function VideoPreviewCard({
   onFileSelect: (file: File) => void
 }) {
   const inputRef = useRef<HTMLInputElement>(null)
-  const [socketData, setSocketData] = useState<{status: string | unknown, progress: number | null} | null>(null);
+  const [socketData, setSocketData] = useState<{status: string | unknown, progress: number | null, message: string | null} | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [playerKey, setPlayerKey] = useState(0);
+
 
   useEffect(() => {
     if (isUploading) setIsProcessing(true);
@@ -45,12 +47,18 @@ export default function VideoPreviewCard({
 
     if (isProcessing) {
       const closeConnection = subscribeToVideoProgress(course.slug, 'COURSE', (data) => {
-        setSocketData({ status: data.status, progress: data.progress });
+        setSocketData({ status: data.status, progress: data.progress, message: data.message });
+
+        if (data.status === 'DONE' || data.status === 'FAILED') {
+          setPlayerKey(prevKey => prevKey + 1);
+        }
 
         if (data.status === 'DONE') {
           setIsProcessing(false);
+
           setTimeout(() => setSocketData(null), 3000);
         }
+
       });
       unsubscribe = () => closeConnection();
     }
@@ -66,12 +74,13 @@ export default function VideoPreviewCard({
           <VideoProcessingOverlay
             status={socketData?.status as any || 'UPLOADED'}
             progress={socketData?.progress ?? 0}
+            message={socketData?.message || null}
           />
         )}
 
         {course.preview_video_url ? (
           isAuth ? (
-            <VideoPlayer slug={course.slug} endpoint={course.preview_video_url} lessonId={null} poster={course.thumbnail_url}/>
+            <VideoPlayer key={playerKey} slug={course.slug} endpoint={course.preview_video_url} lessonId={null} poster={course.thumbnail_url}/>
           ) : (
             <div
               className="cursor-pointer h-full w-full"

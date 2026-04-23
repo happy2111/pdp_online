@@ -24,14 +24,14 @@
     "free": "Bepul",
     "paid": "Pullik",
     "free_preview": "Bepul oldindan ko‘rish",
-    "delete": "O‘chirish",
     "lesson_one": "dars",
     "lesson_few": "dars",
     "lesson_many": "dars",
-    "module" : "Modul",
-    "modules" : "Modullar",
+    "module": "Modul",
+    "modules": "Modullar",
     "hour": "soat",
-    "hours": "soat"
+    "hours": "soat",
+    "delete": "O‘chirish"
   },
   "video": {
     "status": {
@@ -126,6 +126,17 @@
       "draft": "Qoralama",
       "published": "Nashr etilgan",
       "archived": "Arxivlangan"
+    },
+    "video": {
+      "download_failed": "Asl videoni omborxonadan yuklab bo'lmadi",
+      "invalid_metadata": "Video fayl ma'lumotlarini tahlil qilib bo'lmadi",
+      "too_long": "Video juda uzun (maksimal 20 daqiqa)",
+      "resolution_too_high": "Sifat juda yuqori (maksimal 1080p)",
+      "transcoding_failed": "Videoni qayta ishlash jarayonida xatolik yuz berdi",
+      "upload_failed": "Ishlangan fayllarni saqlab bo'lmadi",
+      "profiles_missing": "Video sifati sozlamalari topilmadi",
+      "already_in_queue": "Ushbu video allaqachon navbatda turibdi",
+      "recently_processed": "Video yaqinda yangilangan. {{minute} daqiqadan so'ng qayta urinib ko'ring."
     },
     "dialog": {
       "title": "Yangi kurs yaratish",
@@ -344,8 +355,8 @@
 
     "form": {
       "title": "Dars nomi",
-      "title_placeholder": "Dars nomi",
-      "type": "Tur",
+      "title_placeholder": "Dars nomini kiriting",
+      "type": "Dars turi",
       "content_text": "Dars matni",
       "content_text_placeholder": "Dars mazmuni..."
     }
@@ -396,5 +407,6 @@
     "delete_success": "Fikr o'chirildi",
     "delete_error": "Fikrni o'chirishda xatolik yuz berdi"
   },
-  "students": "Talabalar"
+  "students": "Talabalar",
+  "UNKNOWN_ERROR": "Noma’lum xatolik yuz berdi"
 }
