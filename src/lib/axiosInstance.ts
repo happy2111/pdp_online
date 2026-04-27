@@ -31,12 +31,10 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // ❗ Обрабатываем только 401
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
-        // ✅ если refresh уже идет — ждем его
         if (!refreshPromise) {
           refreshPromise = AuthService.refresh()
             .then((res) => {
@@ -55,10 +53,9 @@ api.interceptors.response.use(
 
               if (typeof window !== "undefined") {
                 const currentUrl = window.location.pathname + window.location.search;
-                // window.location.href = `/login?redirect=${encodeURIComponent(currentUrl)}`;
-
                 console.log('Current URL:', currentUrl);
                 console.log(encodeURIComponent(currentUrl))
+                window.location.href = `/login?redirect=${encodeURIComponent(currentUrl)}`;
               }
 
               throw err;
@@ -68,10 +65,8 @@ api.interceptors.response.use(
             });
         }
 
-        // ✅ ВСЕ ждут один и тот же promise
         await refreshPromise;
 
-        // ✅ повторяем оригинальный запрос
         return api(originalRequest);
 
       } catch (err) {
@@ -79,7 +74,6 @@ api.interceptors.response.use(
       }
     }
 
-    // ❗ 403 НЕ трогаем (важно!)
     return Promise.reject(error);
   }
 );

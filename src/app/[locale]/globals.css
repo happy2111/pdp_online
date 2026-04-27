@@ -147,6 +147,15 @@
   .container-custom {
     @apply max-w-7xl mx-auto px-4 md:px-6 lg:px-8;
   }
+
+  .video-js * {
+    pointer-events: none !important;
+  }
+
+  /* Если вы хотите оставить возможность кликать по самому видео (теху) */
+  .video-js .vjs-tech {
+    pointer-events: auto !important;
+  }
 }
 
 
