@@ -357,7 +357,15 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster}: { slug: string 
       <div
         ref={containerRef}
         className="w-full flex items-center h-full pointer-events-none [&_.video-js]:w-full [&_.video-js]:h-full"
-      />
+      >
+        <div
+          className="absolute inset-0 z-1 touch-manipulation"
+          onClick={(e) => {
+            e.stopPropagation();
+            togglePlay();
+          }}
+        />
+      </div>
 
       {/* Спиннер */}
       {waiting && (
