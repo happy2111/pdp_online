@@ -3,8 +3,9 @@
 import { LoginForm } from "@/components/auth/LoginForm";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft } from "lucide-react";
+import {ChevronLeft, Loader2} from "lucide-react";
 import { useRouter } from "@/i18n/navigation";
+import {Suspense} from "react";
 
 export default function LoginPage() {
   const t = useTranslations();
@@ -58,7 +59,14 @@ export default function LoginPage() {
 
         <div className="w-full md:w-[55%] flex flex-col justify-center px-8 py-12 md:px-16 bg-card">
           <div className="w-full max-w-[400px] mx-auto">
-            <LoginForm className="shadow-none border-none bg-transparent p-0 backdrop-blur-none" />
+            <Suspense fallback={
+              <div className="flex flex-col items-center justify-center space-y-4">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                <p className="text-sm text-muted-foreground">{t("common.loading")}</p>
+              </div>
+            }>
+              <LoginForm className="shadow-none border-none bg-transparent p-0 backdrop-blur-none" />
+            </Suspense>
           </div>
         </div>
       </div>

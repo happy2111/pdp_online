@@ -1,54 +1,81 @@
 import axios from "axios";
+import { AuthService } from "@/services/auth-service";
+import { useAuthStore } from "@/stores/auth-store";
+
+let isRefreshing = false;
+let refreshPromise: Promise<any> | null = null;
+let failedQueue: any[] = [];
+
+const processQueue = (error: any, token: string | null = null) => {
+  failedQueue.forEach((prom) => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve(token);
+    }
+  });
+
+  failedQueue = [];
+};
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
     "Content-Type": "application/json",
   },
+  withCredentials: true,
 });
-
-api.interceptors.request.use((config) => {
-  if (typeof window !== 'undefined') {
-    const authStorage = localStorage.getItem("auth-storage");
-
-    if (authStorage) {
-      try {
-        const parsedStorage = JSON.parse(authStorage);
-
-        const token = parsedStorage?.state?.user?.token;
-
-        if (token) {
-          config.headers["Authorization"] = `Bearer ${token}`;
-        }
-      } catch (error) {
-        console.error("Ошибка парсинга auth-storage:", error);
-      }
-    }
-  }
-
-  return config;
-}, (error) => {
-  return Promise.reject(error);
-});
-
 
 api.interceptors.response.use(
-  response => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      if (typeof window !== 'undefined') {
-        localStorage.removeItem("auth-storage")
-        window.location.href = "/login"
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      try {
+        if (!refreshPromise) {
+          refreshPromise = AuthService.refresh()
+            .then((res) => {
+              const { setUser } = useAuthStore.getState();
+
+              if (res.code === 0) {
+                setUser(res.data);
+                return res.data;
+              } else {
+                throw new Error("Refresh failed");
+              }
+            })
+            .catch((err) => {
+              const { setUser } = useAuthStore.getState();
+              setUser(null);
+
+              if (typeof window !== "undefined") {
+                const currentUrl = window.location.pathname + window.location.search;
+                console.log('Current URL:', currentUrl);
+                console.log(encodeURIComponent(currentUrl))
+                window.location.href = `/login?redirect=${encodeURIComponent(currentUrl)}`;
+              }
+
+              throw err;
+            })
+            .finally(() => {
+              refreshPromise = null;
+            });
+        }
+
+        await refreshPromise;
+
+        return api(originalRequest);
+
+      } catch (err) {
+        return Promise.reject(err);
       }
     }
 
-    if (error.response?.status === 403) {
-      if (typeof window !== 'undefined') {
-        window.location.href = "/"
-      }
-    }
-    return Promise.reject(error)
+    return Promise.reject(error);
   }
-)
+);
 
 export default api;

@@ -105,11 +105,6 @@ export function LessonItem({ lesson, onUpdated, courseSlug }: Props) {
     return () => unsubscribe?.()
   }, [isProcessing, lesson.lesson_id, onUpdated])
 
-  useEffect(() => {
-    console.log(socketData?.status)
-    console.log(lesson)
-  }, [socketData?.status]);
-
   const handleVideoUpload = async (file: File) => {
     try {
       setIsProcessing(true)

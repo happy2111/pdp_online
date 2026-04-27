@@ -147,6 +147,23 @@
   .container-custom {
     @apply max-w-7xl mx-auto px-4 md:px-6 lg:px-8;
   }
+
+  .video-js,
+  .video-js * {
+    pointer-events: none !important;
+  }
+
+
+  .vjs-poster {
+    pointer-events: none !important;
+    display: none !important;
+  }
+
+  .vjs-text-track-display,
+  .vjs-loading-spinner,
+  .vjs-big-play-button {
+    display: none !important;
+  }
 }
 
 

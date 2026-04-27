@@ -28,7 +28,15 @@ interface QualityLevel {
 
 type MenuType = 'speed' | 'quality' | null
 
-export const VideoPlayer = ({ slug, endpoint, lessonId, poster}: { slug: string | null; endpoint: string | null, lessonId: number | null, poster: string | undefined }) => {
+interface VideoPlayerProps {
+  slug: string | null;
+  endpoint: string | null;
+  lessonId: number | null;
+  poster: string | undefined;
+  onEnded?: () => void;
+}
+
+export const VideoPlayer = ({ slug, endpoint, lessonId, poster, onEnded }: VideoPlayerProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const playerRef = useRef<any>(null)
   const progressRef = useRef<HTMLDivElement | null>(null)
@@ -82,15 +90,19 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster}: { slug: string 
     const VHS = (videojs as any).Vhs || (videojs as any).Hls
     if (VHS) {
       VHS.xhr.beforeRequest = (options: any) => {
-        if (token) options.headers = { ...options.headers, Authorization: `Bearer ${token}` }
+        options.withCredentials = true
         return options
       }
 
       VHS.xhr.onResponse = (request: any, error: any, response: any) => {
-        // alert(`VHS response: Status ${response?.status}, Error: ${error?.message || 'none'}`)
+        console.log('VHS response:', response)
         if (response?.status === 401) {
           console.log('401 Unauthorized')
-          window.location.href = '/login'
+          const currentUrl = window.location.pathname + window.location.search;
+
+          console.log('Current URL:', currentUrl);
+          console.log(encodeURIComponent(currentUrl))
+          window.location.href = `/login?redirect=${encodeURIComponent(currentUrl)}`;
         }
       }
     }
@@ -116,8 +128,6 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster}: { slug: string 
       controls: false,
       fluid: true,
       poster: poster,
-      // Умное переключение: на мобилках доверяем нативному плееру,
-      // на десктопе используем VHS (Videojs HTTP Streaming)
       html5: {
         vhs: {
           overrideNative: !videojs.browser.IS_ANY_SAFARI && !videojs.browser.IS_ANDROID,
@@ -131,11 +141,8 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster}: { slug: string 
       }],
     })
 
-    // Добавляем алерт для дебага инициализации
-    // alert(`Player initialized. Override native: ${!videojs.browser.IS_ANY_SAFARI && !videojs.browser.IS_ANDROID}. Endpoint: ${process.env.NEXT_PUBLIC_BASE_URL}${endpoint}. Token present: ${!!token}`)
 
     player.ready(async () => {
-      // alert('Player ready')
       if (lessonId) {
         try {
           const response = await ProgressService.getLessonProgress(lessonId)
@@ -151,17 +158,21 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster}: { slug: string 
     player.on('error', () => {
       const err = player.error()
       console.log('VIDEO ERROR:', err)
-      // alert(`Video error: ${err?.message || 'Unknown error'}. Code: ${err?.code}. Status: ${err?.status}`)
 
       // @ts-ignore
       if (err?.status === 401) {
         console.log('401 detected через player.error')
 
-        window.location.href = '/login'
+        const currentUrl = window.location.pathname + window.location.search;
+        console.log('Current URL:', currentUrl);
+        console.log(encodeURIComponent(currentUrl))
+
+        window.location.href = `/login?redirect=${encodeURIComponent(currentUrl)}`;
+
       }
     })
 
-    player.on('play',           () => {
+    player.on('play', () => {
       setPlaying(true)
 
       if (lessonId) {
@@ -195,6 +206,7 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster}: { slug: string 
         stopHeartbeat()
         sendHeartbeat()
       }
+      if (onEnded) onEnded();
     })
     player.on('waiting',        () => setWaiting(true))
     player.on('canplay',        () => setWaiting(false))
@@ -242,7 +254,14 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster}: { slug: string 
     playerRef.current = player
 
     const onFsChange = () => setFullscreen(!!document.fullscreenElement)
-    document.addEventListener('fullscreenchange', onFsChange)
+
+    const onWebkitFsChange = () => {
+      // @ts-ignore
+      setFullscreen(!!document.webkitIsFullScreen);
+    };
+
+    document.addEventListener('fullscreenchange', onFsChange);
+    document.addEventListener('webkitfullscreenchange', onWebkitFsChange);
 
     return () => {
       document.removeEventListener('fullscreenchange', onFsChange)
@@ -251,7 +270,7 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster}: { slug: string 
         playerRef.current = null
       }
     }
-  }, [slug, endpoint, lessonId])
+  }, [slug, endpoint, lessonId, onEnded])
 
   useEffect(() => { playerRef.current?.playbackRate(speed) }, [speed])
   useEffect(() => {
@@ -289,13 +308,25 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster}: { slug: string 
   const toggleMute = () => setMuted(m => !m)
 
   const toggleFullscreen = () => {
-    if (!wrapperRef.current) return
-    if (!document.fullscreenElement) {
-      wrapperRef.current.requestFullscreen()
-    } else {
-      document.exitFullscreen()
+    const p = playerRef.current;
+    const el = wrapperRef.current as any;
+
+    if (!p || !el) return;
+
+    if (el.requestFullscreen) {
+      if (!document.fullscreenElement) {
+        el.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
     }
-  }
+    else if (p.tech_?.el_?.webkitEnterFullscreen) {
+      p.tech_.el_.webkitEnterFullscreen();
+    }
+    else if (el.webkitRequestFullscreen) {
+      el.webkitRequestFullscreen();
+    }
+  };
 
   const skipBy = (sec: number) => {
     const p = playerRef.current
@@ -332,7 +363,18 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster}: { slug: string 
       onClick={togglePlay}
     >
       {/* video.js контейнер */}
-      <div ref={containerRef} className="w-full flex items-center h-full [&_.video-js]:w-full [&_.video-js]:h-full" />
+      <div
+        ref={containerRef}
+        className="w-full flex items-center h-full pointer-events-none [&_.video-js]:w-full [&_.video-js]:h-full"
+      >
+        <div
+          className="absolute inset-0 z-1 touch-manipulation"
+          onClick={(e) => {
+            e.stopPropagation();
+            togglePlay();
+          }}
+        />
+      </div>
 
       {/* Спиннер */}
       {waiting && (
@@ -382,69 +424,79 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster}: { slug: string 
         {/* Панель кнопок */}
         <div className="flex items-center gap-3">
 
-          <button onClick={() => skipBy(-10)} className="text-white/80 hover:text-white transition-colors">
-            <RotateCcw className="w-4 h-4" />
+          {/* Кнопка назад */}
+          <button
+            onClick={() => skipBy(-10)}
+            className="text-white/80 hover:text-white transition-all active:scale-90 active:text-white p-1"
+          >
+            <RotateCcw className="w-5 h-5" />
           </button>
 
-          <button onClick={togglePlay} className="text-white hover:text-white/80 transition-colors">
+          {/* Кнопка Play/Pause */}
+          <button
+            onClick={togglePlay}
+            className="text-white hover:text-white/80 transition-all active:scale-90 p-1"
+          >
             {playing
-              ? <Pause className="w-5 h-5 fill-white" />
-              : <Play className="w-5 h-5 fill-white ml-0.5" />
+              ? <Pause className="w-6 h-6 fill-white" />
+              : <Play className="w-6 h-6 fill-white ml-0.5" />
             }
           </button>
 
-          <button onClick={() => skipBy(10)} className="text-white/80 hover:text-white transition-colors">
-            <RotateCw className="w-4 h-4" />
+          {/* Кнопка вперед */}
+          <button
+            onClick={() => skipBy(10)}
+            className="text-white/80 hover:text-white transition-all active:scale-90 active:text-white p-1"
+          >
+            <RotateCw className="w-5 h-5" />
           </button>
 
           {/* Громкость */}
           <div className="flex items-center gap-2 group/vol">
-            <button onClick={() => setMuted(m => !m)} className="text-white/80 hover:text-white transition-colors">
-              {muted || volume === 0 ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+            <button
+              onClick={() => setMuted(m => !m)}
+              className="text-white/80 hover:text-white transition-all active:scale-90 p-1"
+            >
+              {muted || volume === 0 ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
             </button>
             <input
               type="range" min={0} max={1} step={0.05}
               value={muted ? 0 : volume}
               onChange={e => { setVolume(+e.target.value); setMuted(false) }}
-              className="w-0 group-hover/vol:w-16 overflow-hidden transition-all duration-200 accent-primary cursor-pointer"
+              className="w-0 group-hover/vol:w-16 overflow-hidden transition-all duration-200 accent-primary cursor-pointer hidden @md/video:block"
             />
           </div>
 
-          {/* Время */}
-          <span className="text-white/70 text-xs hidden @sm/video:block font-mono">
-            {formatTime(currentTime)} / {formatTime(duration)}
-          </span>
-
           <div className="flex-1" />
 
-          {/* Скорость + Качество в одной кнопке Settings */}
+          {/* Настройки (Скорость/Качество) */}
           <div className="relative">
             <button
               onClick={() => toggleMenu('quality')}
-              className={`flex items-center gap-1 text-xs font-medium transition-colors
-                ${openMenu === 'quality' ? 'text-primary' : 'text-white/80 hover:text-white'}`}
+              className={`flex items-center justify-center w-8 h-8 rounded-full transition-all active:scale-90 active:bg-white/10
+        ${openMenu === 'quality' ? 'text-primary bg-white/10' : 'text-white/80 hover:text-white'}`}
             >
-              <Settings className="w-4 h-4" />
+              <Settings className="w-5 h-5" />
             </button>
 
             {openMenu === 'quality' && (
-              <div className="absolute bottom-full right-0 mb-2 w-52 bg-black/90 backdrop-blur-sm
-                rounded-xl border border-white/10 overflow-hidden shadow-xl">
+              <div className="absolute bottom-full right-0 mb-4 w-52 bg-black/95 backdrop-blur-md
+        rounded-2xl border border-white/10 overflow-hidden shadow-2xl animate-in fade-in zoom-in-95 duration-150">
 
                 {/* Секция скорости */}
-                <div className="px-3 pt-2 pb-1">
-                  <p className="text-white/40 text-[10px] uppercase tracking-wider mb-1 flex items-center gap-1">
+                <div className="px-4 pt-3 pb-2">
+                  <p className="text-white/40 text-[10px] uppercase tracking-widest mb-2 flex items-center gap-1.5 font-bold">
                     <Gauge className="w-3 h-3" /> Скорость
                   </p>
-                  <div className="flex gap-1 flex-wrap">
+                  <div className="grid grid-cols-3 gap-1.5">
                     {SPEEDS.map(s => (
                       <button
                         key={s}
-                        onClick={() => { setSpeed(s); }}
-                        className={`px-2 py-0.5 rounded-md text-xs transition-colors
-                          ${speed === s
-                          ? 'bg-primary text-white font-semibold'
-                          : 'bg-white/10 text-white/70 hover:bg-white/20'
+                        onClick={() => { setSpeed(s); setOpenMenu(null); }}
+                        className={`py-1.5 rounded-lg text-xs transition-all active:scale-90
+                  ${speed === s
+                          ? 'bg-primary text-white font-bold shadow-lg shadow-primary/20'
+                          : 'bg-white/5 text-white/70 active:bg-white/20'
                         }`}
                       >
                         {s === 1 ? '1x' : `${s}x`}
@@ -453,24 +505,23 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster}: { slug: string 
                   </div>
                 </div>
 
-                <div className="border-t border-white/10 my-1" />
+                <div className="h-[1px] bg-white/10 mx-2" />
 
                 {/* Секция качества */}
-                <div className="px-3 pb-2 pt-1">
-                  <p className="text-white/40 text-[10px] uppercase tracking-wider mb-1">
+                <div className="px-2 py-2">
+                  <p className="px-2 text-white/40 text-[10px] uppercase tracking-widest mb-1.5 font-bold">
                     Качество
                   </p>
                   {qualities.length === 0 ? (
-                    <p className="text-white/30 text-xs py-1">Загрузка...</p>
+                    <p className="px-2 text-white/30 text-xs py-2">Поиск потоков...</p>
                   ) : (
-                    <div className="space-y-0.5">
-                      {/* Авто */}
+                    <div className="flex flex-col gap-0.5">
                       <button
                         onClick={() => applyQuality('auto')}
-                        className={`w-full text-left px-2 py-1 rounded-md text-xs transition-colors
-                          ${activeQuality === 'auto'
-                          ? 'bg-primary/20 text-primary font-semibold'
-                          : 'text-white/70 hover:bg-white/10'
+                        className={`w-full text-left px-3 py-2 rounded-xl text-xs transition-all active:scale-[0.98] active:bg-white/10
+                  ${activeQuality === 'auto'
+                          ? 'bg-primary/20 text-primary font-bold'
+                          : 'text-white/70 hover:bg-white/5'
                         }`}
                       >
                         Авто
@@ -479,33 +530,31 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster}: { slug: string 
                         <button
                           key={q.height}
                           onClick={() => applyQuality(q.height)}
-                          className={`w-full text-left px-2 py-1 rounded-md text-xs transition-colors
-                            ${activeQuality === q.height
-                            ? 'bg-primary/20 text-primary font-semibold'
-                            : 'text-white/70 hover:bg-white/10'
+                          className={`w-full text-left px-3 py-2 rounded-xl text-xs transition-all active:scale-[0.98] active:bg-white/10
+                    ${activeQuality === q.height
+                            ? 'bg-primary/20 text-primary font-bold'
+                            : 'text-white/70 hover:bg-white/5'
                           }`}
                         >
-                          {q.label}
-                          {q.height === 1080 && <span className="ml-1 text-[9px] text-white/30">HD</span>}
-                          {q.height === 720  && <span className="ml-1 text-[9px] text-white/30">HD</span>}
+                  <span className="flex items-center justify-between">
+                    {q.label}
+                    {(q.height >= 720) && <span className="text-[9px] px-1 bg-white/10 rounded-sm text-white/40">HD</span>}
+                  </span>
                         </button>
                       ))}
                     </div>
                   )}
                 </div>
-
               </div>
             )}
           </div>
 
-          {/* Текущее качество/скорость — подсказка */}
-          <span className="text-white/40 text-[10px] font-mono hidden sm:block">
-            {qualityLabel} · {speed}x
-          </span>
-
           {/* Полный экран */}
-          <button onClick={toggleFullscreen} className="text-white/80 hover:text-white transition-colors">
-            {fullscreen ? <Minimize className="w-4 h-4" /> : <Maximize className="w-4 h-4" />}
+          <button
+            onClick={toggleFullscreen}
+            className="text-white/80 hover:text-white transition-all active:scale-90 p-1"
+          >
+            {fullscreen ? <Minimize className="w-5 h-5" /> : <Maximize className="w-5 h-5" />}
           </button>
         </div>
       </div>
