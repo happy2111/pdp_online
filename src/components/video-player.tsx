@@ -245,7 +245,14 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster}: { slug: string 
     playerRef.current = player
 
     const onFsChange = () => setFullscreen(!!document.fullscreenElement)
-    document.addEventListener('fullscreenchange', onFsChange)
+
+    const onWebkitFsChange = () => {
+      // @ts-ignore
+      setFullscreen(!!document.webkitIsFullScreen);
+    };
+
+    document.addEventListener('fullscreenchange', onFsChange);
+    document.addEventListener('webkitfullscreenchange', onWebkitFsChange);
 
     return () => {
       document.removeEventListener('fullscreenchange', onFsChange)
@@ -292,13 +299,25 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster}: { slug: string 
   const toggleMute = () => setMuted(m => !m)
 
   const toggleFullscreen = () => {
-    if (!wrapperRef.current) return
-    if (!document.fullscreenElement) {
-      wrapperRef.current.requestFullscreen()
-    } else {
-      document.exitFullscreen()
+    const p = playerRef.current;
+    const el = wrapperRef.current as any;
+
+    if (!p || !el) return;
+
+    if (el.requestFullscreen) {
+      if (!document.fullscreenElement) {
+        el.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
     }
-  }
+    else if (p.tech_?.el_?.webkitEnterFullscreen) {
+      p.tech_.el_.webkitEnterFullscreen();
+    }
+    else if (el.webkitRequestFullscreen) {
+      el.webkitRequestFullscreen();
+    }
+  };
 
   const skipBy = (sec: number) => {
     const p = playerRef.current
