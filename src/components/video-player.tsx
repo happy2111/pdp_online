@@ -82,15 +82,19 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster}: { slug: string 
     const VHS = (videojs as any).Vhs || (videojs as any).Hls
     if (VHS) {
       VHS.xhr.beforeRequest = (options: any) => {
-        if (token) options.headers = { ...options.headers, Authorization: `Bearer ${token}` }
+        options.withCredentials = true
         return options
       }
 
       VHS.xhr.onResponse = (request: any, error: any, response: any) => {
-        // alert(`VHS response: Status ${response?.status}, Error: ${error?.message || 'none'}`)
+        console.log('VHS response:', response)
         if (response?.status === 401) {
           console.log('401 Unauthorized')
-          window.location.href = '/login'
+          const currentUrl = window.location.pathname + window.location.search;
+
+          console.log('Current URL:', currentUrl);
+          console.log(encodeURIComponent(currentUrl))
+          window.location.href = `/login?redirect=${encodeURIComponent(currentUrl)}`;
         }
       }
     }
@@ -116,8 +120,6 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster}: { slug: string 
       controls: false,
       fluid: true,
       poster: poster,
-      // Умное переключение: на мобилках доверяем нативному плееру,
-      // на десктопе используем VHS (Videojs HTTP Streaming)
       html5: {
         vhs: {
           overrideNative: !videojs.browser.IS_ANY_SAFARI && !videojs.browser.IS_ANDROID,
@@ -131,11 +133,8 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster}: { slug: string 
       }],
     })
 
-    // Добавляем алерт для дебага инициализации
-    // alert(`Player initialized. Override native: ${!videojs.browser.IS_ANY_SAFARI && !videojs.browser.IS_ANDROID}. Endpoint: ${process.env.NEXT_PUBLIC_BASE_URL}${endpoint}. Token present: ${!!token}`)
 
     player.ready(async () => {
-      // alert('Player ready')
       if (lessonId) {
         try {
           const response = await ProgressService.getLessonProgress(lessonId)
@@ -151,17 +150,21 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster}: { slug: string 
     player.on('error', () => {
       const err = player.error()
       console.log('VIDEO ERROR:', err)
-      // alert(`Video error: ${err?.message || 'Unknown error'}. Code: ${err?.code}. Status: ${err?.status}`)
 
       // @ts-ignore
       if (err?.status === 401) {
         console.log('401 detected через player.error')
 
-        window.location.href = '/login'
+        const currentUrl = window.location.pathname + window.location.search;
+        console.log('Current URL:', currentUrl);
+        console.log(encodeURIComponent(currentUrl))
+
+        window.location.href = `/login?redirect=${encodeURIComponent(currentUrl)}`;
+
       }
     })
 
-    player.on('play',           () => {
+    player.on('play', () => {
       setPlaying(true)
 
       if (lessonId) {

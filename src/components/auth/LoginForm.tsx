@@ -7,7 +7,6 @@ import { Loader2, Eye, EyeOff } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
-import { useRouter } from "@/i18n/navigation";
 
 import { LoginSchema, type LoginSchemaType } from "@/schemas/auth-schema";
 import { useAuthStore } from "@/stores/auth-store";
@@ -18,11 +17,17 @@ import { Input } from "@/components/ui/input";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {Link} from "@/i18n/navigation";
+import {useRouter, useSearchParams} from "next/navigation";
 
 export function LoginForm({ className }: { className?: string }) {
   const t = useTranslations();
   const router = useRouter();
   const loginAction = useAuthStore((state) => state.login);
+
+
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get('redirect') || '/';
+
 
   const [showPass, setShowPass] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -40,7 +45,7 @@ export function LoginForm({ className }: { className?: string }) {
   const onSubmit = async (data: LoginSchemaType) => {
     startTransition(async () => {
       try {
-        await loginAction(data, router, t);
+        await loginAction(data, router, t, redirect);
       } catch (error: any) {
         toast.error(t(`errors.${error.message}`) || t("errors.1000"));
       }

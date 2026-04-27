@@ -12,8 +12,6 @@ export default async function LearnLayout({
 }) {
   const { slug } = await params
 
-  console.log("slug:", slug)
-
   const [courseRes, modulesRes] = await Promise.all([
     CoursesService.getCourseBySlug(slug),
     ModulesService.getCourseModules(slug),

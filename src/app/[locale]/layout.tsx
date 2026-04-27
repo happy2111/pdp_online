@@ -9,6 +9,7 @@ import { hasLocale, NextIntlClientProvider} from 'next-intl';
 import {routing} from '@/i18n/routing';
 import {ThemeProvider} from "next-themes";
 import NextTopLoader from 'nextjs-toploader';
+import AuthInitializer from "@/components/AuthInitializer";
 
 
 const geistSans = Geist({
@@ -57,6 +58,7 @@ export default async function RootLayout({
       <NextIntlClientProvider>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <NextTopLoader shadow="none" color="var(--primary)" showSpinner={false} />
+          <AuthInitializer />
             {children}
           <Toaster
               position={'top-right'}

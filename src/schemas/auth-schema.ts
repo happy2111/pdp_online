@@ -49,7 +49,6 @@ export const AuthResponseSchema = z.object({
   is_active: z.boolean(),
   created_at: z.string(),
   updated_at: z.string(),
-  token: z.string(),
 });
 
 
