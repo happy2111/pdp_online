@@ -8,6 +8,7 @@ import { LessonTitle } from "@/schemas/modules-schema"
 import { VideoPlayer } from "@/components/video-player"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import {useCallback, useEffect, useState} from "react";
 
 interface Props {
   lesson: LessonTitle | null
@@ -15,7 +16,7 @@ interface Props {
   isEnrolled: boolean
 }
 
-function VideoLesson({ lesson }: { lesson: LessonTitle }) {
+function VideoLesson({ lesson, handleVideoEnded }: { lesson: LessonTitle, handleVideoEnded?: () => void }) {
   if (lesson.video_status !== "DONE" || !lesson.content_url) {
     return (
       <div className="w-full h-full flex flex-col items-center justify-center gap-3 bg-black text-white/60">
@@ -31,6 +32,7 @@ function VideoLesson({ lesson }: { lesson: LessonTitle }) {
       endpoint={`/api/v1/videos/lesson/stream/${lesson.lesson_id}/master.m3u8`}
       lessonId={lesson.lesson_id}
       poster={undefined}
+      onEnded={handleVideoEnded}
     />
   )
 }
@@ -76,6 +78,7 @@ function LockedLesson() {
 export function LessonContent({ lesson, allLessons, isEnrolled }: Props) {
   const router = useRouter()
   const params = useParams<{ slug: string }>()
+  const [autoNextCountdown, setAutoNextCountdown] = useState<number | null>(null);
 
   if (!lesson) return <EmptyLesson />
 
@@ -89,15 +92,58 @@ export function LessonContent({ lesson, allLessons, isEnrolled }: Props) {
   const canGo = (l: LessonTitle | null) =>
     !!l && (isEnrolled || l.is_free_preview)
 
-  const go = (l: LessonTitle) =>
-    router.push(`/courses/${params.slug}/learn/${l.lesson_id}`)
+  const go = useCallback((l: LessonTitle) => {
+    setAutoNextCountdown(null);
+    router.push(`/courses/${params.slug}/learn/${l.lesson_id}`);
+  }, [params.slug, router]);
+
+  useEffect(() => {
+    if (autoNextCountdown === null) return;
+
+    if (autoNextCountdown <= 0) {
+      if (nextLesson) go(nextLesson);
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      setAutoNextCountdown(prev => (prev !== null ? prev - 1 : null));
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [autoNextCountdown, nextLesson, go]);
+
+  const handleVideoEnded = () => {
+    if (nextLesson && isEnrolled) {
+      setAutoNextCountdown(5);
+    }
+  };
 
   return (
     <div className="flex flex-col h-full overflow-hidden">
 
+      {autoNextCountdown !== null && (
+        <div className="absolute inset-0 z-[100] flex flex-col items-center justify-center bg-black/90 backdrop-blur-md animate-in fade-in duration-300">
+          <div className="text-center space-y-4">
+            <p className="text-white/60 text-sm font-medium uppercase tracking-widest">Следующий урок</p>
+            <h3 className="text-white text-xl font-bold px-6 max-w-md line-clamp-2">{nextLesson?.title}</h3>
+            <div className="relative flex items-center justify-center">
+              <span className="text-6xl font-black text-primary animate-pulse">{autoNextCountdown}</span>
+            </div>
+            <div className="flex gap-3 pt-4">
+              <Button variant="default" onClick={() => nextLesson && go(nextLesson)}>
+                Перейти сейчас
+              </Button>
+              <Button variant="outline" className="bg-transparent text-white border-white/20 hover:bg-white/10" onClick={() => setAutoNextCountdown(null)}>
+                Отмена
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* ── Content ── */}
       <div className={`flex-1 overflow-hidden ${lesson.type === "VIDEO" ? "bg-black" : "bg-background"}`}>
-        {lesson.type === "VIDEO"  && <VideoLesson lesson={lesson} />}
+        {lesson.type === "VIDEO"  && <VideoLesson lesson={lesson} handleVideoEnded={handleVideoEnded} />}
         {lesson.type === "TEXT"   && <TextLesson lesson={lesson} />}
         {lesson.type !== "VIDEO" && lesson.type !== "TEXT" && (
           <div className="h-full flex flex-col items-center justify-center gap-3 text-muted-foreground p-8">

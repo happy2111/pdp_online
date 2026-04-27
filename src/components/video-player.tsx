@@ -28,7 +28,15 @@ interface QualityLevel {
 
 type MenuType = 'speed' | 'quality' | null
 
-export const VideoPlayer = ({ slug, endpoint, lessonId, poster}: { slug: string | null; endpoint: string | null, lessonId: number | null, poster: string | undefined }) => {
+interface VideoPlayerProps {
+  slug: string | null;
+  endpoint: string | null;
+  lessonId: number | null;
+  poster: string | undefined;
+  onEnded?: () => void;
+}
+
+export const VideoPlayer = ({ slug, endpoint, lessonId, poster, onEnded }: VideoPlayerProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const playerRef = useRef<any>(null)
   const progressRef = useRef<HTMLDivElement | null>(null)
@@ -198,6 +206,7 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster}: { slug: string 
         stopHeartbeat()
         sendHeartbeat()
       }
+      if (onEnded) onEnded();
     })
     player.on('waiting',        () => setWaiting(true))
     player.on('canplay',        () => setWaiting(false))
@@ -261,7 +270,7 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster}: { slug: string 
         playerRef.current = null
       }
     }
-  }, [slug, endpoint, lessonId])
+  }, [slug, endpoint, lessonId, onEnded])
 
   useEffect(() => { playerRef.current?.playbackRate(speed) }, [speed])
   useEffect(() => {
