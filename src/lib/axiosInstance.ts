@@ -48,13 +48,16 @@ api.interceptors.response.use(
               }
             })
             .catch((err) => {
-              const { setUser } = useAuthStore.getState();
-              setUser(null);
+
+              const { logout } = useAuthStore.getState();
 
               if (typeof window !== "undefined") {
                 const currentUrl = window.location.pathname + window.location.search;
                 console.log('Current URL:', currentUrl);
                 console.log(encodeURIComponent(currentUrl))
+
+                logout();
+
                 window.location.href = `/login?redirect=${encodeURIComponent(currentUrl)}`;
               }
 

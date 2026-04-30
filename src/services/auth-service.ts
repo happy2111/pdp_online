@@ -38,4 +38,9 @@ export class AuthService  {
     const res = await api.post<ApiResponse<AuthResponse>>(`/auth/refresh`);
     return res.data;
   }
+
+  static async logout(): Promise<BaseResponse> {
+    const res = await api.post<BaseResponse>(`/auth/logout`);
+    return res.data;
+  }
 }
