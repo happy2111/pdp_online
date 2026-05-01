@@ -9,6 +9,8 @@ import {
   Gauge, RotateCcw, RotateCw, Loader2, Settings
 } from 'lucide-react'
 import {ProgressService} from "@/services/lesson-progress-service";
+import axios from "axios";
+import api from "@/lib/axiosInstance";
 
 const SPEEDS = [0.5, 0.75, 1, 1.25, 1.5, 2]
 
@@ -57,6 +59,7 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster, onEnded }: Video
   const [openMenu, setOpenMenu] = useState<MenuType>(null)
   const [qualities, setQualities] = useState<QualityLevel[]>([])
   const [activeQuality, setActiveQuality] = useState<number | 'auto'>('auto')
+  const [isAuthorized, setIsAuthorized] = useState(false);
 
   const resetHideTimer = useCallback(() => {
     setShowControls(true)
@@ -68,7 +71,23 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster, onEnded }: Video
   }, [])
 
   useEffect(() => {
-    if (!endpoint || !containerRef.current) return
+    if (!endpoint || !lessonId) return;
+
+    const authorizeStream = async () => {
+      try {
+        await api.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/videos/lesson/${lessonId}/set-token`);
+
+        setIsAuthorized(true);
+      } catch (err) {
+        console.error("Failed to authorize stream", err);
+      }
+    };
+
+    authorizeStream();
+  }, [lessonId, endpoint]);
+
+  useEffect(() => {
+    if (!isAuthorized || !endpoint || !containerRef.current) return;
     if (playerRef.current && !playerRef.current.isDisposed()) return
 
     const videoEl = document.createElement('video')
@@ -81,12 +100,6 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster, onEnded }: Video
     containerRef.current.innerHTML = ''
     containerRef.current.appendChild(videoEl)
 
-    const authStorage = localStorage.getItem('auth-storage')
-    let token: string | null = null
-    if (authStorage) {
-      try { token = JSON.parse(authStorage)?.state?.user?.token } catch {}
-    }
-
     const VHS = (videojs as any).Vhs || (videojs as any).Hls
     if (VHS) {
       VHS.xhr.beforeRequest = (options: any) => {
@@ -95,15 +108,11 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster, onEnded }: Video
       }
 
       VHS.xhr.onResponse = (request: any, error: any, response: any) => {
-        console.log('VHS response:', response)
-        if (response?.status === 401) {
-          console.log('401 Unauthorized')
-          const currentUrl = window.location.pathname + window.location.search;
-
-          console.log('Current URL:', currentUrl);
-          console.log(encodeURIComponent(currentUrl))
-          window.location.href = `/login?redirect=${encodeURIComponent(currentUrl)}`;
-        }
+        console.log('[VHS DEBUG]', {
+          url: request?.uri?.substring(0, 80),
+          status: response?.statusCode,
+          error: error
+        })
       }
     }
 
@@ -141,7 +150,6 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster, onEnded }: Video
       }],
     })
 
-
     player.ready(async () => {
       if (lessonId) {
         try {
@@ -155,22 +163,24 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster, onEnded }: Video
       }
     })
 
-    player.on('error', () => {
-      const err = player.error()
-      console.log('VIDEO ERROR:', err)
+    player.on('error', async () => {
+      const err = player.error();
 
-      // @ts-ignore
-      if (err?.status === 401) {
-        console.log('401 detected через player.error')
+      if (err?.code === 4 || (err as any).status === 403 || (err as any).status === 401) {
+        console.log('Token expired or unauthorized, attempting to refresh...');
 
-        const currentUrl = window.location.pathname + window.location.search;
-        console.log('Current URL:', currentUrl);
-        console.log(encodeURIComponent(currentUrl))
-
-        window.location.href = `/login?redirect=${encodeURIComponent(currentUrl)}`;
-
+        try {
+          await api.get(`/api/v1/videos/lesson/${lessonId}/set-token`);
+          player.error(undefined);
+          player.src(player.currentSrc());
+          player.load();
+          player.play();
+        } catch (retryErr) {
+          const currentUrl = window.location.pathname + window.location.search;
+          window.location.href = `/login?redirect=${encodeURIComponent(currentUrl)}`;
+        }
       }
-    })
+    });
 
     player.on('play', () => {
       setPlaying(true)
@@ -190,8 +200,6 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster, onEnded }: Video
       }
 
     })
-
-
 
     player.on('pause', () => {
       setPlaying(false)
@@ -222,7 +230,6 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster, onEnded }: Video
       setBuffered(player.bufferedEnd?.() ?? 0)
     })
 
-    // Загружаем уровни качества после инициализации
     player.ready(() => {
       const ql = (player as any).qualityLevels?.()
       if (!ql) return
@@ -270,7 +277,7 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster, onEnded }: Video
         playerRef.current = null
       }
     }
-  }, [slug, endpoint, lessonId, onEnded])
+  }, [slug, endpoint, lessonId, onEnded, isAuthorized])
 
   useEffect(() => { playerRef.current?.playbackRate(speed) }, [speed])
   useEffect(() => {

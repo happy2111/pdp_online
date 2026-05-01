@@ -23,7 +23,7 @@ export default function Protected({
   const { isAuthenticated, user, isLoading, rehydrated } = useAuthStore()
 
   useEffect(() => {
-    if (!rehydrated) return // Ждем пока zustand загрузит localStorage
+    if (!rehydrated) return
 
     if (!isAuthenticated) {
       router.replace(redirectTo)
