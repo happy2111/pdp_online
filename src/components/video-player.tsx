@@ -171,9 +171,9 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster, onEnded }: Video
 
         try {
           await api.get(`/api/v1/videos/lesson/${lessonId}/set-token`);
-
           player.error(undefined);
           player.src(player.currentSrc());
+          player.load();
           player.play();
         } catch (retryErr) {
           const currentUrl = window.location.pathname + window.location.search;
