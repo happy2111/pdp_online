@@ -61,7 +61,7 @@ export default async function RootLayout({
           <AuthInitializer />
             {children}
           <Toaster
-              position={'top-right'}
+              position={'top-center'}
           />
         </ThemeProvider>
       </NextIntlClientProvider>

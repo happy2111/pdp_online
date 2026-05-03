@@ -87,7 +87,8 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster, onEnded }: Video
   }, [lessonId, endpoint]);
 
   useEffect(() => {
-    if (!isAuthorized || !endpoint || !containerRef.current) return;
+    if (lessonId && !isAuthorized) return;
+    if (!endpoint || !containerRef.current) return;
     if (playerRef.current && !playerRef.current.isDisposed()) return
 
     const videoEl = document.createElement('video')
