@@ -1,30 +1,11 @@
 'use client'
 
-import {useTranslations} from "next-intl";
 import {Suspense, useEffect} from "react";
 import {printMe} from "@/lib/utils";
 import Hero from "@/components/home/Hero";
-import {CoursesList} from "@/components/courses/CoursesList";
-import {BookOpen, Loader2, Users} from "lucide-react";
-import {useSearchParams} from "next/navigation";
-import {useRouter} from "@/i18n/navigation";
-import {TeachersList} from "@/components/TeachersList";
-import {Button} from "@/components/ui/button";
+import {TabsSection} from "@/components/home/TabsSection";
 
 export default function Home() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const t = useTranslations();
-
-  const tab = searchParams.get("tab") || "courses";
-
-  const setTab = (newTab: string) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("tab", newTab);
-    params.set("page", "0");
-    router.push(`?${params.toString()}`, {scroll: false});
-  };
-
   useEffect(() => {
     printMe()
   }, []);
@@ -48,65 +29,10 @@ export default function Home() {
         </div>
 
         <div className="container-custom relative z-1 py-16">
-          <div className="py-16 sm:flex flex-col items-center">
-            <div className="inline-flex gap-0 bg-background mb-12 border border-border/20 rounded-xl p-1">
-              <button
-                onClick={() => setTab("courses")}
-                className={`
-                  relative flex items-center gap-2 px-6 py-2 rounded-[calc(var(--radius-xl)-4px)]
-                  text-sm font-medium transition-all duration-200 cursor-pointer border-none
-                  ${tab === "courses"
-                              ? "bg-muted text-foreground"
-                              : "bg-transparent text-muted-foreground hover:text-foreground"
-                            }
-                `}
-              >
-                <BookOpen className="w-4 h-4" />
-                Курсы
-                <span
-                  className={`text-xs px-1.5 py-0.5 rounded-full min-w-5 text-center transition-all ${
-                    tab === "courses" ? "bg-background text-foreground" : "bg-muted text-muted-foreground"
-                  }`}
-                >
-                  24
-                </span>
-              </button>
-
-              <button
-                onClick={() => setTab("teachers")}
-                className={`
-                  relative flex items-center gap-2 px-6 py-2 rounded-[calc(var(--radius-xl)-4px)]
-                  text-sm font-medium transition-all duration-200 cursor-pointer border-none
-                  ${tab === "teachers"
-                              ? "bg-muted text-foreground"
-                              : "bg-transparent text-muted-foreground hover:text-foreground"
-                            }
-                `}
-              >
-                <Users className="w-4 h-4" />
-                Учителя
-                <span
-                  className={`text-xs px-1.5 py-0.5 rounded-full min-w-5 text-center transition-all ${
-                    tab === "teachers" ? "bg-background text-foreground" : "bg-muted text-muted-foreground"
-                  }`}
-                >
-      8
-    </span>
-              </button>
-            </div>
-
-            {tab === "courses" && (
-              <Suspense
-                fallback={null}
-              >
-                <CoursesList />
-              </Suspense>)}
-            {tab === "teachers" &&
-              <Suspense
-                fallback={null}
-              ><TeachersList />
-              </Suspense>
-            }
+          <div className="py-16 sm:flex flex-col items-center w-full">
+            <Suspense fallback={<div className="h-64" />}>
+              <TabsSection />
+            </Suspense>
           </div>
         </div>
 

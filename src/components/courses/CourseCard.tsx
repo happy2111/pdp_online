@@ -28,7 +28,6 @@ export function CourseCard({course, isOwner, customPath}: Props) {
       onClick={() => router.push(`${customPath ?? `/courses/${course.slug}`}`)}
       className="group pt-0! border-border relative gap-2 overflow-hidden rounded-3xl bg-card/70 backdrop-blur transition-all duration-500 hover:shadow-2xl hover:shadow-primary/5 hover:-translate-y-1.5 cursor-pointer flex flex-col border-none ring-1 ring-border/50"
     >
-      {/* Контейнер изображения */}
       <div className="relative w-full h-36 overflow-hidden">
         <img
           src={course.thumbnail_url}

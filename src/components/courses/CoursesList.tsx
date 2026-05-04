@@ -59,7 +59,6 @@ export function CoursesList() {
 
   return (
     <div id="courses-list">
-      {/* Вызов фильтра сверху списка */}
       <CategoryFilter />
 
       {loading ? (

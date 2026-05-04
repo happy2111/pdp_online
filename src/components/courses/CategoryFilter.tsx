@@ -63,7 +63,7 @@ export function CategoryFilter() {
   if (loading) return <Loader2 className="animate-spin h-5 w-5 mb-6" />;
 
   return (
-    <div className="flex flex-col gap-3 mb-8">
+    <div className="flex w-full flex-col gap-3 mb-8">
       <div className="flex w-full overflow-x-auto no-scrollbar gap-2 pb-0.5">
         <Button
           variant="ghost"
