@@ -412,7 +412,35 @@
     "delete_error": "Fikrni o'chirishda xatolik yuz berdi"
   },
   "students": "Talabalar",
-  "UNKNOWN_ERROR": "Noma’lum xatolik yuz berdi",
+  "UNKNOWN_ERROR": "Noma'lum xatolik yuz berdi",
+  "contact": {
+    "title": "Biz bilan aloqa qiling",
+    "subtitle": "Savol bormi? Biz sizga yordam bermasga tayyormiz! Quyidagi formani to'ldiring va biz 24 soat ichida javob beramiz.",
+    "form_title": "Xabar yuborish",
+    "form_description": "Bizga xabar yozing va biz pochtangizga javob beramiz",
+    "email": "Email",
+    "email_description": "Hozir bize xat yozing",
+    "phone": "Telefon",
+    "phone_description": "Ish vaqti paytida bizga qo'ng'iroq qiling",
+    "support": "Texnik yordam",
+    "support_description": "Bizning yordam jamoasidan yordam oling",
+    "available": "Mavjud",
+    "submit": "Yuborish",
+    "submitting": "Yuborilmoqda...",
+    "success_message": "Rahmat! Biz sizning xabaringizni oldi va tez orada javob beramiz.",
+    "fields": {
+      "name": "Ism",
+      "name_placeholder": "Ismingizni kiriting",
+      "phone": "Telefon raqami",
+      "phone_format": "Format: +998 90 000 00 00",
+      "telegram": "Telegram",
+      "telegram_format": "Format: @username (kamida 5 ta belgi)",
+      "optional": "ixtiyoriy",
+      "message": "Xabar",
+      "message_placeholder": "Sizning muammoni yoki savolingizni tavsiflang...",
+      "message_length": "5 dan 1000 ta belgigacha"
+    }
+  },
   "footer": {
     "description": "Ta'lim va rivojlanish uchun onlayn platforma, ko'nikmalar va bilimlarni yaxshilash uchun keng doiradagi kurslar va resurslarni taklif etadi.",
     "usefulLinks": "Foydali havolalar",
