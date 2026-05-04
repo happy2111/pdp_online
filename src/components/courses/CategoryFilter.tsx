@@ -62,7 +62,32 @@ export function CategoryFilter() {
     router.push(`?${params.toString()}`, { scroll: false });
   };
 
-  if (loading) return <Loader2 className="animate-spin h-5 w-5 mb-6" />;
+  if (loading) return (
+    <div className="flex w-full flex-col gap-3 mb-8 animate-pulse">
+      {/* Ряд основных категорий */}
+      <div className="flex w-full overflow-x-auto no-scrollbar gap-2 pb-0.5">
+        {/* Кнопка "Все" */}
+        <div className="shrink-0 rounded-2xl h-10 w-24 bg-muted/60" />
+        {/* Заглушки для категорий */}
+        {[1, 2, 3, 4, 5].map((i) => (
+          <div
+            key={i}
+            className="shrink-0 rounded-2xl h-10 w-32 bg-muted/60"
+          />
+        ))}
+      </div>
+
+      {/* Опционально: Имитация подкатегорий (можно скрыть или оставить полупрозрачным) */}
+      <div className="flex w-full overflow-x-auto no-scrollbar gap-2 px-3 py-2.5 bg-muted/20 rounded-2xl border border-border/20">
+        {[1, 2, 3].map((i) => (
+          <div
+            key={i}
+            className="shrink-0 rounded-xl h-9 w-20 bg-muted/40"
+          />
+        ))}
+      </div>
+    </div>
+  );
 
   return (
     <div className="flex w-full flex-col gap-3 mb-8">
