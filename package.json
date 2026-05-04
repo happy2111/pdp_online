@@ -25,6 +25,7 @@
     "nextjs-toploader": "^3.9.17",
     "radix-ui": "^1.4.3",
     "react": "19.2.3",
+    "react-countup": "^6.5.3",
     "react-dom": "19.2.3",
     "react-hook-form": "^7.72.0",
     "sockjs-client": "^1.6.1",
