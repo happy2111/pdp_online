@@ -5,10 +5,25 @@ import {Suspense, useEffect} from "react";
 import {printMe} from "@/lib/utils";
 import Hero from "@/components/home/Hero";
 import {CoursesList} from "@/components/courses/CoursesList";
-import {Loader2} from "lucide-react";
+import {BookOpen, Loader2, Users} from "lucide-react";
+import {useSearchParams} from "next/navigation";
+import {useRouter} from "@/i18n/navigation";
+import {TeachersList} from "@/components/TeachersList";
+import {Button} from "@/components/ui/button";
 
 export default function Home() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const t = useTranslations();
+
+  const tab = searchParams.get("tab") || "courses";
+
+  const setTab = (newTab: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("tab", newTab);
+    params.set("page", "0");
+    router.push(`?${params.toString()}`, {scroll: false});
+  };
 
   useEffect(() => {
     printMe()
@@ -27,29 +42,72 @@ export default function Home() {
 
       <div className="relative min-h-svh overflow-hidden ">
 
-        {/* Background blobs */}
         <div className="absolute inset-0 z-0 pointer-events-none">
           <div className="absolute top-[35%] right-[5%] w-[450px] h-[450px] rounded-full bg-green-500/15 blur-[120px] animate-blob animation-delay-2000" />
           <div className="absolute bottom-[15%] left-[15%] w-72 h-72 rounded-full bg-green-400/20 blur-[100px] animate-blob animation-delay-4000" />
         </div>
 
         <div className="container-custom relative z-1 py-16">
+          <div className="py-16 sm:flex flex-col items-center">
+            <div className="inline-flex gap-0 bg-background mb-12 border border-border/20 rounded-xl p-1">
+              <button
+                onClick={() => setTab("courses")}
+                className={`
+                  relative flex items-center gap-2 px-6 py-2 rounded-[calc(var(--radius-xl)-4px)]
+                  text-sm font-medium transition-all duration-200 cursor-pointer border-none
+                  ${tab === "courses"
+                              ? "bg-muted text-foreground"
+                              : "bg-transparent text-muted-foreground hover:text-foreground"
+                            }
+                `}
+              >
+                <BookOpen className="w-4 h-4" />
+                Курсы
+                <span
+                  className={`text-xs px-1.5 py-0.5 rounded-full min-w-5 text-center transition-all ${
+                    tab === "courses" ? "bg-background text-foreground" : "bg-muted text-muted-foreground"
+                  }`}
+                >
+                  24
+                </span>
+              </button>
 
-          <h1 className="text-3xl font-bold mb-10">
-            {t("courses.title")}
-          </h1>
+              <button
+                onClick={() => setTab("teachers")}
+                className={`
+                  relative flex items-center gap-2 px-6 py-2 rounded-[calc(var(--radius-xl)-4px)]
+                  text-sm font-medium transition-all duration-200 cursor-pointer border-none
+                  ${tab === "teachers"
+                              ? "bg-muted text-foreground"
+                              : "bg-transparent text-muted-foreground hover:text-foreground"
+                            }
+                `}
+              >
+                <Users className="w-4 h-4" />
+                Учителя
+                <span
+                  className={`text-xs px-1.5 py-0.5 rounded-full min-w-5 text-center transition-all ${
+                    tab === "teachers" ? "bg-background text-foreground" : "bg-muted text-muted-foreground"
+                  }`}
+                >
+      8
+    </span>
+              </button>
+            </div>
 
-
-          <Suspense
-            fallback={
-              <div className="flex justify-center items-center h-64 text-primary">
-                <Loader2 className="w-8 h-8 animate-spin" />
-              </div>
+            {tab === "courses" && (
+              <Suspense
+                fallback={null}
+              >
+                <CoursesList />
+              </Suspense>)}
+            {tab === "teachers" &&
+              <Suspense
+                fallback={null}
+              ><TeachersList />
+              </Suspense>
             }
-          >
-            <CoursesList />
-          </Suspense>
-
+          </div>
         </div>
 
         <style
