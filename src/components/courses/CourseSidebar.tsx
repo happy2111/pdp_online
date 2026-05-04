@@ -23,6 +23,7 @@ import {formatDurationHour} from "@/lib/utils";
 import {CoursesService} from "@/services/courses-service";
 import {useParams} from "next/navigation";
 import {useRouter} from "next/navigation";
+import NProgress from "nprogress";
 
 export const CourseSidebar = ({ course }: { course: CourseDetails }) => {
   const isAuth = useAuthStore((state) => state.isAuthenticated)
@@ -68,6 +69,7 @@ export const CourseSidebar = ({ course }: { course: CourseDetails }) => {
           const targetPath = `/${locale}/courses/${course.slug}/learn/${lessonId}`;
 
           setTimeout(() => {
+            NProgress.start();
             router.push(targetPath);
           }, 800);
 

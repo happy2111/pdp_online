@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Link } from "@/i18n/navigation";
+import NProgress from "nprogress";
 
 export function SignupForm({ className }: { className?: string }) {
   const t = useTranslations();
@@ -74,7 +75,10 @@ export function SignupForm({ className }: { className?: string }) {
   return (
     <Card className={cn("relative z-10 w-full backdrop-blur-xl bg-background/70 shadow-2xl border-muted/40", className)}>
       <Button
-        onClick={() => router.push('/')}
+        onClick={() => {
+          NProgress.start();
+          router.push('/')
+        }}
         className="hover:bg-white/10 px-2 absolute md:hidden hover:text-white rounded-2xl"
         variant='ghost'
       ><ChevronLeft/>Orqaga</Button>

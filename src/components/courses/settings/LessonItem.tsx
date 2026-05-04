@@ -27,6 +27,7 @@ import { LessonTitle } from "@/schemas/modules-schema"
 import { useRouter } from "@/i18n/navigation"
 import { useTranslations } from "next-intl"
 import { Progress } from "@/components/ui/progress"
+import NProgress from "nprogress";
 
 const TYPE_ICONS: Record<string, React.ElementType> = {
   VIDEO: Video,
@@ -175,7 +176,10 @@ export function LessonItem({ lesson, onUpdated, courseSlug }: Props) {
 
           {(lesson.video_status === "DONE" || socketData?.status === "DONE") && !isProcessing && (
             <Button
-              onClick={() => router.push(`/courses/${courseSlug}/learn/${lesson.lesson_id}`)}
+              onClick={() => {
+                NProgress.start();
+                router.push(`/courses/${courseSlug}/learn/${lesson.lesson_id}`)
+              }}
               variant="ghost"
               size="icon"
               className="h-7 w-7 text-primary"

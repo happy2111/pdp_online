@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import { useRouter } from "@/i18n/navigation";
 import Stats from "@/components/auth/Stats";
+import NProgress from "nprogress";
 
 export default function SignupPage() {
   const t = useTranslations();
@@ -23,7 +24,10 @@ export default function SignupPage() {
 
           <div className="relative z-10 ">
             <Button
-              onClick={() => router.push('/')}
+              onClick={() => {
+                NProgress.start();
+                router.push('/')
+              }}
               className="hover:bg-white/10 px-2! text-white! -translate-x-4 text-primary-foreground rounded-2xl"
               variant='ghost'
             >

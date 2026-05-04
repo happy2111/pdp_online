@@ -12,6 +12,7 @@ import { CourseSidebar } from "./CourseSidebar"
 import { LearnContext } from "./LearnContext"
 import { useRouter } from "@/i18n/navigation";
 import { useParams } from "next/navigation";
+import NProgress from "nprogress";
 
 interface Props {
   course: CourseDetails
@@ -33,6 +34,7 @@ export function CourseLearningShell({ course, modules, children }: Props) {
 
   const handleSelectLesson = useCallback((lesson: LessonTitle) => {
     setSidebarOpen(false)
+    NProgress.start();
     router.push(`/courses/${params.slug}/learn/${lesson.lesson_id}`)
   }, [router, params.slug])
 
@@ -49,7 +51,10 @@ export function CourseLearningShell({ course, modules, children }: Props) {
         <header className="sticky top-0 flex items-center gap-3 h-14 border-b border-border/60 bg-background/95 backdrop-blur shrink-0 z-20 px-4">
           <Button
             variant="ghost" size="icon" className="h-8 w-8 shrink-0"
-            onClick={() => router.push(`/courses/${params.slug}`)}
+            onClick={() => {
+              NProgress.start();
+              router.push(`/courses/${params.slug}`)
+            }}
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>

@@ -9,6 +9,7 @@ import { VideoPlayer } from "@/components/video-player"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import {useCallback, useEffect, useState} from "react";
+import NProgress from "nprogress";
 
 interface Props {
   lesson: LessonTitle | null
@@ -94,6 +95,7 @@ export function LessonContent({ lesson, allLessons, isEnrolled }: Props) {
 
   const go = useCallback((l: LessonTitle) => {
     setAutoNextCountdown(null);
+    NProgress.start();
     router.push(`/courses/${params.slug}/learn/${l.lesson_id}`);
   }, [params.slug, router]);
 

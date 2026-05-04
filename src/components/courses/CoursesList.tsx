@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronRight, Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { CategoryFilter } from "./CategoryFilter";
+import NProgress from "nprogress";
 
 export function CoursesList() {
   const searchParams = useSearchParams();
@@ -54,6 +55,7 @@ export function CoursesList() {
   const updateUrl = (newPage: number) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("page", newPage.toString());
+    NProgress.start();
     router.push(`?${params.toString()}`, { scroll: false });
   };
 

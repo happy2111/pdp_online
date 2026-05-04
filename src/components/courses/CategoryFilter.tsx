@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import {useTranslations} from "next-intl";
 import {cn} from "@/lib/utils";
+import NProgress from "nprogress";
 
 export function CategoryFilter() {
   const router = useRouter();
@@ -57,6 +58,7 @@ export function CategoryFilter() {
       params.set("category_id", id.toString());
     }
     params.set("page", "0");
+    NProgress.start();
     router.push(`?${params.toString()}`, { scroll: false });
   };
 

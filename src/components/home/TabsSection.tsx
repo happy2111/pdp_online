@@ -9,6 +9,7 @@ import { BookOpen, Users } from "lucide-react";
 import {useStatsStore} from "@/stores/stats-store";
 import CountUp from "react-countup";
 import {useTranslations} from "next-intl";
+import NProgress from "nprogress";
 
 export function TabsSection() {
   const searchParams = useSearchParams();
@@ -25,6 +26,7 @@ export function TabsSection() {
     const params = new URLSearchParams(searchParams.toString());
     params.set("tab", newTab);
     params.set("page", "0");
+    NProgress.start();
     router.push(`?${params.toString()}`, { scroll: false });
   };
 

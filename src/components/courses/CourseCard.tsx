@@ -7,6 +7,7 @@ import {Button} from "@/components/ui/button";
 import {useTranslations} from "next-intl";
 import {Star, Settings, StarHalf} from "lucide-react";
 import {useRouter} from "@/i18n/navigation"
+import NProgress from "nprogress";
 
 interface Props {
   course: CourseListItem;
@@ -20,12 +21,16 @@ export function CourseCard({course, isOwner, customPath}: Props) {
 
   const handleSettingsClick = (e: React.MouseEvent) => {
     e.stopPropagation();
+    NProgress.start();
     router.push(`/courses/${course.slug}/settings`);
   };
 
   return (
     <Card
-      onClick={() => router.push(`${customPath ?? `/courses/${course.slug}`}`)}
+      onClick={() => {
+        NProgress.start();
+        router.push(`${customPath ?? `/courses/${course.slug}`}`)
+      }}
       className="group pt-0! border-border relative gap-2 overflow-hidden rounded-3xl bg-card/70 backdrop-blur transition-all duration-500 hover:shadow-2xl hover:shadow-primary/5 hover:-translate-y-1.5 cursor-pointer flex flex-col border-none ring-1 ring-border/50"
     >
       <div className="relative w-full h-36 overflow-hidden">

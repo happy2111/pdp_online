@@ -6,38 +6,6 @@ import { TeachersSchema } from "@/schemas/teachers-schema";
 import { Loader2 } from "lucide-react";
 import {TeacherCard} from "@/components/TeacherCard";
 
-const BANNER_COLORS = [
-  "from-blue-100 to-blue-200",
-  "from-green-100 to-green-200",
-  "from-amber-100 to-amber-200",
-  "from-pink-100 to-pink-200",
-  "from-purple-100 to-purple-200",
-  "from-teal-100 to-teal-200",
-];
-
-const AVATAR_COLORS = [
-  "bg-blue-500",
-  "bg-green-500",
-  "bg-amber-500",
-  "bg-pink-500",
-  "bg-purple-500",
-  "bg-teal-500",
-];
-
-function getInitials(name: string) {
-  return name
-    .split(" ")
-    .slice(0, 2)
-    .map((w) => w[0])
-    .join("")
-    .toUpperCase();
-}
-
-interface TeacherCardProps {
-  teacher: TeachersSchema;
-  index: number;
-}
-
 
 export function TeachersList() {
   const [teachers, setTeachers] = useState<TeachersSchema[]>([]);

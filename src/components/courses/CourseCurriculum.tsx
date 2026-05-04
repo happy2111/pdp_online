@@ -10,6 +10,7 @@ import { CourseModule } from "@/schemas/modules-schema";
 import { formatDuration } from "@/lib/utils";
 import { useRouter } from "@/i18n/navigation";
 import {useTranslations} from "next-intl";
+import NProgress from "nprogress";
 
 interface CurriculumProps {
   modules: CourseModule[];
@@ -50,6 +51,7 @@ export const CourseCurriculum = ({ modules, courseSlug }: CurriculumProps) => {
                     key={lesson.lesson_id}
                     onClick={() => {
                       if (!isLocked) {
+                        NProgress.start();
                         router.push(
                           `/courses/${courseSlug}/learn/${lesson.lesson_id}`
                         );

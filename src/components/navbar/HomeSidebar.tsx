@@ -30,6 +30,7 @@ import {
 import { CategoriesService } from "@/services/categories-service"
 import { Category } from "@/schemas/categories-schema"
 import { NavUserSidebar } from "@/components/navbar/NavUserSidebar"
+import NProgress from "nprogress";
 
 function HomeSidebarContent({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const router = useRouter()
@@ -61,6 +62,8 @@ function HomeSidebarContent({ ...props }: React.ComponentProps<typeof Sidebar>) 
     params.set("page", "0")
 
     // Переход на главную с параметрами
+
+    NProgress.start();
     router.push(`/?${params.toString()}#courses-list`, { scroll: true })
 
     // Закрываем мобильный сайдбар

@@ -10,6 +10,7 @@ import {useStatsStore} from "@/stores/stats-store";
 import api from "@/lib/axiosInstance";
 import CountUp from "react-countup";
 import Stats from "@/components/auth/Stats";
+import NProgress from "nprogress";
 
 
 export default function LoginPage() {
@@ -32,7 +33,10 @@ export default function LoginPage() {
 
           <div className="relative z-10 ">
             <Button
-              onClick={() => router.push('/')}
+              onClick={() => {
+                NProgress.start();
+                router.push('/')
+              }}
               className="hover:bg-white/10 px-2! -translate-x-4 text-white rounded-2xl"
               variant='ghost'
             >

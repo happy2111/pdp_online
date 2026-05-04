@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/popover"
 
 import { cn } from "@/lib/utils"
+import NProgress from "nprogress";
 
 export const CategoryDropdown = () => {
   const t = useTranslations()
@@ -55,6 +56,7 @@ export const CategoryDropdown = () => {
     params.set("page", "0") // Сбрасываем пагинацию
 
     // Переходим на страницу курсов (или главную) с новыми параметрами
+    NProgress.start();
     router.push(`/?${params.toString()}#courses-list`, { scroll: true })
     setOpen(false) // Закрываем выпадающее меню
   }
