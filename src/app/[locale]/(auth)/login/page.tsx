@@ -5,11 +5,20 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import {ChevronLeft, Loader2} from "lucide-react";
 import { useRouter } from "@/i18n/navigation";
-import {Suspense} from "react";
+import {Suspense, useEffect} from "react";
+import {useStatsStore} from "@/stores/stats-store";
+import api from "@/lib/axiosInstance";
+import CountUp from "react-countup";
+
 
 export default function LoginPage() {
   const t = useTranslations();
   const router = useRouter();
+  const { stats, isLoading, fetchStats } = useStatsStore();
+
+  useEffect(() => {
+    fetchStats();
+  }, []);
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-muted/30 max-md:p-4 transition-colors dark:text-white! duration-300">
@@ -42,18 +51,44 @@ export default function LoginPage() {
           </div>
 
           <div className="relative z-10 flex items-end gap-10">
-            <div>
-              <div className="text-3xl font-bold">12K+</div>
-              <div className="text-[11px] opacity-80 font-medium uppercase tracking-wider mt-1">O'quvchilar</div>
+            <div className="transform transition-all duration-700 ease-out animate-[fadeInUp_0.8s_ease]">
+              <div className="text-3xl font-bold">
+                {isLoading ? (
+                  "..."
+                ) : (
+                  <CountUp end={stats?.students ?? 0} duration={1.5} />
+                )}
+              </div>
+              <div className="text-[11px] opacity-80 font-medium uppercase tracking-wider mt-1">
+                O'quvchilar
+              </div>
             </div>
-            <div>
-              <div className="text-3xl font-bold">340+</div>
-              <div className="text-[11px] opacity-80 font-medium uppercase tracking-wider mt-1">Kurslar</div>
+            <div className="transform transition-all duration-700 ease-out animate-[fadeInUp_0.8s_ease]">
+              <div className="text-3xl font-bold">
+                {isLoading ? (
+                  "..."
+                ) : (
+                  <CountUp end={stats?.courses ?? 0} duration={1.5} />
+                )}
+              </div>
+              <div className="text-[11px] opacity-80 font-medium uppercase tracking-wider mt-1">
+  Kurslar
+              </div>
             </div>
-            <div>
-              <div className="text-3xl font-bold">80+</div>
-              <div className="text-[11px] opacity-80 font-medium uppercase tracking-wider mt-1">O'qituvchilar</div>
+            <div className="transform transition-all duration-700 ease-out animate-[fadeInUp_0.8s_ease]">
+              <div className="text-3xl font-bold">
+                {isLoading ? (
+                  "..."
+                ) : (
+                  <CountUp end={stats?.teachers ?? 0} duration={1.5} />
+                )}
+              </div>
+              <div className="text-[11px] opacity-80 font-medium uppercase tracking-wider mt-1">
+                O'qituvchilar
+              </div>
             </div>
+
+
           </div>
         </div>
 
