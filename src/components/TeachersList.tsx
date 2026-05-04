@@ -20,9 +20,33 @@ export function TeachersList() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-64 text-primary">
-        <Loader2 className="w-8 h-8 animate-spin" />
+      <div className="min-w-full grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {[1, 2, 3, 4].map((_, i) => (
+          <div className="rounded-3xl bg-card/70 ring-1 ring-border/50 overflow-hidden animate-pulse flex flex-col">
+            <div className="w-full h-40 bg-muted" />
+            <div className="flex-1 flex flex-col px-4 pb-4 pt-3 text-center">
+              <div className="h-4 w-32 mx-auto bg-muted rounded-md" />
+              <div className="h-3 w-24 mx-auto bg-muted rounded-md mt-2" />
+              <div className="my-3 border-t border-dashed border-border" />
+              <div className="flex justify-center gap-5 mt-auto">
+                <div className="flex flex-col items-center gap-1">
+                  <div className="h-4 w-6 bg-muted rounded-md" />
+                  <div className="h-3 w-8 bg-muted rounded-md" />
+                </div>
+                <div className="flex flex-col items-center gap-1">
+                  <div className="h-4 w-6 bg-muted rounded-md" />
+                  <div className="h-3 w-14 bg-muted rounded-md" />
+                </div>
+                <div className="flex flex-col items-center gap-1">
+                  <div className="h-4 w-6 bg-muted rounded-md" />
+                  <div className="h-3 w-12 bg-muted rounded-md" />
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
+
     );
   }
 

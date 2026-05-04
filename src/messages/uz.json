@@ -412,5 +412,17 @@
     "delete_error": "Fikrni o'chirishda xatolik yuz berdi"
   },
   "students": "Talabalar",
-  "UNKNOWN_ERROR": "Noma’lum xatolik yuz berdi"
+  "UNKNOWN_ERROR": "Noma’lum xatolik yuz berdi",
+  "footer": {
+    "description": "Ta'lim va rivojlanish uchun onlayn platforma, ko'nikmalar va bilimlarni yaxshilash uchun keng doiradagi kurslar va resurslarni taklif etadi.",
+    "usefulLinks": "Foydali havolalar",
+    "about": "Biz haqimizda",
+    "courses": "Kurslar",
+    "teachers": "O'qituvchilar",
+    "contact": "Aloqa",
+    "privacy": "Maxfiylik siyosati",
+    "terms": "Foydalanish shartlari",
+    "followUs": "Bizni kuzatib boring",
+    "copyright": "© 2026 PDP Online. Barcha huquqlar himoyalangan."
+  }
 }

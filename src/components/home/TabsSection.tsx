@@ -32,11 +32,12 @@ export function TabsSection() {
 
   return (
     <>
-      <div className="mb-10 inline-flex gap-0 bg-white/20 dark:bg-black/30  border border-border/20 rounded-xl p-1">
+      <div className="mb-10 inline-flex gap-0 bg-background/40 backdrop-blur-sm
+                border border-border shadow-lgrounded-xl rounded-3xl p-1">
         <button
           onClick={() => setTab("courses")}
           className={`
-      relative flex items-center gap-2 px-6 py-2 rounded-[calc(var(--radius-xl)-4px)]
+      relative flex items-center gap-2 px-6 py-2 rounded-3xl
       text-sm font-medium transition-all duration-200 cursor-pointer border-none
       ${tab === "courses"
             ? "bg-muted/40 text-foreground"
@@ -56,7 +57,7 @@ export function TabsSection() {
         <button
           onClick={() => setTab("teachers")}
           className={`
-      relative flex items-center gap-2 px-6 py-2 rounded-[calc(var(--radius-xl)-4px)]
+      relative flex items-center gap-2 px-6 py-2 rounded-3xl
       text-sm font-medium transition-all duration-200 cursor-pointer border-none
       ${tab === "teachers"
             ? "bg-muted/40 text-foreground"

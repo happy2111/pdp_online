@@ -6,6 +6,8 @@ export const TeachersSchema = z.object({
   avatar_url: z.string(),
   experience_year: z.number(),
   department: z.string(),
+  rating_avg: z.number(),
+  total_students: z.number(),
 })
 
 export type TeachersSchema = z.infer<typeof TeachersSchema>

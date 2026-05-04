@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <div className="relative w-full">
 
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+      <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute top-[10%] left-[10%] w-80 h-80 rounded-full bg-primary/20 blur-[100px] animate-blob" />
         <div className="absolute top-[40%] right-[10%] w-[420px] h-[420px] rounded-full bg-accent/20 blur-[120px] animate-blob animation-delay-2000" />
         <div className="absolute bottom-[10%] left-[25%] w-72 h-72 rounded-full bg-primary/15 blur-[100px] animate-blob animation-delay-4000" />

@@ -68,26 +68,26 @@ export function TeacherCard({ teacher, index }: TeacherCardProps) {
               лет
             </span>
           </div>
-          {/*{teacher.students_count != null && (*/}
-          {/*  <div className="flex flex-col items-center gap-0.5">*/}
-          {/*    <span className="text-sm font-bold text-foreground">*/}
-          {/*      {teacher.students_count}*/}
-          {/*    </span>*/}
-          {/*    <span className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground/70">*/}
-          {/*      студентов*/}
-          {/*    </span>*/}
-          {/*  </div>*/}
-          {/*)}*/}
-          {/*{teacher.rating != null && (*/}
-          {/*  <div className="flex flex-col items-center gap-0.5">*/}
-          {/*    <span className="text-sm font-bold text-foreground">*/}
-          {/*      {teacher.rating.toFixed(1)}*/}
-          {/*    </span>*/}
-          {/*    <span className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground/70">*/}
-          {/*      рейтинг*/}
-          {/*    </span>*/}
-          {/*  </div>*/}
-          {/*)}*/}
+          {teacher.total_students != null && (
+            <div className="flex flex-col items-center gap-0.5">
+              <span className="text-sm font-bold text-foreground">
+                {teacher.total_students}
+              </span>
+              <span className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground/70">
+                студентов
+              </span>
+            </div>
+          )}
+          {teacher.rating_avg != null && (
+            <div className="flex flex-col items-center gap-0.5">
+              <span className="text-sm font-bold text-foreground">
+                {teacher.rating_avg.toFixed(1)}
+              </span>
+              <span className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground/70">
+                рейтинг
+              </span>
+            </div>
+          )}
         </div>
       </div>
     </div>

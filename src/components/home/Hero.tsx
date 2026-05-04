@@ -79,7 +79,7 @@ const Hero = () => {
                   setQuery(e.target.value);
                   if (!isOpen) setIsOpen(true);
                 }}
-                className="h-12 pl-12 pr-4 rounded-full bg-card/70 backdrop-blur border-border focus-visible:ring-primary transition-all"
+                className="h-12 pl-12 pr-4 rounded-full bg-background/40! backdrop-blur-sm border-border focus-visible:ring-primary transition-all"
               />
               <div className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">
                 {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
