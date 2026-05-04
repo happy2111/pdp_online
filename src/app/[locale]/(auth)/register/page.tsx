@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import { useRouter } from "@/i18n/navigation";
+import Stats from "@/components/auth/Stats";
 
 export default function SignupPage() {
   const t = useTranslations();
@@ -32,29 +33,7 @@ export default function SignupPage() {
             <h2 className="text-3xl font-bold mb-2 mt-4">PDP Online</h2>
           </div>
 
-          <div className="relative z-10">
-            <h1 className="text-4xl font-extrabold leading-tight mb-4">
-              Xush kelibsiz!
-            </h1>
-            <p className="opacity-90 text-lg max-w-[280px]">
-              Mutahassis bo'lishlikdagi safaringizni davom ettiring. Minglab kurslar sizni kutmoqda.
-            </p>
-          </div>
-
-          <div className="relative z-10 flex gap-8">
-            <div>
-              <div className="text-2xl font-bold">12K+</div>
-              <div className="text-xs opacity-80 uppercase tracking-wider">O'quvchilar</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold">340+</div>
-              <div className="text-xs opacity-80 uppercase tracking-wider">Kurslar</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold">80+</div>
-              <div className="text-xs opacity-80 uppercase tracking-wider">O'qituvchilar</div>
-            </div>
-          </div>
+          <Stats/>
         </div>
         <div className="w-full md:w-1/2 flex flex-col justify-center p-8 md:p-12 bg-card">
           <div className="w-full max-w-[450px] mx-auto">
