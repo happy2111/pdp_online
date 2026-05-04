@@ -30,7 +30,11 @@
     "modules" : "Модули",
     "hour": "час",
     "hours": "часов",
-    "delete": "Удалить"
+    "delete": "Удалить",
+    "tab": {
+      "courses": "Курсы",
+      "teachers": "Преподаватели"
+    }
   },
   "video":{
     "status": {

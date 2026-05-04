@@ -58,7 +58,7 @@ export function CoursesList() {
   };
 
   return (
-    <div id="courses-list">
+    <div id="courses-list" className="min-w-full">
       <CategoryFilter />
 
       {loading ? (

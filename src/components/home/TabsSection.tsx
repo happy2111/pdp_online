@@ -8,11 +8,12 @@ import { TeachersList } from "@/components/TeachersList";
 import { BookOpen, Users } from "lucide-react";
 import {useStatsStore} from "@/stores/stats-store";
 import CountUp from "react-countup";
+import {useTranslations} from "next-intl";
 
 export function TabsSection() {
   const searchParams = useSearchParams();
   const router = useRouter();
-
+  const t = useTranslations();
   const { stats, isLoading, fetchStats } = useStatsStore();
   useEffect(() => {
     fetchStats();
@@ -42,7 +43,7 @@ export function TabsSection() {
     `}
         >
           <BookOpen className="w-4 h-4" />
-          Курсы
+          {t("common.tab.courses")}
           <span className={`text-xs px-1.5 py-0.5 rounded-full min-w-5 text-center transition-all ${
             tab === "courses" ? "bg-background text-foreground" : "bg-muted text-muted-foreground"
           }`}>
@@ -62,7 +63,7 @@ export function TabsSection() {
     `}
         >
           <Users className="w-4 h-4" />
-          Учителя
+          {t("common.tab.teachers")}
           <span className={`text-xs px-1.5 py-0.5 rounded-full min-w-5 text-center transition-all ${
             tab === "teachers" ? "bg-background text-foreground" : "bg-muted text-muted-foreground"
           }`}>
@@ -72,7 +73,7 @@ export function TabsSection() {
       </div>
 
       <Suspense fallback={
-        <div className="flex justify-center items-center h-64 text-primary"></div>
+        <div className="flex justify-center items-center min-w-full h-64 text-primary"></div>
       }>
         {tab === "courses" && <CoursesList />}
         {tab === "teachers" && <TeachersList />}

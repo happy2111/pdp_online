@@ -31,7 +31,11 @@
     "modules": "Modullar",
     "hour": "soat",
     "hours": "soat",
-    "delete": "O‘chirish"
+    "delete": "O‘chirish",
+    "tab": {
+      "courses": "Kurslar",
+      "teachers": "O'qituvchilar"
+    }
   },
   "video": {
     "status": {
