@@ -9,6 +9,7 @@ import { CoursesService } from "@/services/courses-service";
 import { CourseListItem } from "@/schemas/courses-schema";
 import {Link, useRouter} from "@/i18n/navigation";
 import NProgress from "nprogress";
+import SponsorsCarousel from "@/components/home/SponsorsCarousel";
 
 const Hero = () => {
   const t = useTranslations();
@@ -119,6 +120,8 @@ const Hero = () => {
               </div>
             )}
           </div>
+
+          <SponsorsCarousel />
         </div>
       </div>
     </section>

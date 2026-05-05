@@ -22,7 +22,7 @@ export function TeachersList() {
     return (
       <div className="min-w-full grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {[1, 2, 3, 4].map((_, i) => (
-          <div className="rounded-3xl bg-card/70 ring-1 ring-border/50 overflow-hidden animate-pulse flex flex-col">
+          <div key={i} className="rounded-3xl bg-card/70 ring-1 ring-border/50 overflow-hidden animate-pulse flex flex-col">
             <div className="w-full h-40 bg-muted" />
             <div className="flex-1 flex flex-col px-4 pb-4 pt-3 text-center">
               <div className="h-4 w-32 mx-auto bg-muted rounded-md" />

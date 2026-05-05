@@ -67,45 +67,27 @@ export function CoursesList() {
       {loading ? (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grib-cols-5">
           {[1, 2, 3, 4].map((_, i) => (
-            <Card className="pt-0 border-border relative gap-2 overflow-hidden rounded-3xl bg-card/70 flex flex-col border-none ring-1 ring-border/50 animate-pulse">
-
-              {/* Image */}
+            <Card key={i} className="pt-0 border-border relative gap-2 overflow-hidden rounded-3xl bg-card/70 flex flex-col border-none ring-1 ring-border/50 animate-pulse">
               <div className="w-full h-36 bg-muted" />
-
               <CardContent className="px-4 pb-4 flex-1 flex flex-col pt-2">
-
-                {/* Title */}
                 <div className="h-4 w-3/4 bg-muted rounded-md mb-2" />
-
-                {/* Description */}
                 <div className="space-y-1 mb-2">
                   <div className="h-3 w-full bg-muted rounded-md" />
                   <div className="h-3 w-5/6 bg-muted rounded-md" />
                 </div>
-
-                {/* Divider */}
                 <div className="my-3 border-t border-dashed border-border" />
-
-                {/* Rating + Level */}
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-1">
                     <div className="h-3 w-16 bg-muted rounded-md" />
                   </div>
-
                   <div className="h-5 w-12 bg-muted rounded-md" />
                 </div>
-
-                {/* Bottom */}
                 <div className="flex items-center justify-between items-end mt-auto">
-
                   <div className="h-3 w-24 bg-muted rounded-md" />
-
                   <div className="h-4 w-16 bg-muted rounded-md" />
                 </div>
-
               </CardContent>
             </Card>
-
             ))}
         </div>
       ) : (

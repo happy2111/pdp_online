@@ -2,10 +2,8 @@ import type { Viewport } from 'next'
 import {SidebarProvider} from "@/components/ui/sidebar";
 import {HomeSidebar} from "@/components/navbar/HomeSidebar";
 import Navbar from "@/components/navbar/Navbar";
-import ContactUs from "@/components/ContactUs";
 import Footer from "@/components/Footer";
-import {Loader2} from "lucide-react";
-import {Suspense} from "react";
+
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -27,7 +25,6 @@ export default async function MainLayout({
         <main className="w-full pt-28 flex-grow">
           {children}
         </main>
-        <ContactUs />
         <Footer />
       </div>
     </SidebarProvider>

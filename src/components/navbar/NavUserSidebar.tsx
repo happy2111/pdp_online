@@ -6,7 +6,7 @@ import {
   ChevronsUpDown,
   LogOut,
   LogIn,
-  UserPlus
+  UserPlus, User, User2
 } from "lucide-react"
 
 import {
@@ -79,6 +79,7 @@ export function NavUserSidebar() {
   const avatarUrl = user.avatar_url || ""
   const roleName = user.role_name || "User"
 
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -145,16 +146,10 @@ export function NavUserSidebar() {
 
               <DropdownMenuItem asChild>
                 <Link href="/profile" className="cursor-pointer">
-                  <BadgeCheck className="mr-2 size-4" />
-                  {t("sidebar.account")}
+                  <User2 className="mr-2 size-4" />
+                  {t("sidebar.profile")}
                 </Link>
               </DropdownMenuItem>
-
-              <DropdownMenuItem>
-                <Bell className="mr-2 size-4" />
-                {t("sidebar.notifications")}
-              </DropdownMenuItem>
-
             </DropdownMenuGroup>
 
             <DropdownMenuSeparator />

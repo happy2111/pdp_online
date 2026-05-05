@@ -36,7 +36,7 @@ const Navbar = () => {
       <nav className={`
                 relative container-custom py-3
                 flex justify-between items-center 
-                rounded-3xl transition-all duration-300
+                rounded-full transition-all duration-300
                 bg-background/40 backdrop-blur-sm
                 border border-border shadow-lg
                 w-full

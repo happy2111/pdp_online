@@ -16,10 +16,6 @@ import {
 } from "@/schemas/sponsors-schema";
 
 export class SponsorsService {
-  // ========================
-  // GET Sponsors
-  // ========================
-
   static async getAllSponsors(
     params?: GetSponsorsParams
   ): Promise<Pagination<ApiResponseItems<SponsorListItem[]>>> {
@@ -44,10 +40,6 @@ export class SponsorsService {
     return res.data;
   }
 
-  // ========================
-  // CREATE Sponsor
-  // ========================
-
   static async createSponsor(
     dto: CreateSponsorRequest
   ): Promise<ApiResponse<SponsorResponse>> {
@@ -57,10 +49,6 @@ export class SponsorsService {
     );
     return res.data;
   }
-
-  // ========================
-  // UPDATE Sponsor
-  // ========================
 
   static async updateSponsor(
     id: number,
@@ -72,21 +60,12 @@ export class SponsorsService {
     );
     return res.data;
   }
-
-  // ========================
-  // DELETE Sponsor
-  // ========================
-
   static async deleteSponsor(id: number): Promise<BaseResponse> {
     const res = await api.delete<BaseResponse>(
       `${process.env.NEXT_PUBLIC_API_URL}/sponsors/${id}/delete`
     );
     return res.data;
   }
-
-  // ========================
-  // LOGO Upload - Presign
-  // ========================
 
   static async getLogoPresignUrl(
     id: number,
@@ -99,10 +78,6 @@ export class SponsorsService {
     return res.data;
   }
 
-  // ========================
-  // LOGO Upload - Confirm
-  // ========================
-
   static async confirmLogoUpload(
     id: number,
     key: string
@@ -114,10 +89,6 @@ export class SponsorsService {
     );
     return res.data;
   }
-
-  // ========================
-  // LOGO Upload - Full Process
-  // ========================
 
   static async uploadLogo(id: number, file: File): Promise<BaseResponse> {
     try {
