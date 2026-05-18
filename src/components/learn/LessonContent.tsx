@@ -121,7 +121,7 @@ export function LessonContent({ lesson, allLessons, isEnrolled }: Props) {
   };
 
   return (
-    <div className="flex flex-col h-full overflow-hidden">
+    <div className="flex flex-col h-full">
 
       {autoNextCountdown !== null && (
         <div className="absolute inset-0 z-[100] flex flex-col items-center justify-center bg-black/90 backdrop-blur-md animate-in fade-in duration-300">
@@ -144,7 +144,7 @@ export function LessonContent({ lesson, allLessons, isEnrolled }: Props) {
       )}
 
       {/* ── Content ── */}
-      <div className={`flex-1 overflow-hidden ${lesson.type === "VIDEO" ? "bg-black" : "bg-background"}`}>
+      <div className={`sm:flex-1 rounded-2xl overflow-hidden ${lesson.type === "VIDEO" ? "bg-black" : "bg-background"}`}>
         {lesson.type === "VIDEO"  && <VideoLesson lesson={lesson} handleVideoEnded={handleVideoEnded} />}
         {lesson.type === "TEXT"   && <TextLesson lesson={lesson} />}
         {lesson.type !== "VIDEO" && lesson.type !== "TEXT" && (

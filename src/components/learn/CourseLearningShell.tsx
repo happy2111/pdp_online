@@ -78,16 +78,11 @@ export function CourseLearningShell({ course, modules, children }: Props) {
 
         {/* ── Body ── */}
         <div className="flex flex-1 gap-6 lg:gap-8 px-4 py-6">
-          {/* Контентная часть (плеер) */}
           <main className="flex-1 min-w-0 flex flex-col">
-            {/* Плеерный контейнер - занимает всю доступную высоту под header, с округлыми краями и тенями */}
-            <div className="rounded-2xl shadow-lg overflow-hidden bg-black flex-1 flex flex-col h-[calc(100vh-3.5rem)]">
-              {/* Внутренний контент (видео или текст) сохраняем в контейнере с паддингом для удобства */}
               <div className="flex-1 min-h-0">
                 <div className="h-full">
                   {children}
                 </div>
-              </div>
             </div>
           </main>
 
