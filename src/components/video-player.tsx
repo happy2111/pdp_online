@@ -45,6 +45,8 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster, onEnded }: Video
   const hideControlsTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const wrapperRef = useRef<HTMLDivElement | null>(null)
   const heartbeatIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const refreshingRef = useRef(false)
+  const retryCountRef = useRef(0)
 
   const [playing, setPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
@@ -75,7 +77,7 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster, onEnded }: Video
 
     const authorizeStream = async () => {
       try {
-        await api.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/videos/lesson/${lessonId}/set-token`);
+        await api.get(`/v1/videos/lesson/${lessonId}/set-token`);
 
         setIsAuthorized(true);
       } catch (err) {
@@ -165,20 +167,44 @@ export const VideoPlayer = ({ slug, endpoint, lessonId, poster, onEnded }: Video
     })
 
     player.on('error', async () => {
+      if (refreshingRef.current) return;
+
+
       const err = player.error();
 
-      if (err?.code === 4 || (err as any).status === 403 || (err as any).status === 401) {
-        console.log('Token expired or unauthorized, attempting to refresh...');
+      if (
+        err?.code === 4 ||
+        (err as any)?.status === 403 ||
+        (err as any)?.status === 401
+      ) {
+        refreshingRef.current = true;
 
         try {
-          await api.get(`/api/v1/videos/lesson/${lessonId}/set-token`);
+          await api.get(`/v1/videos/lesson/${lessonId}/set-token`);
+
           player.error(undefined);
-          player.src(player.currentSrc());
-          player.load();
-          player.play();
+
+          const currentTime = player.currentTime();
+
+          player.src({
+            src: `${process.env.NEXT_PUBLIC_BASE_URL}${endpoint}`,
+            type: 'application/x-mpegURL'
+          });
+
+          player.one('loadedmetadata', () => {
+            player.currentTime(currentTime);
+            player.play();
+          });
+
         } catch (retryErr) {
           const currentUrl = window.location.pathname + window.location.search;
-          window.location.href = `/login?redirect=${encodeURIComponent(currentUrl)}`;
+
+          // window.location.href =
+          //   `/login?redirect=${encodeURIComponent(currentUrl)}`;
+        } finally {
+          setTimeout(() => {
+            refreshingRef.current = false;
+          }, 3000);
         }
       }
     });

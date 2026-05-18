@@ -10,7 +10,8 @@ import {
   CheckCircle2,
   Info,
   Loader2,
-  PlayCircle
+  PlayCircle,
+  Lock
 } from "lucide-react"
 
 import { CoursesService } from "@/services/courses-service"
@@ -19,9 +20,12 @@ import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { CourseSidebar } from "@/components/courses/CourseSidebar"
 import { ModulesService } from "@/services/modules-service"
-import { CourseCurriculum } from "@/components/courses/CourseCurriculum"
 import { useTranslations } from "next-intl"
-import {ReviewsTab} from "@/components/courses/Review";
+import { ReviewsTab } from "@/components/courses/Review"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import { formatDuration } from "@/lib/utils"
+import NProgress from "nprogress"
+import {useRouter} from "@/i18n/navigation";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -30,8 +34,9 @@ const fadeInUp = {
 
 export default function CourseDetailPage() {
   const { slug } = useParams()
-  const t = useTranslations('courses')        // ???????? namespace
-  const tDetail = useTranslations('courses.detail') // ??? ????????? ????????
+  const router = useRouter()
+  const t = useTranslations('courses')
+  const tDetail = useTranslations('courses.detail')
   const tMain = useTranslations()
   const [course, setCourse] = useState<CourseDetails | null>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -74,6 +79,8 @@ export default function CourseDetailPage() {
         </div>
     )
   }
+
+
 
   if (!course) return <div>{t('no_courses_yet')}</div>
 
@@ -147,19 +154,19 @@ export default function CourseDetailPage() {
         <div className="container-custom py-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
             <div className="lg:col-span-8">
-              <Tabs defaultValue="general" className="w-full space-y-6">
-                <TabsList className="flex w-full overflow-x-auto no-scrollbar whitespace-nowrap bg-card/30 backdrop-blur-md p-1.5 h-14 rounded-2xl border border-border/50 gap-1">
-                  {["general", "curriculum", "reviews"].map((tab) => {
+              <Tabs defaultValue="about" className="w-full">
+                {/* Google-style Tab Navigation */}
+                <TabsList className="flex w-full border-b border-border/50 bg-transparent p-0 h-auto gap-8 mb-8" variant="line">
+                  {["about", "reviews"].map((tab) => {
                     const labels: Record<string, string> = {
-                      general: tDetail('general'),
-                      curriculum: tDetail('curriculum'),
+                      about: tDetail('general'),
                       reviews: tDetail('reviews'),
                     }
                     return (
                       <TabsTrigger
                         key={tab}
                         value={tab}
-                        className="relative shrink-0 rounded-xl px-6 font-bold text-xs uppercase tracking-tighter data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-200"
+                        className="relative bg-transparent px-0 py-4 font-medium text-sm text-muted-foreground data-[state=active]:text-foreground data-[state=active]:bg-transparent hover:text-foreground transition-colors rounded-none after:opacity-0 data-[state=active]:after:opacity-100"
                       >
                         {labels[tab]}
                       </TabsTrigger>
@@ -167,43 +174,175 @@ export default function CourseDetailPage() {
                   })}
                 </TabsList>
 
-                <TabsContent value="general" className="space-y-10 outline-none">
-                  <div className="p-6 border border-border rounded-3xl bg-card/70 backdrop-blur">
-                    <h3 className="text-xl font-bold mb-6">{tDetail('whatYouWillLearn')}</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
+                {/* About Tab - Combined General + Curriculum */}
+                <TabsContent value="about" className="space-y-12 outline-none">
+                  {/* What You Will Learn */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="space-y-6"
+                  >
+                    <div className="space-y-3">
+                      <h3 className="text-2xl md:text-3xl font-bold tracking-tight">{tDetail('whatYouWillLearn')}</h3>
+                      <div className="h-1 w-12 bg-primary rounded-full" />
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8">
                       {course.learning_outcomes.map((outcome, idx) => (
-                          <div key={idx} className="flex gap-3">
-                            <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                            <span className="text-muted-foreground text-sm">{outcome}</span>
-                          </div>
+                        <motion.div
+                          key={idx}
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.3, delay: idx * 0.05 }}
+                          className="flex gap-3 items-start"
+                        >
+                          <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5 flex-shrink-0" />
+                          <span className="text-foreground text-base leading-relaxed">{outcome}</span>
+                        </motion.div>
                       ))}
                     </div>
-                  </div>
+                  </motion.div>
 
-                  <div className="space-y-4">
-                    <h3 className="text-xl font-bold">{tDetail('courseDescription')}</h3>
-                    <div className="prose prose-slate max-w-none text-muted-foreground whitespace-pre-line leading-relaxed text-sm break-words max-h-96 overflow-y-auto">
+                  {/* Course Description */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: 0.1 }}
+                    className="space-y-6"
+                  >
+                    <div className="space-y-3">
+                      <h3 className="text-2xl md:text-3xl font-bold tracking-tight">{tDetail('courseDescription')}</h3>
+                      <div className="h-1 w-12 bg-primary rounded-full" />
+                    </div>
+                    <div className="prose prose-slate max-w-none text-foreground whitespace-pre-line leading-relaxed text-base break-words">
                       {course.description}
                     </div>
-                  </div>
+                  </motion.div>
 
-                  <div className="space-y-4">
-                    <h3 className="text-xl font-bold flex items-center gap-2">
-                      <Info className="h-5 w-5 text-primary" /> {tDetail('requirements')}
-                    </h3>
-                    <ul className="space-y-2 text-muted-foreground text-sm ml-2">
+                  {/* Requirements */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: 0.2 }}
+                    className="space-y-6"
+                  >
+                    <div className="space-y-3">
+                      <h3 className="text-2xl md:text-3xl font-bold tracking-tight flex items-center gap-3">
+                        <Info className="h-6 w-6 text-primary" /> {tDetail('requirements')}
+                      </h3>
+                      <div className="h-1 w-12 bg-primary rounded-full" />
+                    </div>
+                    <ul className="space-y-3">
                       {course.requirements.map((req, idx) => (
-                          <li key={idx} className="flex gap-2">
-                            <span className="text-primary mt-1">?</span>
-                            {req}
-                          </li>
+                        <motion.li
+                          key={idx}
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.3, delay: idx * 0.05 }}
+                          className="flex gap-3 items-start text-base text-foreground"
+                        >
+                          <span className="text-primary font-bold mt-0.5 flex-shrink-0">✓</span>
+                          {req}
+                        </motion.li>
                       ))}
                     </ul>
-                  </div>
+                  </motion.div>
+
+                  {/* Curriculum Section */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: 0.3 }}
+                    className="space-y-8"
+                  >
+                    <div className="space-y-3">
+                      <h3 className="text-2xl md:text-3xl font-bold tracking-tight">{tDetail('curriculum')}</h3>
+                      <div className="h-1 w-12 bg-primary rounded-full" />
+                    </div>
+
+                    <div className="space-y-2">
+                      <p className="text-sm text-muted-foreground font-medium">
+                        {modules.reduce((sum, m) => sum + m.lessons.length, 0)} {tMain("common.lesson_many")} • {modules.length} {tMain("common.module")}
+                      </p>
+                    </div>
+
+                    <Accordion type="single" collapsible className="w-full space-y-2">
+                      {modules.map((module, index) => (
+                        <AccordionItem
+                          key={module.id}
+                          value={`module-${module.id}`}
+                          className="border-0 bg-muted/40 hover:bg-muted/60 transition-colors rounded-xl px-6 py-0 overflow-hidden group"
+                        >
+                          <AccordionTrigger className="hover:no-underline py-5 text-left">
+                            <div className="flex flex-col items-start text-left gap-1.5 w-full">
+                              <span className="font-semibold text-base text-foreground group-hover:text-primary transition-colors">
+                                {tMain("common.module")} {index + 1}: {module.title}
+                              </span>
+                              <span className="text-xs text-muted-foreground font-medium">
+                                {module.lessons.length} {tMain("common.lesson_many")}
+                              </span>
+                            </div>
+                          </AccordionTrigger>
+
+                          <AccordionContent className="pt-0 pb-4 space-y-2 px-0">
+                            {module.lessons.map((lesson: any) => {
+                              const isLocked = !lesson.is_free_preview
+
+                              return (
+                                <motion.div
+                                  key={lesson.lesson_id}
+                                  initial={{ opacity: 0, x: -5 }}
+                                  animate={{ opacity: 1, x: 0 }}
+                                  whileHover={!isLocked ? { x: 4 } : {}}
+                                  transition={{ duration: 0.2 }}
+                                  onClick={() => {
+                                    if (!isLocked) {
+                                      NProgress.start()
+                                      router.push(
+                                        `/courses/${slug}/learn/${lesson.lesson_id}`
+                                      );
+                                    }
+                                  }}
+                                  className={`flex items-center justify-between p-3 rounded-lg transition-all group
+                                    ${
+                                    isLocked
+                                      ? "opacity-50 cursor-not-allowed"
+                                      : "hover:bg-muted/80 cursor-pointer"
+                                  }
+                                  `}
+                                >
+                                  <div className="flex items-center gap-3 flex-1 min-w-0">
+                                    {isLocked ? (
+                                      <Lock className="h-4 w-4 text-muted-foreground shrink-0" />
+                                    ) : (
+                                      <PlayCircle className="h-4 w-4 text-primary shrink-0 opacity-60 group-hover:opacity-100 transition-opacity" />
+                                    )}
+
+                                    <span className="text-sm font-medium text-foreground truncate">
+                                      {lesson.title}
+                                    </span>
+                                  </div>
+
+                                  <span className="text-xs text-muted-foreground font-medium px-3 py-1 bg-background/50 rounded-md shrink-0 ml-2">
+                                    {formatDuration(lesson?.duration_seconds)}
+                                  </span>
+                                </motion.div>
+                              )
+                            })}
+
+                            {module.lessons.length === 0 && (
+                              <div className="text-center py-4 text-sm text-muted-foreground">
+                                {tMain("module.empty_lessons")}
+                              </div>
+                            )}
+                          </AccordionContent>
+                        </AccordionItem>
+                      ))}
+                    </Accordion>
+                  </motion.div>
                 </TabsContent>
 
-                <CourseCurriculum modules={modules} courseSlug={slug as string} />
-
+                {/* Reviews Tab */}
                 <TabsContent value="reviews" className="outline-none">
                   <ReviewsTab courseId={course.id} courseSlug={slug as string} />
                 </TabsContent>

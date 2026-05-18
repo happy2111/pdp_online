@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import {
   ChevronDown, ChevronUp, Play, FileText, BookOpen,
-  Code, File, Lock, CheckCircle2, Loader2, X, Menu,
+  Code, File, Lock, CheckCircle2, X, Menu,
 } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
@@ -118,27 +118,25 @@ function ModuleAccordion({
   const doneCount = module.lessons.filter(l => l.video_status === "DONE").length
 
   return (
-    <div className="border-b border-border/40 last:border-0">
-      <button
-        type="button"
+    <div className="mb-3">
+      <div
+        className="w-full flex items-start gap-2 p-3 text-left transition-colors bg-background/40 rounded-lg shadow-sm"
         onClick={() => setOpen(v => !v)}
-        className="w-full flex items-start gap-2 px-4 py-3 text-left hover:bg-muted/30 transition-colors"
+        role="button"
+        tabIndex={0}
       >
-        <div className="flex-1 min-w-0 space-y-0.5">
-          <p className="text-sm font-medium leading-snug">{module.title}</p>
-          <p className="text-[11px] text-muted-foreground">
-            {module.lessons.length} {
-            module.lessons.length === 1 ? "урок" :
-              module.lessons.length < 5 ? "урока" : "уроков"
-          }
+        <div className="flex-1 min-w-0">
+          <p className="text-base font-semibold leading-snug">{module.title}</p>
+          <p className="text-sm text-muted-foreground mt-1">
+            {module.lessons.length} {module.lessons.length === 1 ? "урок" : module.lessons.length < 5 ? "урока" : "уроков"}
             {doneCount > 0 && ` · ${doneCount} пройдено`}
           </p>
         </div>
         {open
-          ? <ChevronUp className="h-4 w-4 text-muted-foreground shrink-0 mt-0.5" />
-          : <ChevronDown className="h-4 w-4 text-muted-foreground shrink-0 mt-0.5" />
+          ? <ChevronUp className="h-5 w-5 text-muted-foreground shrink-0 mt-0.5" />
+          : <ChevronDown className="h-5 w-5 text-muted-foreground shrink-0 mt-0.5" />
         }
-      </button>
+      </div>
 
       <AnimatePresence initial={false}>
         {open && (
@@ -147,9 +145,9 @@ function ModuleAccordion({
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.18 }}
-            className="overflow-hidden"
+            className="overflow-hidden mt-2"
           >
-            <div className="px-2 pb-2 space-y-0.5">
+            <div className="px-1 pb-2 space-y-1">
               {module.lessons.map(lesson => (
                 <LessonRow
                   key={lesson.lesson_id}
@@ -192,16 +190,16 @@ export function CourseSidebar({
   return (
     <>
       {/* Header */}
-      <div className="px-4 py-3 border-b border-border/60 shrink-0 relative">
-        <p className="text-sm font-semibold">Содержание курса</p>
-        <p className="text-xs text-muted-foreground mt-0.5">
+      <div className="px-2 py-2 shrink-0 relative">
+        <p className="text-lg font-semibold">Содержание курса</p>
+        <p className="text-sm text-muted-foreground mt-1">
           {modules.length} {modules.length === 1 ? "модуль" : modules.length < 5 ? "модуля" : "модулей"}
           {" · "}
           {totalLessons} {totalLessons === 1 ? "урок" : totalLessons < 5 ? "урока" : "уроков"}
         </p>
 
         <Button
-          variant="ghost" size="icon" className="h-8 w-8 shrink-0 lg:hidden absolute top-1/2 -translate-y-1/2 right-3"
+          variant="ghost" size="icon" className="h-8 w-8 shrink-0 lg:hidden absolute top-2 right-2"
           onClick={() => setSidebarOpen()}
         >
           {sidebarOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
@@ -209,11 +207,11 @@ export function CourseSidebar({
       </div>
 
       {/* List */}
-      <ScrollArea className="flex-1">
+      <ScrollArea className="flex-1 px-1 pt-2">
         {modules.length === 0 ? (
-          <div className="flex flex-col items-center gap-2 py-12 text-muted-foreground">
+          <div className="flex flex-col items-center gap-2 py-8 text-muted-foreground">
             <BookOpen className="h-8 w-8 opacity-20" />
-            <p className="text-xs">Модули не добавлены</p>
+            <p className="text-sm">Модули не добавлены</p>
           </div>
         ) : (
           modules.map(module => (
