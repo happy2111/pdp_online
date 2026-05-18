@@ -9,8 +9,8 @@ const Footer = () => {
   const t = useTranslations('footer')
 
   return (
-    <footer className="relative mt-16 bg-background/40 backdrop-blur-sm border-t border-border shadow-lg">
-      <div className="container-custom py-8">
+    <footer className="relative mt-16 mb-8 px-4">
+      <div className="container-custom bg-background/40 backdrop-blur-sm rounded-2xl p-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo and Description */}
           <div className="col-span-1 md:col-span-2">
@@ -24,7 +24,7 @@ const Footer = () => {
 
           {/* Useful Links */}
           <div>
-            <h3 className="font-semibold mb-4">{t('usefulLinks')}</h3>
+            <h3 className="font-semibold mb-4 text-foreground">{t('usefulLinks')}</h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link href="/about" className="text-muted-foreground hover:text-primary transition-colors">
@@ -61,7 +61,7 @@ const Footer = () => {
 
           {/* Social Links */}
           <div>
-            <h3 className="font-semibold mb-4">{t('followUs')}</h3>
+            <h3 className="font-semibold mb-4 text-foreground">{t('followUs')}</h3>
             <div className="flex space-x-4">
               <Link href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
                 <Facebook size={20} />

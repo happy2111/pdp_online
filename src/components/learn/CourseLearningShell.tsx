@@ -47,7 +47,6 @@ export function CourseLearningShell({ course, modules, children }: Props) {
       {/* Новый более «плотный» layout: плеер слева занимает всё доступное пространство, сайдбар справа фиксированной ширины */}
       <div className="flex flex-col min-h-screen bg-background">
 
-        {/* ── Top bar ── */}
         <header className="sticky top-0 flex items-center gap-3 h-14 bg-background/95 backdrop-blur shrink-0 z-20 px-4">
           <Button
             variant="ghost" size="icon" className="h-8 w-8 shrink-0"
@@ -76,17 +75,15 @@ export function CourseLearningShell({ course, modules, children }: Props) {
           </Button>
         </header>
 
-        {/* ── Body ── */}
         <div className="flex flex-1 gap-6 lg:gap-8 px-4 py-6">
           <main className="flex-1 min-w-0 flex flex-col">
-              <div className="flex-1 min-h-0">
+              <div className="flex-1 min-h-0 md:px-6">
                 <div className="h-full">
                   {children}
                 </div>
             </div>
           </main>
 
-          {/* Desktop sidebar: фиксированная ширина, близко к плееру. Сайдбар "липкий" и имеет внутренний скролл, чтобы сам он не уезжал */}
           <aside className="hidden lg:block w-96 flex-shrink-0 relative">
             <div className="sticky top-14 max-h-[calc(100vh-3.5rem)] overflow-auto rounded-xl bg-background/60 p-3 shadow-sm">
               <CourseSidebar
