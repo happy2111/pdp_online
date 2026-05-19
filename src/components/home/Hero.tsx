@@ -58,7 +58,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative w-full py-16">
+    <section className="relative w-full py-16 pb-8">
       <div className="container-custom relative z-10">
         <div className="text-center space-y-6">
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight">

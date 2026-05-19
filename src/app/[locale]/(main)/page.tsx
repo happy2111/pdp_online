@@ -22,15 +22,15 @@ export default function Home() {
 
       <Hero />
 
-      <div className="relative min-h-svh overflow-hidden">
+      <div className="relative mb-15 overflow-hidden">
 
         <div className="absolute inset-0 z-0 pointer-events-none">
           <div className="absolute top-[35%] right-[5%] w-[450px] h-[450px] rounded-full bg-green-500/15 blur-[120px] animate-blob animation-delay-2000" />
           <div className="absolute bottom-[15%] left-[15%] w-72 h-72 rounded-full bg-green-400/20 blur-[100px] animate-blob animation-delay-4000" />
         </div>
 
-        <div className="container-custom relative z-1 pb-16 pt-0">
-          <div className="py-16 sm:flex flex-col items-center w-full">
+        <div className="container-custom relative z-1">
+          <div className="py-0 sm:flex flex-col items-center w-full">
             <Suspense fallback={<div className="h-64" />}>
               <TabsSection />
             </Suspense>

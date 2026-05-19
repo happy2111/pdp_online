@@ -32,7 +32,7 @@ export function TabsSection() {
 
   return (
     <>
-      <div className="mb-10 inline-flex gap-0 bg-background/40 backdrop-blur-sm
+      <div className="mb-12 inline-flex gap-0 bg-background/40 backdrop-blur-sm
                 border border-border shadow-lgrounded-xl rounded-3xl p-1">
         <button
           onClick={() => setTab("courses")}

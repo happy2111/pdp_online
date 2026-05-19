@@ -60,7 +60,7 @@ const ContactUs = () => {
   }
 
   return (
-    <section className="relative py-16 md:py-24 overflow-hidden">
+    <section className="relative py-16 md:py-0 overflow-x--hidden">
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute top-[5%] right-[5%] w-80 h-80 rounded-full bg-primary/15 blur-[100px]" />
         <div className="absolute bottom-[10%] left-[5%] w-72 h-72 rounded-full bg-accent/10 blur-[100px]" />

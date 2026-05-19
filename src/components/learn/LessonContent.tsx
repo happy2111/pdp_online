@@ -144,7 +144,7 @@ export function LessonContent({ lesson, allLessons, isEnrolled }: Props) {
       )}
 
       {/* ── Content ── */}
-      <div className={`sm:flex-1 rounded-2xl overflow-hidden ${lesson.type === "VIDEO" ? "bg-black" : "bg-background"}`}>
+      <div className={`sm:flex-1 rounded-2xl overflow-hidden ${lesson.type === "VIDEO" ? "" : "bg-background"}`}>
         {lesson.type === "VIDEO"  && <VideoLesson lesson={lesson} handleVideoEnded={handleVideoEnded} />}
         {lesson.type === "TEXT"   && <TextLesson lesson={lesson} />}
         {lesson.type !== "VIDEO" && lesson.type !== "TEXT" && (
