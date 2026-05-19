@@ -442,6 +442,11 @@
       "message_length": "5 dan 1000 ta belgigacha"
     }
   },
+  "graduates": {
+    "title": "Bitiruvchilarimiz yetakchi kompaniyalarda ishlashadi",
+    "description": "Bugungi kunda bitiruvchilarimiz dunyoning yetakchi xalqaro va mahalliy kompaniyalarida muvaffaqiyatli faoliyat yuritishmoqda!",
+    "subtitle": "Muvaffaqiyatli karyera qurgan minglab bitiruvchilarga qo'shiling"
+  },
   "footer": {
     "description": "Ta'lim va rivojlanish uchun onlayn platforma, ko'nikmalar va bilimlarni yaxshilash uchun keng doiradagi kurslar va resurslarni taklif etadi.",
     "usefulLinks": "Foydali havolalar",

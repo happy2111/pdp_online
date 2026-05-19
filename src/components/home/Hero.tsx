@@ -9,7 +9,6 @@ import { CoursesService } from "@/services/courses-service";
 import { CourseListItem } from "@/schemas/courses-schema";
 import {Link, useRouter} from "@/i18n/navigation";
 import NProgress from "nprogress";
-import SponsorsCarousel from "@/components/home/SponsorsCarousel";
 
 const Hero = () => {
   const t = useTranslations();
@@ -58,7 +57,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative w-full py-16 pb-8">
+    <section className="relative mb-20 w-full py-16 pb-8">
       <div className="container-custom relative z-10">
         <div className="text-center space-y-6">
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
@@ -120,8 +119,6 @@ const Hero = () => {
               </div>
             )}
           </div>
-
-          <SponsorsCarousel />
         </div>
       </div>
     </section>
