@@ -19,3 +19,11 @@ export interface ApiResponseItems<T> {
   message: string;
   items: T;
 }
+
+export interface PageListResponse<T> extends BaseResponse {
+  items: T[];
+  total_elements: number;
+  total_pages: number;
+  current_page: number;
+  page_size: number;
+}

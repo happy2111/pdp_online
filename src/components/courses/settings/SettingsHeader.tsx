@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import {
   ArrowLeft,
   ChevronRight,
+  Clock,
   Loader2,
   PencilLine,
   SendHorizonal,
@@ -30,6 +31,7 @@ import {
   CourseStatusEnum,
   CourseStatusLabels,
 } from "@/schemas/courses-schema";
+import { PublishRequestStatus } from "@/schemas/publish-request-schema";
 import { useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/badge";
 
@@ -37,6 +39,7 @@ interface Props {
   course: CourseDetails;
   isEditing: boolean;
   isPublishing: boolean;
+  publishRequestStatus?: PublishRequestStatus | null;
   toggleEdit: () => void;
   handlePublish: () => void;
 }
@@ -57,6 +60,7 @@ const SettingsHeader = ({
                           course,
                           isEditing,
                           isPublishing,
+                          publishRequestStatus,
                           toggleEdit,
                           handlePublish
                         }: Props) => {
@@ -65,6 +69,8 @@ const SettingsHeader = ({
   const router = useRouter();
 
   const isPublished = course.status === "PUBLISHED";
+  const isPendingReview = publishRequestStatus === "PENDING";
+  const canSubmitRequest = !isPublished && !isPendingReview && !isPublishing;
 
   return (
     <motion.div
@@ -104,6 +110,13 @@ const SettingsHeader = ({
             >
               {t(CourseStatusLabels[course.status])}
             </Badge>
+
+            {isPendingReview && (
+              <Badge className="rounded-full px-3 py-1 text-xs font-medium ring-1 bg-yellow-500/10 text-yellow-700 ring-yellow-500/20">
+                <Clock className="mr-1 h-3 w-3 inline" />
+                {t("courses.settings.publishRequest.status.pending")}
+              </Badge>
+            )}
           </div>
         </div>
       </div>
@@ -124,10 +137,10 @@ const SettingsHeader = ({
             <Button
               variant="outline"
               size="sm"
-              disabled={isPublishing || isPublished}
+              disabled={!canSubmitRequest}
               className={cn(
                 "h-9 gap-1.5 rounded-xl font-medium",
-                isPublished
+                isPublished || isPendingReview
                   ? "opacity-60 cursor-not-allowed"
                   : "border-primary/30 text-primary hover:bg-primary/5"
               )}
@@ -142,6 +155,11 @@ const SettingsHeader = ({
                   <ShieldCheck className="h-3.5 w-3.5" />
                   {t("courses.settings.published")}
                 </>
+              ) : isPendingReview ? (
+                <>
+                  <Clock className="h-3.5 w-3.5" />
+                  {t("courses.settings.publishRequest.status.pending")}
+                </>
               ) : (
                 <>
                   <SendHorizonal className="h-3.5 w-3.5" />
@@ -151,7 +169,7 @@ const SettingsHeader = ({
             </Button>
           </AlertDialogTrigger>
 
-          {!isPublished && (
+          {canSubmitRequest && (
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle className="flex items-center gap-2">

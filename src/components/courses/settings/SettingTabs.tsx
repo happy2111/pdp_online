@@ -9,7 +9,7 @@ import {
   FileText,
   CheckCircle2,
   AlertCircle,
-  Eye, TableOfContents,
+  Eye, TableOfContents, SendHorizonal,
 } from "lucide-react"
 
 import {
@@ -36,6 +36,8 @@ import { useTranslations } from "next-intl"
 import { Category } from "@/schemas/categories-schema"
 import { Controller } from "react-hook-form"
 import ModulesTab from "@/components/courses/settings/ModulesTab";
+import PublishRequestsTab from "@/components/courses/settings/PublishRequestsTab";
+import { CoursePublishRequest } from "@/schemas/publish-request-schema";
 
 interface Props {
   isEditing: boolean;
@@ -64,6 +66,7 @@ interface Props {
   handleVideoUpload: (file: File) => void;
 
   errors: any;
+  latestPublishRequest: CoursePublishRequest | null;
 }
 
 type FlatCategory = Category & { level: number }
@@ -100,6 +103,7 @@ const SettingTabs = (props: Props) => {
     handleThumbnailUpload,
     handleVideoUpload,
     errors,
+    latestPublishRequest,
   } = props;
 
   const t = useTranslations('courses.settings')
@@ -109,7 +113,7 @@ const SettingTabs = (props: Props) => {
   return (
     <motion.div initial="hidden" animate="visible" custom={2}>
       <Tabs defaultValue="info" className="space-y-6">
-        <TabsList className="grid w-full max-w-md grid-cols-4 p-1 bg-muted/50 rounded-2xl">
+        <TabsList className="grid w-full max-w-2xl grid-cols-5 p-1 bg-muted/50 rounded-2xl">
           <TabsTrigger value="info" className="rounded-xl gap-1.5 text-xs sm:text-sm">
             <FileText className="h-3.5 w-3.5" /> {t('tabs.info')}
           </TabsTrigger>
@@ -121,6 +125,9 @@ const SettingTabs = (props: Props) => {
           </TabsTrigger>
           <TabsTrigger value="modules" className="rounded-xl gap-1.5 text-xs sm:text-sm">
             <BookOpen className="h-3.5 w-3.5" /> {t('tabs.modules')}
+          </TabsTrigger>
+          <TabsTrigger value="publish" className="rounded-xl gap-1.5 text-xs sm:text-sm">
+            <SendHorizonal className="h-3.5 w-3.5" /> {t('tabs.publish')}
           </TabsTrigger>
         </TabsList>
 
@@ -366,6 +373,10 @@ const SettingTabs = (props: Props) => {
               slug={course.slug}
               courseId={course.id}
             />
+          </TabsContent>
+
+          <TabsContent value="publish" className="mt-0">
+            <PublishRequestsTab latestRequest={latestPublishRequest} />
           </TabsContent>
 
       </Tabs>

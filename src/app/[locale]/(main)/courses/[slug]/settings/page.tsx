@@ -15,6 +15,7 @@ import {
   UpdateCourseRequest,
   UpdateCourseSchema,
 } from "@/schemas/courses-schema"
+import { CoursePublishRequest } from "@/schemas/publish-request-schema"
 import { Category } from "@/schemas/categories-schema"
 import { useAuthStore } from "@/stores/auth-store"
 import Protected from "@/components/protecters/Protected"
@@ -34,6 +35,7 @@ export default function CourseSettingsPage() {
   const [isEditing, setIsEditing] = useState(false)
   const [isPending, startTransition] = useTransition()
   const [isPublishing, setIsPublishing] = useState(false)
+  const [latestPublishRequest, setLatestPublishRequest] = useState<CoursePublishRequest | null>(null)
   const [uploadingThumb, setUploadingThumb] = useState(false)
   const [uploadingVideo, setUploadingVideo] = useState(false)
 
@@ -52,6 +54,15 @@ export default function CourseSettingsPage() {
   const requirements = watch("requirements") ?? []
   const outcomes = watch("learning_outcomes") ?? []
   const level = watch("level")
+
+  const loadLatestPublishRequest = async (courseSlug: string) => {
+    try {
+      const res = await CoursesService.getLatestPublishRequest(courseSlug)
+      setLatestPublishRequest(res.data)
+    } catch {
+      setLatestPublishRequest(null)
+    }
+  }
 
   // ── Load Data ─────────────────────────────────────────────────
   useEffect(() => {
@@ -81,6 +92,8 @@ export default function CourseSettingsPage() {
           // @ts-ignore
           setCategories(catRes.data)
         }
+
+        await loadLatestPublishRequest(slug)
       } catch (error) {
         toast.error(tSettings('loadingError'))
       }
@@ -106,12 +119,15 @@ export default function CourseSettingsPage() {
   const handlePublish = async () => {
     setIsPublishing(true)
     try {
-      await CoursesService.publishCourse(slug)
-      const res = await CoursesService.getCourseBySlugProtected(slug)
-      if (res.data) setCourse(res.data)
+      const res = await CoursesService.submitPublishRequest(slug)
+      setLatestPublishRequest(res.data)
+
+      const courseRes = await CoursesService.getCourseBySlugProtected(slug)
+      if (courseRes.data) setCourse(courseRes.data)
+
       toast.success(tSettings('publishSuccess'))
     } catch (e: any) {
-      toast.error(e?.message || tSettings('publishError'))
+      toast.error(e?.response?.data?.message || e?.message || tSettings('publishError'))
     } finally {
       setIsPublishing(false)
     }
@@ -177,6 +193,9 @@ export default function CourseSettingsPage() {
           course={course}
           isEditing={isEditing}
           isPublishing={isPublishing}
+          publishRequestStatus={
+            latestPublishRequest?.status ?? course.publish_request_status ?? null
+          }
           toggleEdit={toggleEdit}
           handlePublish={handlePublish}
         />
@@ -204,6 +223,7 @@ export default function CourseSettingsPage() {
           handleThumbnailUpload={handleThumbnailUpload}
           handleVideoUpload={handleVideoUpload}
           errors={errors}
+          latestPublishRequest={latestPublishRequest}
         />
       </div>
     </Protected>

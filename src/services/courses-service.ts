@@ -1,9 +1,15 @@
 import api from "@/lib/axiosInstance";
 import {
   ApiResponse,
-  ApiResponseItems, BaseResponse,
-  Pagination
+  ApiResponseItems,
+  BaseResponse,
+  PageListResponse,
+  Pagination,
 } from "@/schemas/response-schema";
+import {
+  CoursePublishRequest,
+  GetMyPublishRequestsParams,
+} from "@/schemas/publish-request-schema";
 
 import {
   CourseListItem,
@@ -216,11 +222,37 @@ export class CoursesService {
     }
   }
 
-  static async publishCourse(
+  static async submitPublishRequest(
     slug: string
-  ) : Promise<BaseResponse>{
-    const res = await api.patch<BaseResponse>(`${process.env.NEXT_PUBLIC_API_URL}/courses/${slug}/publish`, )
-    return res.data
+  ): Promise<ApiResponse<CoursePublishRequest>> {
+    const res = await api.post<ApiResponse<CoursePublishRequest>>(
+      `${process.env.NEXT_PUBLIC_API_URL}/courses/${slug}/publish-request`
+    );
+    return res.data;
+  }
+
+  static async getLatestPublishRequest(
+    slug: string
+  ): Promise<ApiResponse<CoursePublishRequest>> {
+    const res = await api.get<ApiResponse<CoursePublishRequest>>(
+      `${process.env.NEXT_PUBLIC_API_URL}/courses/${slug}/publish-request`
+    );
+    return res.data;
+  }
+
+  static async getMyPublishRequests(
+    params?: GetMyPublishRequestsParams
+  ): Promise<PageListResponse<CoursePublishRequest>> {
+    const res = await api.get<PageListResponse<CoursePublishRequest>>(
+      `${process.env.NEXT_PUBLIC_API_URL}/courses/my/publish-requests`,
+      {
+        params: {
+          page: params?.page ?? 0,
+          size: params?.size ?? 10,
+        },
+      }
+    );
+    return res.data;
   }
 
 

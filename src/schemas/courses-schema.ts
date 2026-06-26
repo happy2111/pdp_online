@@ -88,6 +88,7 @@ export const CourseDetailsSchema = z.object({
   category_name: z.string(),
 
   status: CourseStatusEnum,
+  publish_request_status: z.enum(["PENDING", "APPROVED", "REJECTED"]).nullable().optional(),
 
   teacher_id: z.number(),
   teacher_full_name: z.string(),
