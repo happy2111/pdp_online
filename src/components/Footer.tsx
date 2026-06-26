@@ -2,15 +2,22 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { Facebook, Twitter, Instagram, Linkedin } from 'lucide-react'
+import { Facebook, Twitter, Instagram, Linkedin, Send } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
 const Footer = () => {
   const t = useTranslations('footer')
 
   return (
-    <footer className="relative mt-16 mb-8 px-4">
-      <div className="container-custom bg-background/40 backdrop-blur-sm rounded-2xl p-8">
+    // Обертка центрирует футер и задает отступы снизу, чтобы он "левитировал" над краем экрана
+    <footer className="relative w-full flex justify-center z-40 px-4 mt-16 mb-8">
+      <div className="
+        container-custom p-8 
+        flex flex-col
+        bg-background/40 backdrop-blur-sm 
+        rounded-3xl border border-border shadow-lg
+        w-full
+      ">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo and Description */}
           <div className="col-span-1 md:col-span-2">
@@ -63,16 +70,16 @@ const Footer = () => {
           <div>
             <h3 className="font-semibold mb-4 text-foreground">{t('followUs')}</h3>
             <div className="flex space-x-4">
-              <Link href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+              <Link href="https://www.facebook.com/pdpuz" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
                 <Facebook size={20} />
               </Link>
-              <Link href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
-                <Twitter size={20} />
+              <Link href="https://t.me/s/pdpuz" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                <Send size={20} />
               </Link>
-              <Link href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+              <Link href="https://www.instagram.com/pdpuz/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
                 <Instagram size={20} />
               </Link>
-              <Link href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+              <Link href="https://uz.linkedin.com/company/pdp.uz" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
                 <Linkedin size={20} />
               </Link>
             </div>
