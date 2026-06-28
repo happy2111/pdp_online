@@ -62,10 +62,13 @@ export function CategoryFilter() {
     router.push(`?${params.toString()}`, { scroll: false });
   };
 
+  const scrollRowClass =
+    "flex w-full min-w-0 max-w-full overflow-x-auto overscroll-x-contain no-scrollbar gap-2";
+
   if (loading) return (
-    <div className="flex w-full flex-col gap-3 mb-8 animate-pulse">
+    <div className="flex w-full min-w-0 max-w-full flex-col gap-3 mb-8 animate-pulse">
       {/* Ряд основных категорий */}
-      <div className="flex w-full overflow-x-auto no-scrollbar gap-2 pb-0.5">
+      <div className={cn(scrollRowClass, "pb-0.5")}>
         {/* Кнопка "Все" */}
         <div className="shrink-0 rounded-2xl h-10 w-24 bg-muted/60" />
         {/* Заглушки для категорий */}
@@ -78,7 +81,7 @@ export function CategoryFilter() {
       </div>
 
       {/* Опционально: Имитация подкатегорий (можно скрыть или оставить полупрозрачным) */}
-      <div className="flex w-full overflow-x-auto no-scrollbar gap-2 px-3 py-2.5 bg-muted/20 rounded-2xl border border-border/20">
+      <div className={cn(scrollRowClass, "px-3 py-2.5 bg-muted/20 rounded-2xl border border-border/20")}>
         {[1, 2, 3].map((i) => (
           <div
             key={i}
@@ -90,13 +93,13 @@ export function CategoryFilter() {
   );
 
   return (
-    <div className="flex w-full flex-col gap-3 mb-8">
-      <div className="flex w-full overflow-x-auto no-scrollbar gap-2 pb-0.5">
+    <div className="flex w-full min-w-0 max-w-full flex-col gap-3 mb-8">
+      <div className={cn(scrollRowClass, "pb-0.5")}>
         <Button
           variant="ghost"
           size="sm"
           className={cn(
-            "shrink-0 rounded-2xl h-10 px-5 font-semibold text-sm transition-all duration-200",
+            "shrink-0 whitespace-nowrap rounded-2xl h-10 px-5 font-semibold text-sm transition-all duration-200",
             !currentId
               ? "bg-primary text-primary-foreground hover:bg-primary/90"
               : "bg-muted/60 text-muted-foreground hover:text-foreground hover:bg-muted"
@@ -111,7 +114,7 @@ export function CategoryFilter() {
             variant="ghost"
             size="sm"
             className={cn(
-              "shrink-0 rounded-2xl h-10 px-5 font-semibold text-sm transition-all duration-200",
+              "shrink-0 whitespace-nowrap rounded-2xl h-10 px-5 font-semibold text-sm transition-all duration-200",
               findActiveInfo.activeParentId === cat.id
                 ? "bg-primary text-primary-foreground hover:bg-primary/90"
                 : "bg-muted/60 text-muted-foreground hover:text-foreground hover:bg-muted"
@@ -124,14 +127,14 @@ export function CategoryFilter() {
       </div>
 
       {findActiveInfo.subCategories.length > 0 && (
-        <div className="flex w-full overflow-x-auto no-scrollbar gap-2 px-3 py-2.5 bg-muted/40 rounded-2xl border border-border/50 animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className={cn(scrollRowClass, "px-3 py-2.5 bg-muted/40 rounded-2xl border border-border/50 animate-in fade-in slide-in-from-top-2 duration-200")}>
           {findActiveInfo.subCategories.map((sub) => (
             <Button
               key={sub.id}
               variant="ghost"
               size="sm"
               className={cn(
-                "shrink-0 rounded-xl h-9 px-4 text-xs font-semibold transition-all duration-200",
+                "shrink-0 whitespace-nowrap rounded-xl h-9 px-4 text-xs font-semibold transition-all duration-200",
                 currentId === sub.id.toString()
                   ? "bg-background text-foreground shadow-sm border border-border/60"
                   : "text-muted-foreground hover:text-foreground hover:bg-background/70"

@@ -27,7 +27,7 @@ export default function Home() {
 
 
         <div className="container-custom relative z-1">
-          <div className="py-0 sm:flex flex-col items-center w-full">
+          <div className="py-0 sm:flex flex-col items-center w-full min-w-0">
             <Suspense fallback={<div className="h-64" />}>
               <TabsSection />
             </Suspense>

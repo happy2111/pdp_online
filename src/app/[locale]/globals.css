@@ -148,6 +148,15 @@
     @apply max-w-7xl mx-auto px-4 md:px-6 lg:px-8;
   }
 
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
   .video-js,
   .video-js * {
     pointer-events: none !important;
